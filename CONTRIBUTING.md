@@ -162,10 +162,10 @@ HBW Helper's repository has several branches. It is important to know each
 branch's purpose and which branch you should submit pull request to.
 
 - **Release branch for latest clients**  
-The branch whose name ends in `latest`contains source code of this mod's latest
-release for the latest Minecraft client version(s). Only when a commit is
-examined to be stable enough would it be merged to this branch. Therefore, you
-**should not** submit your pull request to this branch.
+The branch whose name ends in `latest` contains source code of this mod's 
+latest release for the latest Minecraft client version(s). Only when a commit 
+is examined to be stable enough would it be merged to this branch. Therefore, 
+you **should not** submit your pull request to this branch.
 - **Development branch for latest clients**  
 The `dev` branch's code is based on the branch mentioned above, and
 additionally, it contains most recent changes that may be merged to the branch
@@ -223,10 +223,10 @@ time examining the commit log, which will include your commits if you
 contribute to this project. In order to make the commit log easy to read,
 please stick with the following guidelines when you are creating a commit.
 
-- **Never** make a change in GitHub web editor in your browser. Some people
-click on the "Propose file change" directly after they finish editing, which
-creates a commit with a trivial message ("Update `filename`"). What is more,
-the web editor is not friendly to long files and formatting operations.
+- **Never** make a change in GitHub web editor in your browser. It does not 
+allow editing multiple files at once, forcing the users to create several 
+commits if they are editing various files. What is more, the web editor is not 
+friendly to long files and formatting operations.
 - If you find out that you forget something in the commit you just created,
 **do not** create a new commit. Instead,
 [amend](https://git-scm.com/docs/git-commit#git-commit---amend) the previous
