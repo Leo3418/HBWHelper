@@ -50,23 +50,23 @@ this repository.
 (on Windows), or a Command Prompt window (on Windows). Navigate to the folder
 where you have cloned the repository.
 2. If you are using terminal or Windows PowerShell, execute:
-```
-./gradlew setupDecompWorkspace
-```
-or, if you are using Command Prompt, execute:
-```
-gradlew setupDecompWorkspace
-```
-Then, wait for the process to complete.
+  ```
+  ./gradlew setupDecompWorkspace
+  ```
+  Or, if you are using Command Prompt, execute:
+  ```
+  gradlew setupDecompWorkspace
+  ```
+  Then, wait for the process to complete.  
 3. Perform this step only if you are using **Eclipse** for development:  
-In terminal or Windows PowerShell, execute:
-```
-./gradlew eclipse
-```
-Or, in Command Prompt, execute:
-```
-gradlew eclipse
-```
+  In terminal or Windows PowerShell, execute:
+  ```
+  ./gradlew eclipse
+  ```
+  Or, in Command Prompt, execute:
+  ```
+  gradlew eclipse
+  ```
 4. Import the folder storing your fork in your IDE.  
 On IntelliJ IDEA, make sure you either select `build.gradle` in the folder or
 choose `Gradle` as the project model if you select the folder itself.
@@ -75,13 +75,13 @@ recommended.
   - If you are using **IntelliJ IDEA** for development:  
     - Close this project in IntelliJ IDEA if it is opened.
     - In terminal or Windows PowerShell, execute:
-  ```
-  ./gradlew genIntelliJRuns
-  ```
-    Or, in Command Prompt, execute:
-  ```
-  gradlew genIntelliJRuns
-  ```
+      ```
+      ./gradlew genIntelliJRuns
+      ```
+      Or, in Command Prompt, execute:
+      ```
+      gradlew genIntelliJRuns
+      ```
     - Then, reopen the project, and you can see run configurations.  
   - If you are using **Eclipse** for development:
     - Select `Run - Run Configurations...` from menu.

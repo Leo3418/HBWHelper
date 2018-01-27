@@ -39,9 +39,7 @@ JAR file or in the mod options menu in game -->
 - HBW Helper version:
 - Minecraft version:
 - Minecraft Forge version:
-<!-- Report the Java version you see on the top-right corner of the debug
-screen, which shows by pressing F3 when you are playing in a world -->
-- Java version:
+- Java version: <!-- Report the Java version you see on the top-right corner of the debug screen -->
 - Operating system:
 - Other mods you have installed:
 
