@@ -57,7 +57,8 @@ where you have cloned the repository.
   ```
   gradlew setupDecompWorkspace
   ```
-  Then, wait for the process to complete.  
+  Then, wait for the process to complete.
+
 3. Perform this step only if you are using **Eclipse** for development:  
   In terminal or Windows PowerShell, execute:
   ```
