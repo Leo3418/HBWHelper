@@ -1,0 +1,20 @@
+language: java
+
+install:
+  - ./gradlew setupCiWorkspace
+
+script:
+  - ./gradlew build
+
+before_deploy:
+  - travis/before_deploy.sh
+
+deploy:
+  provider: releases
+  api_key:
+    secure: oZSVUvSbwTHkaFhdvftHiXDyZF88hpIRSRjfFMWo8vvoh1t8kDwPWpV1oNXW5aYsx05kjqZPbYN3/HwlK32mm5xVfQEB8Bt8ZxdF17asgGBi6osfgntaG6os5sUqptLHFUvf8Pc/HF3Lg9zW/qRedl4/GwmdJZ+R76LRTlkRANcvqMpZCTBnu4vi9oP+M+H1NYA3mXZOZ8MaiLKmCJaAV43A6fztaCb2KQVd8iPd0FLMFCgEVV6GBHDmGlNBpdz2E6m63dlxBO4sHa40/P5C4k4eWEtIozJRHp2+HVxTHxA2izyh2DWBnFqHZ2LWWR6vjqM6eHCI8IyEl6zHDQOFSK0Mb57/d6UMB3jFz1RipvsxjWQQ+vPLjZYYupjl9z41HQEo50HOg3B10FFqH9EhpEdmvAwVJBegnrTBWblT9ZLOAVpsb1d/LF5O/ZjcFKddeowweQVC4VitSkfpYFExii7ZB+q2RldpsDp5S0C+ULuwsnl4y3I9TDSr6Za5UnKWVID7wE4d3UkKoZd/Vjzgf6HPNAwsI5OEPJcOPkdIwijDuWfcygtG0+c97Rdwz7n1H/42mHOtrdmYw7CE8W9vpHu/Kl7bOy/9/UQE+mcOEcGMDeiuUoOgjZh3BBy4akQ0LVvrwwiCGTW32FzU4fDR0hdJhFAzTbTQFvKpdJzGOUo=
+  file_glob: true # Enables wildcard
+  file: build/libs/*
+  skip_cleanup: true
+  on:
+    tags: true
