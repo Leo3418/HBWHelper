@@ -1,5 +1,8 @@
 language: java
 
+git:
+  depth: false # Allows Git operations
+
 install:
   - ./gradlew setupCiWorkspace
 
