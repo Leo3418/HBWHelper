@@ -90,7 +90,7 @@ public class GameDetector {
 
     /**
      * If this is {@code true}, {@code GuiOpenEvent} where
-     * {@code GuiDownloadTerrain} is loaded will be ignored once.
+     * {@code GuiDownloadTerrain} is loaded will be ignored once
      */
     private boolean ignoreGuiOpenEvent;
 
@@ -147,8 +147,8 @@ public class GameDetector {
      * @see #update(TickCounterTimeUpEvent)
      */
     public void prepareToReadScoreboard(EntityJoinWorldEvent event) {
-        if (hypixelDetector.isIn() && event.entity ==
-                Minecraft.getMinecraft().thePlayer) {
+        if (hypixelDetector.isIn() && event.entity
+                == Minecraft.getMinecraft().thePlayer) {
             tickCounter.reset();
             tickCounter.start();
         }
