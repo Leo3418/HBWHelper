@@ -19,6 +19,7 @@ since it contains some important information.
   - [Testing for Multiple Client Versions](#testing-for-multiple-client-versions)
     - [Reconfiguring Your Project](#reconfiguring-your-project)
     - [Applying Your Change onto Another Branch](#applying-your-change-onto-another-branch)
+- [Build Instructions](#build-instructions)
 - [Commit Creating Guidelines](#commit-creating-guidelines)
 - [Ticket Submitting Guidelines](#ticket-submitting-guidelines)
   - [Pull Request Guidelines](#pull-request-guidelines)
@@ -217,8 +218,32 @@ Now you may test whether your code works in other Minecraft client versions.
 
 [Return to top](#table-of-contents)
 
-## Commit Creating Guidelines
+## Build Instructions
+Although you can start a Minecraft Forge client from your IDE and test your
+code quickly, you might want to build a JAR artifact from your code for 
+everyday testing.   
+In fact, we really encourage you to do this because the client you start from 
+IDE can have different behaviors from the standalone Minecraft client you 
+installed as a program. For example, any code that deals with regular 
+expressions does not seem to work on the standalone client.  
+Open up a terminal (on GNU/Linux or macOS), a Windows PowerShell console
+(on Windows), or a Command Prompt window (on Windows). Navigate to the folder
+of your project.  
+In terminal or Windows PowerShell, execute:
+```
+./gradlew build
+```
+Or, in Command Prompt, execute:
+```
+gradlew build
+```
+Then, check files in folder `build/libs`. The JAR file without `sources` in its
+file name is the one that you can install onto the standalone Minecraft client 
+with Minecraft Forge.
 
+[Return to top](#table-of-contents)
+
+## Commit Creating Guidelines
 People who want to know what has changed in this mod are likely to spend some
 time examining the commit log, which will include your commits if you
 contribute to this project. In order to make the commit log easy to read,
