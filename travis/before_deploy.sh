@@ -7,7 +7,3 @@ git checkout 1.8.9
 git checkout 1.9-1.10.2
 ./gradlew setupCiWorkspace
 ./gradlew build
-
-# Deletes source JARs
-cd build/libs
-find . -type f -iregex '.*-sources\.jar' -delete
