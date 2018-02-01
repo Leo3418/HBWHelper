@@ -76,8 +76,8 @@ public class HudGui extends Gui {
         just pick the hotbar as the object we monitor. Also, we only want this
         GUI to be displayed when the client is in Bed Wars.
          */
-        if (event.type == RenderGameOverlayEvent.ElementType.HOTBAR
-                && GameDetector.getInstance().isIn()) {
+        if (GameDetector.getInstance().isIn()
+                && event.type == RenderGameOverlayEvent.ElementType.HOTBAR) {
             int currentHeight = BEGINNING_HEIGHT;
 
             // Renders the first line
