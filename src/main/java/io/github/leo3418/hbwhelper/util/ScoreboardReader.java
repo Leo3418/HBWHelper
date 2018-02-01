@@ -51,9 +51,8 @@ public class ScoreboardReader {
                 .getObjectiveInDisplaySlot(1);
         if (scoreboardTitle != null) {
             return scoreboardTitle.getDisplayName();
-        } else {
-            return "";
         }
+        return "";
     }
 
     /**
