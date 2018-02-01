@@ -38,12 +38,14 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
  */
 public class TickCounter {
     /**
-     * Number of ticks per second in Minecraft.
+     * Number of ticks per second in Minecraft Forge.
+     * <p>
+     * Note that this is different from game tick in Minecraft.
      */
     public static final int TICKS_PER_SECOND = 40;
 
     /**
-     * True if this {@code TickCounter} is running
+     * {@code true} if this {@code TickCounter} is running
      */
     private boolean running;
 
@@ -61,6 +63,8 @@ public class TickCounter {
      * Constructs a new {@code TickCounter}, and starts counting ticks.
      */
     public TickCounter() {
+        // Number of ticks starts from 0 and keeps increasing, so it will never
+        // be negative
         this(-1);
     }
 
@@ -108,7 +112,7 @@ public class TickCounter {
     }
 
     /**
-     * Resets the counter.
+     * Resets the counter. The counter will keep running or being stopped.
      */
     public void reset() {
         tick = 0;
