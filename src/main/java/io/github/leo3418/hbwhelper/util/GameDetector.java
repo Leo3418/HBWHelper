@@ -44,7 +44,7 @@ public class GameDetector {
     /**
      * Size of scoreboard when client is waiting for game to start
      */
-    private static final int WAITING_BOARD_SIZE = 9;
+    private static final int WAITING_BOARD_SIZE = 12;
 
     /**
      * Length of postponement to read scoreboard when client spawns, whose unit
