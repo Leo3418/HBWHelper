@@ -92,9 +92,16 @@ public class HudGui extends Gui {
             drawString(mc.fontRenderer, armorInfo, BEGINNING_WIDTH,
                     currentHeight, TEXT_COLOR);
 
-            // Renders the second line
-            currentHeight += LINE_SPACE;
-            // Code that renders the second line goes here
+            if (armorMaterial != null) {
+                // If the player has armor, checks its enchantment
+                int enchantmentLevel = ArmorReader.getProtectionLevel();
+                if (enchantmentLevel > 0) {
+                    currentHeight += LINE_SPACE;
+                    String enchantmentInfo = "Protection " + enchantmentLevel;
+                    drawString(mc.fontRenderer, enchantmentInfo, BEGINNING_WIDTH,
+                            currentHeight, TEXT_COLOR);
+                }
+            }
         }
     }
 }

@@ -19,6 +19,8 @@
 package io.github.leo3418.hbwhelper.util;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -45,6 +47,11 @@ public class ArmorReader {
     private static final int LEGGINGS_INDEX = 1;
 
     /**
+     * Enchantment ID for Protection
+     */
+    private static final int ENCHANTMENT_ID = 0;
+
+    /**
      * Prevents instantiation of this class.
      */
     private ArmorReader() {
@@ -66,6 +73,38 @@ public class ArmorReader {
     }
 
     /**
+     * Returns the level of Protection enchantment on the player's armor. If
+     * the player does not wear armor, returns {@code 0}.
+     *
+     * @return the level of Protection enchantment on the player's armor, or
+     *         {@code 0} if the player has no armor
+     */
+    public static int getProtectionLevel() {
+        ItemStack leggings = getArmorStack();
+        if (leggings != null) {
+            return EnchantmentHelper.getEnchantmentLevel(Enchantment
+                    .getEnchantmentByID(ENCHANTMENT_ID), leggings);
+        }
+        return 0;
+    }
+
+    /**
+     * Returns an {@link ItemStack} object which represents the player's armor.
+     * If the player does not wear armor, returns {@code null}.
+     *
+     * @return an {@link ItemStack} object which represents the player's armor,
+     *         or {@code null} if the player has no armor
+     */
+    private static ItemStack getArmorStack() {
+        Iterator<ItemStack> armorItr = Minecraft.getMinecraft().player
+                .getArmorInventoryList().iterator();
+        for (int i = 0; i < LEGGINGS_INDEX; i++) {
+            armorItr.next();
+        }
+        return armorItr.next();
+    }
+
+    /**
      * Returns the player's armor. If the player does not wear armor, returns
      * {@code null}.
      *
@@ -73,12 +112,7 @@ public class ArmorReader {
      *         or {@code null} if the player has no armor
      */
     private static ItemArmor getArmor() {
-        Iterator<ItemStack> armorItr = Minecraft.getMinecraft().player
-                .getArmorInventoryList().iterator();
-        for (int i = 0; i < LEGGINGS_INDEX; i++) {
-            armorItr.next();
-        }
-        ItemStack leggings = armorItr.next();
+        ItemStack leggings = getArmorStack();
         if (leggings != null) {
             Item leggingsItem = leggings.getItem();
             if (leggingsItem instanceof ItemArmor) {
