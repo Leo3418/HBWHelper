@@ -125,7 +125,7 @@ public class HudGui extends Gui {
      * Renders a piece of text on this GUI with default parameters.
      * <p>
      * The text aligns its left edge, is under the previous line, and is in the
-     * default color,
+     * default color.
      * <p>
      * After this line of text is rendered, sets height of the next line to be
      * directly below this line.
