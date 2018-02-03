@@ -19,11 +19,14 @@
 package io.github.leo3418.hbwhelper.gui;
 
 import io.github.leo3418.hbwhelper.util.ArmorReader;
+import io.github.leo3418.hbwhelper.util.EffectsReader;
 import io.github.leo3418.hbwhelper.util.GameDetector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+
+import java.util.Map;
 
 /**
  * The GUI of this mod shown in Minecraft's Head-Up Display (HUD).
@@ -56,12 +59,18 @@ public class HudGui extends Gui {
     private final Minecraft mc;
 
     /**
+     * Height of the next line of text that would be rendered
+     */
+    private int currentHeight;
+
+    /**
      * Constructs a new instance of this GUI.
      *
      * @param mc the current Minecraft instance
      */
     public HudGui(Minecraft mc) {
         this.mc = mc;
+        currentHeight = BEGINNING_HEIGHT;
     }
 
     /**
@@ -78,30 +87,54 @@ public class HudGui extends Gui {
          */
         if (GameDetector.getInstance().isIn()
                 && event.type == RenderGameOverlayEvent.ElementType.HOTBAR) {
-            int currentHeight = BEGINNING_HEIGHT;
+            renderArmorInfo();
+            renderEffectsInfo();
+            // Resets height of the first line in the next rendering
+            currentHeight = BEGINNING_HEIGHT;
+        }
+    }
 
-            // Renders the first line
-            String armorInfo;
-            ArmorMaterial armorMaterial = ArmorReader.getMaterial();
-            if (armorMaterial == null) {
-                armorInfo = "Not wearing armor";
-            } else {
-                armorInfo = "Wearing " + armorMaterial.toString()
-                        .toLowerCase() + " armor";
-            }
-            drawString(mc.fontRendererObj, armorInfo, BEGINNING_WIDTH,
-                    currentHeight, TEXT_COLOR);
-
-            if (armorMaterial != null) {
-                // If the player has armor, checks its enchantment
-                int enchantmentLevel = ArmorReader.getProtectionLevel();
-                if (enchantmentLevel > 0) {
-                    currentHeight += LINE_SPACE;
-                    String enchantmentInfo = "Protection " + enchantmentLevel;
-                    drawString(mc.fontRendererObj, enchantmentInfo, BEGINNING_WIDTH,
-                            currentHeight, TEXT_COLOR);
-                }
+    /**
+     * Renders the player's armor information on this GUI.
+     */
+    private void renderArmorInfo() {
+        ArmorMaterial armorMaterial = ArmorReader.getMaterial();
+        if (armorMaterial != null) {
+            drawString("Wearing " + armorMaterial.toString().toLowerCase()
+                    + " armor");
+            // If the player has armor, checks its enchantment
+            int enchantmentLevel = ArmorReader.getProtectionLevel();
+            if (enchantmentLevel > 0) {
+                drawString("Protection " + enchantmentLevel);
             }
         }
+    }
+
+    /**
+     * Renders the player's effects information on this GUI.
+     */
+    private void renderEffectsInfo() {
+        Map<String, String> effects = EffectsReader.getEffects();
+        for (String effect : effects.keySet()) {
+            String duration = effects.get(effect);
+            drawString(effect + " " + duration);
+        }
+    }
+
+    /**
+     * Renders a piece of text on this GUI with default parameters.
+     * <p>
+     * The text aligns its left edge, is under the previous line, and is in the
+     * default color,
+     * <p>
+     * After this line of text is rendered, sets height of the next line to be
+     * directly below this line.
+     *
+     * @param text the text to be rendered
+     */
+    private void drawString(String text) {
+        drawString(mc.fontRendererObj, text, BEGINNING_WIDTH, currentHeight,
+                TEXT_COLOR);
+        currentHeight += LINE_SPACE;
     }
 }
