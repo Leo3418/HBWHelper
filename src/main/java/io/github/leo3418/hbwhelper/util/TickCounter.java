@@ -128,7 +128,7 @@ public class TickCounter {
      */
     @SubscribeEvent
     public void tick(ClientTickEvent event) {
-        tick += 1;
+        tick++;
         if (tick == timer) {
             EventManager.EVENT_BUS.post(new TickCounterTimeUpEvent(this));
         }
