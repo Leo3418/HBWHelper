@@ -282,7 +282,7 @@ public class GameDetector {
             waitingToStart = false;
             inBedWars = true;
             EventManager.EVENT_BUS.post(new GameStartEvent());
-        } else if (event.message.getFormattedText().equals(REJOIN_TEXT)) {
+        } else if (message.contains(REJOIN_TEXT)) {
             // Client rejoins a Bed Wars game
             inBedWars = true;
             EventManager.EVENT_BUS.post(new ClientRejoinGameEvent());
