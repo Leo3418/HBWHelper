@@ -260,8 +260,8 @@ public class GameDetector {
     }
 
     /**
-     * Updates whether client is in a Bed Wars game if client joins a game that
-     * is about to start.
+     * Updates whether client is in a Bed Wars game by analyzing chat message
+     * client receives.
      * <p>
      * When the game starts, fires a {@link GameStartEvent} on this mod's
      * event bus.
