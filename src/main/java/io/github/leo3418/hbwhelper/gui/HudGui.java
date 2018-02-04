@@ -56,6 +56,9 @@ public class HudGui extends Gui {
      */
     private static final int LINE_SPACE = 10;
 
+    /**
+     * The instance of Minecraft client
+     */
     private final Minecraft mc;
 
     /**
