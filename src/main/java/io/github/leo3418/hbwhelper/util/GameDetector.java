@@ -42,20 +42,10 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnection
  */
 public class GameDetector {
     /**
-     * Size of scoreboard when client is waiting for game to start
-     */
-    private static final int WAITING_BOARD_SIZE = 12;
-
-    /**
      * Length of postponement to read scoreboard when client spawns, whose unit
      * is second
      */
     private static final double READ_POSTPONEMENT = 1.0;
-
-    /**
-     * Text that is in scoreboard only when client is in a Bed Wars game
-     */
-    private static final String BW_SCOREBOARD_TEXT = "Red";
 
     /**
      * Title of scoreboard in a Bed Wars game
@@ -63,10 +53,28 @@ public class GameDetector {
     private static final String BW_SCOREBOARD_TITLE = "BED WARS";
 
     /**
-     * Prompt client received in chat when the game starts
+     * Text that only appears on the scoreboard when client is waiting for a
+     * game to start
      */
-    private static final String GAME_START_TEXT =
-            "Protect your bed and destroy the enemy beds.";
+    private static final String WAITING_BOARD_TEXT = "Mode: ";
+
+    /**
+     * Prompt client received in chat when an ordinary game starts
+     */
+    private static final String ORDINARY_START_TEXT =
+            "\u00A7r\u00A7f\u00A7lBed Wars\u00A7r";
+
+    /**
+     * Prompt client received in chat when a game in Capture Mode starts
+     */
+    private static final String CAPTURE_START_TEXT =
+            "\u00A7r\u00A7f\u00A7lTo win a game of Bed Wars Capture\u00A7r";
+
+    /**
+     * Prompt client received in chat when it rejoins a game
+     */
+    private static final String REJOIN_TEXT =
+            "\u00A7e\u00A7lTo leave Bed Wars, type /lobby\u00A7r";
 
     /**
      * The only instance of this class
@@ -226,32 +234,26 @@ public class GameDetector {
     /**
      * Updates whether client is in a Bed Wars game by reading the scoreboard
      * when it is created and ready to be read.
-     * <p>
-     * If client is rejoining a Bed Wars game, fires a
-     * {@link ClientRejoinGameEvent} on this mod's event bus.
      *
      * @param event the event fired when it is long enough for scoreboard to be
      *         ready
      * @see #prepareToReadScoreboard(EntityJoinWorldEvent)
-     * @see ClientRejoinGameEvent
      * @see EventManager#EVENT_BUS
      */
     public void update(TickCounterTimeUpEvent event) {
         if (event.getExpiringCounter() == tickCounter) {
             // Timer created by this instance expires
             tickCounter.stop();
-            if (hypixelDetector.isIn() && ScoreboardReader.getTitle()
+            if (hypixelDetector.isIn() && ScoreboardReader.getTitle(true)
                     .contains(BW_SCOREBOARD_TITLE)) {
                 // Scoreboard's title shows client is in Bed Wars lobby, waiting
                 // for a game to start, or in game
-                if (ScoreboardReader.getSize() == WAITING_BOARD_SIZE) {
+                if (ScoreboardReader.contains(WAITING_BOARD_TEXT, true)) {
                     // Client is waiting for a Bed Wars game to start
                     waitingToStart = true;
-                } else if (ScoreboardReader.contains(BW_SCOREBOARD_TEXT)) {
-                    // Client rejoins a Bed Wars game
-                    inBedWars = true;
-                    EventManager.EVENT_BUS.post(new ClientRejoinGameEvent());
                 }
+                // The case when client rejoins a game is detected on receiving
+                // chat message
                 // Nothing needed to do when client is in lobby
             }
         }
@@ -263,17 +265,27 @@ public class GameDetector {
      * <p>
      * When the game starts, fires a {@link GameStartEvent} on this mod's
      * event bus.
+     * <p>
+     * If client is rejoining a Bed Wars game, fires a
+     * {@link ClientRejoinGameEvent} on this mod's event bus.
      *
      * @param event the event fired when client receives a chat message
      * @see GameStartEvent
+     * @see ClientRejoinGameEvent
      * @see EventManager#EVENT_BUS
      */
     public void update(ClientChatReceivedEvent event) {
-        if (waitingToStart && event.getMessage().toString()
-                .contains(GAME_START_TEXT)) {
+        String message = event.getMessage().getFormattedText();
+        if (waitingToStart && (message.contains(ORDINARY_START_TEXT)
+                || message.contains(CAPTURE_START_TEXT))) {
+            // A Bed Wars game starts
             waitingToStart = false;
             inBedWars = true;
             EventManager.EVENT_BUS.post(new GameStartEvent());
+        } else if (event.getMessage().getFormattedText().equals(REJOIN_TEXT)) {
+            // Client rejoins a Bed Wars game
+            inBedWars = true;
+            EventManager.EVENT_BUS.post(new ClientRejoinGameEvent());
         }
     }
 }
