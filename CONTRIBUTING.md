@@ -224,8 +224,9 @@ code quickly, you might want to build a JAR artifact from your code for
 everyday testing.   
 In fact, we really encourage you to do this because the client you start from 
 IDE can have different behaviors from the standalone Minecraft client you 
-installed as a program. For example, any code that deals with regular 
-expressions does not seem to work on the standalone client.  
+installed as a program. For example, any code that processes strings with the
+section sign (`§`) does not work on the standalone client, though it works on 
+the client opened from IDE.  
 Open up a terminal (on GNU/Linux or macOS), a Windows PowerShell console
 (on Windows), or a Command Prompt window (on Windows). Navigate to the folder
 of your project.  
