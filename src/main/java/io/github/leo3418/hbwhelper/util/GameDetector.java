@@ -194,9 +194,11 @@ public class GameDetector {
                      */
                 ignoreGuiOpenEvent = false;
             } else {
+                if (inBedWars) {
+                    EventManager.EVENT_BUS.post(new ClientLeaveGameEvent());
+                }
                 inBedWars = false;
                 tickCounter.stop();
-                EventManager.EVENT_BUS.post(new ClientLeaveGameEvent());
             }
         }
     }

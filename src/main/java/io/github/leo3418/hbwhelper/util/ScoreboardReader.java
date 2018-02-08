@@ -34,21 +34,6 @@ import java.util.Collection;
  */
 public class ScoreboardReader {
     /**
-     * Regular expression of formatting codes in Minecraft
-     * <p>
-     * I have to use the Unicode encoding for the section sign ({@code §})
-     * because Minecraft is so mean that it does not want the player to use
-     * this sign in game to produce formatted text, even if the player is
-     * merely using it in a mod's code.
-     *
-     * @see <a href="https://minecraft.gamepedia.com/Formatting_codes"
-     *         target="_top">Formatting codes in Minecraft</a>
-     * @see <a href="https://en.wikipedia.org/wiki/Section_sign">
-     *         The section sign's information on Wikipedia</a>
-     */
-    private static final String FORMATTING_REGEX = "\u00A7[0-9a-fk-or]";
-
-    /**
      * Prevents instantiation of this class.
      */
     private ScoreboardReader() {
@@ -68,7 +53,7 @@ public class ScoreboardReader {
         if (scoreboardTitle != null) {
             String title = scoreboardTitle.getDisplayName();
             if (removeFormat) {
-                title = title.replaceAll(FORMATTING_REGEX, "");
+                title = TextFormatRemover.removeAllFormats(title);
             }
             return title;
         }
@@ -140,7 +125,7 @@ public class ScoreboardReader {
             String lineText = ScorePlayerTeam.formatPlayerName(line,
                     score.getPlayerName());
             if (removeFormat) {
-                lineText = lineText.replaceAll(FORMATTING_REGEX, "");
+                lineText = TextFormatRemover.removeAllFormats(lineText);
             }
             lines.add(lineText);
         }
