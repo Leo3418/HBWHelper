@@ -43,17 +43,17 @@ public class GameManager {
     /**
      * Text that only appears in the line showing spawn time above a generator
      */
-    private static final String GENERATOR_TEXT = "§eSpawns in §c";
+    private static final String GENERATOR_TEXT = "\u00A7eSpawns in \u00A7c";
 
     /**
      * Text that only appears in a diamond generator's display name
      */
-    private static final String DIAMOND_GEN_TEXT = "§b§lDiamond§r";
+    private static final String DIAMOND_GEN_TEXT = "\u00A7b\u00A7lDiamond\u00A7r";
 
     /**
      * Text that only appears in an emerald generator's display name
      */
-    private static final String EMERALD_GEN_TEXT = "§2§lEmerald§r";
+    private static final String EMERALD_GEN_TEXT = "\u00A72\u00A7lEmerald\u00A7r";
 
     /**
      * A reference to the last created instance of this class
