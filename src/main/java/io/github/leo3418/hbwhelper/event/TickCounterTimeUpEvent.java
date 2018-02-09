@@ -29,14 +29,14 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  * code demonstrates how to check if this event is fired by a specified
  * {@code TickCounter}. Assume that the {@code TickCounter} is called
  * {@code tickCounter}.
- * <blockquote><pre><code>
- *      &#64;SubscribeEvent
+ * <blockquote><pre>{@code
+ *      \u0040SubscribeEvent
  *      public void onTickCounterTimeUp(TickCounterTimeUpEvent event) {
  *          if (event.getExpiringCounter() == tickCounter) {
  *              // The event is fired by tickCounter
  *          }
  *      }
- * </code></pre></blockquote>
+ * }</pre></blockquote>
  *
  * @author Leo
  * @see TickCounter
