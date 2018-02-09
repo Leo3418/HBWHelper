@@ -165,14 +165,13 @@ public class GameManager {
         List<EntityArmorStand> genEntities = Minecraft.getMinecraft().world
                 .getEntitiesWithinAABB(EntityArmorStand.class,
                         new AxisAlignedBB(generatorPos));
-        int time = -1;
         for (EntityArmorStand genEntity : genEntities) {
             String floatText = genEntity.getDisplayName().getFormattedText();
             if (floatText.contains(GENERATOR_TEXT)) {
                 floatText = TextFormatRemover.removeAllFormats(floatText);
-                time = Integer.parseInt(floatText.replaceAll("[^0-9]", ""));
+                return Integer.parseInt(floatText.replaceAll("[^0-9]", ""));
             }
         }
-        return time;
+        return -1;
     }
 }
