@@ -128,9 +128,9 @@ comments, please follow
 [this guide](http://www.oracle.com/technetwork/java/javase/documentation/index-137868.html)
 from Oracle. However, there are some other things to notice in addition to
 Oracle's documentation:
-- Use `@code` tag instead of `<code></code>`, unless you are in a case where
-you must use an [HTML entity](https://www.w3schools.com/html/html_entities.asp),
-such as including `@` in a sample code.
+- Use `@code` tag instead of `<code></code>`. If you need to include characters
+reserved by Javadoc, such as `@`, please use its Unicode encoding, such as
+`\u0040` for `@`.
 - Surround a standalone sample code block with `<blockquote><pre>` and
 `</pre></blockquote>` tags.
 - **Do not** align parameter descriptions, since if we do so, we may need to
