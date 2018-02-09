@@ -20,7 +20,6 @@ package io.github.leo3418.hbwhelper;
 
 import io.github.leo3418.hbwhelper.event.ClientRejoinGameEvent;
 import io.github.leo3418.hbwhelper.event.GameStartEvent;
-import io.github.leo3418.hbwhelper.event.TickCounterTimeUpEvent;
 import io.github.leo3418.hbwhelper.gui.HudGui;
 import io.github.leo3418.hbwhelper.util.GameDetector;
 import io.github.leo3418.hbwhelper.util.GameManager;
@@ -30,7 +29,6 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
@@ -96,22 +94,12 @@ public class EventManager {
     }
 
     @SubscribeEvent
-    public void onEntityJoinWorld(EntityJoinWorldEvent event) {
-        gameDetector.prepareToReadScoreboard(event);
-    }
-
-    @SubscribeEvent
     public void onGuiOpen(GuiOpenEvent event) {
         gameDetector.update(event);
     }
 
     @SubscribeEvent
     public void onClientChatReceived(ClientChatReceivedEvent event) {
-        gameDetector.update(event);
-    }
-
-    @SubscribeEvent
-    public void onTickCounterTimeUp(TickCounterTimeUpEvent event) {
         gameDetector.update(event);
     }
 
