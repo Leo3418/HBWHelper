@@ -22,14 +22,10 @@ import io.github.leo3418.hbwhelper.EventManager;
 import io.github.leo3418.hbwhelper.event.ClientLeaveGameEvent;
 import io.github.leo3418.hbwhelper.event.ClientRejoinGameEvent;
 import io.github.leo3418.hbwhelper.event.GameStartEvent;
-import io.github.leo3418.hbwhelper.event.TickCounterTimeUpEvent;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiDownloadTerrain;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
 
 /**
@@ -41,23 +37,6 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnection
  * @author Leo
  */
 public class GameDetector {
-    /**
-     * Length of postponement to read scoreboard when client spawns, whose unit
-     * is second
-     */
-    private static final double READ_POSTPONEMENT = 1.0;
-
-    /**
-     * Title of scoreboard in a Bed Wars game
-     */
-    private static final String BW_SCOREBOARD_TITLE = "BED WARS";
-
-    /**
-     * Text that only appears on the scoreboard when client is waiting for a
-     * game to start
-     */
-    private static final String WAITING_BOARD_TEXT = "Mode: ";
-
     /**
      * Prompt client received in chat when an ordinary game starts
      */
@@ -87,26 +66,9 @@ public class GameDetector {
     private final HypixelDetector hypixelDetector;
 
     /**
-     * {@code TickCounter} which defers reading of scoreboard
-     */
-    private TickCounter tickCounter;
-
-    /**
      * {@code true} when client is currently in a Bed Wars game
      */
     private boolean inBedWars;
-
-    /**
-     * If this is {@code true}, {@code GuiOpenEvent} where
-     * {@code GuiDownloadTerrain} is loaded will be ignored once
-     */
-    private boolean ignoreGuiOpenEvent;
-
-    /**
-     * {@code true} when client is in a Bed Wars server where a game is about
-     * to start
-     */
-    private boolean waitingToStart;
 
     /**
      * Implementation of Singleton design pattern, which allows only one
@@ -114,8 +76,6 @@ public class GameDetector {
      */
     private GameDetector() {
         hypixelDetector = HypixelDetector.getInstance();
-        tickCounter = new TickCounter(READ_POSTPONEMENT);
-        tickCounter.stop();
     }
 
     /**
@@ -145,24 +105,6 @@ public class GameDetector {
     }
 
     /**
-     * When client spawns on a Hypixel server, prepares to read scoreboard.
-     * <p>
-     * Because {@code EntityJoinWorldEvent} is fired before client actually
-     * spawns and gets the scoreboard, we need to postpone reading of
-     * scoreboard for a few seconds.
-     *
-     * @param event the event fired when client spawns
-     * @see #update(TickCounterTimeUpEvent)
-     */
-    public void prepareToReadScoreboard(EntityJoinWorldEvent event) {
-        if (hypixelDetector.isIn() && event.entity
-                == Minecraft.getMinecraft().thePlayer) {
-            tickCounter.reset();
-            tickCounter.start();
-        }
-    }
-
-    /**
      * Updates whether client is in a Bed Wars game when it transfers from one
      * server to another.
      * <p>
@@ -176,37 +118,21 @@ public class GameDetector {
      * @see EventManager#EVENT_BUS
      */
     public void update(GuiOpenEvent event) {
-        if (event.gui instanceof GuiDownloadTerrain) {
-            /*
-            If client is currently in a Bed Wars game, this means it must
-            be leaving the game.
-            If client is not in a Bed Wars game, we will try to detect if
-            it is joining a Bed Wars game using other code.
-             */
-            if (ignoreGuiOpenEvent) {
-                    /*
-                    When client makes initial connection to server,
-                    GuiOpenEvent is fired after EntityJoinWorldEvent, which
-                    unexpectedly stops the timer and prevents detection of game
-                    session on first join. To fix this, the following boolean
-                    is introduced so that on the first join, the timer is not
-                    stopped.
-                     */
-                ignoreGuiOpenEvent = false;
-            } else {
-                if (inBedWars) {
-                    EventManager.EVENT_BUS.post(new ClientLeaveGameEvent());
-                }
-                inBedWars = false;
-                tickCounter.stop();
-            }
+        if (inBedWars && event.gui instanceof GuiDownloadTerrain) {
+            inBedWars = false;
+            EventManager.EVENT_BUS.post(new ClientLeaveGameEvent());
         }
     }
 
     /**
      * Updates whether client is in a Bed Wars game upon connection change.
      * <p>
-     * When client leaves game, fires a {@link ClientLeaveGameEvent} on this
+     * Because {@code GuiOpenEvent} will not be called when
+     * client disconnects, this method is implemented to detect
+     * {@code ClientDisconnectionFromServerEvent}, which is fired when client
+     * disconnects.
+     * <p>
+     * If client leaves game, fires a {@link ClientLeaveGameEvent} on this
      * mod's event bus.
      *
      * @param event the event fired when client joins or leaves a server
@@ -214,50 +140,13 @@ public class GameDetector {
      * @see EventManager#EVENT_BUS
      */
     public void update(FMLNetworkEvent event) {
-        if (event instanceof ClientConnectedToServerEvent) {
-            /*
-            Because of difference between orders of events fired when client
-            connects to a server and when it transfers between servers, we
-            would want the GuiOpenEvent fired straight after client's join to
-            server to be ignored.
-             */
-            ignoreGuiOpenEvent = true;
-        } else if (event instanceof ClientDisconnectionFromServerEvent) {
+        if (inBedWars && event instanceof ClientDisconnectionFromServerEvent) {
             /*
             GuiOpenEvent will not be called when client disconnects, so we need
             to detect ClientDisconnectionFromServerEvent
              */
             inBedWars = false;
-            tickCounter.stop();
             EventManager.EVENT_BUS.post(new ClientLeaveGameEvent());
-        }
-    }
-
-    /**
-     * Updates whether client is in a Bed Wars game by reading the scoreboard
-     * when it is created and ready to be read.
-     *
-     * @param event the event fired when it is long enough for scoreboard to be
-     *         ready
-     * @see #prepareToReadScoreboard(EntityJoinWorldEvent)
-     * @see EventManager#EVENT_BUS
-     */
-    public void update(TickCounterTimeUpEvent event) {
-        if (event.getExpiringCounter() == tickCounter) {
-            // Timer created by this instance expires
-            tickCounter.stop();
-            if (hypixelDetector.isIn() && ScoreboardReader.getTitle(true)
-                    .contains(BW_SCOREBOARD_TITLE)) {
-                // Scoreboard's title shows client is in Bed Wars lobby, waiting
-                // for a game to start, or in game
-                if (ScoreboardReader.contains(WAITING_BOARD_TEXT, true)) {
-                    // Client is waiting for a Bed Wars game to start
-                    waitingToStart = true;
-                }
-                // The case when client rejoins a game is detected on receiving
-                // chat message
-                // Nothing needed to do when client is in lobby
-            }
         }
     }
 
@@ -265,7 +154,7 @@ public class GameDetector {
      * Updates whether client is in a Bed Wars game by analyzing chat message
      * client receives.
      * <p>
-     * When the game starts, fires a {@link GameStartEvent} on this mod's
+     * If a Bed Wars game starts, fires a {@link GameStartEvent} on this mod's
      * event bus.
      * <p>
      * If client is rejoining a Bed Wars game, fires a
@@ -277,17 +166,18 @@ public class GameDetector {
      * @see EventManager#EVENT_BUS
      */
     public void update(ClientChatReceivedEvent event) {
-        String message = event.message.getFormattedText();
-        if (waitingToStart && (message.contains(ORDINARY_START_TEXT)
-                || message.contains(CAPTURE_START_TEXT))) {
-            // A Bed Wars game starts
-            waitingToStart = false;
-            inBedWars = true;
-            EventManager.EVENT_BUS.post(new GameStartEvent());
-        } else if (message.contains(REJOIN_TEXT)) {
-            // Client rejoins a Bed Wars game
-            inBedWars = true;
-            EventManager.EVENT_BUS.post(new ClientRejoinGameEvent());
+        if (hypixelDetector.isIn() && !inBedWars) {
+            String message = event.message.getFormattedText();
+            if ((message.contains(ORDINARY_START_TEXT)
+                    || message.contains(CAPTURE_START_TEXT))) {
+                // A Bed Wars game starts
+                inBedWars = true;
+                EventManager.EVENT_BUS.post(new GameStartEvent());
+            } else if (message.contains(REJOIN_TEXT)) {
+                // Client rejoins a Bed Wars game
+                inBedWars = true;
+                EventManager.EVENT_BUS.post(new ClientRejoinGameEvent());
+            }
         }
     }
 }
