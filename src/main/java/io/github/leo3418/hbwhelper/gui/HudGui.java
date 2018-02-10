@@ -21,6 +21,7 @@ package io.github.leo3418.hbwhelper.gui;
 import io.github.leo3418.hbwhelper.util.ArmorReader;
 import io.github.leo3418.hbwhelper.util.EffectsReader;
 import io.github.leo3418.hbwhelper.util.GameDetector;
+import io.github.leo3418.hbwhelper.util.GameManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -92,6 +93,7 @@ public class HudGui extends Gui {
                 && event.type == RenderGameOverlayEvent.ElementType.HOTBAR) {
             renderArmorInfo();
             renderEffectsInfo();
+            renderGensInfo();
             // Resets height of the first line in the next rendering
             currentHeight = BEGINNING_HEIGHT;
         }
@@ -121,6 +123,18 @@ public class HudGui extends Gui {
         for (String effect : effects.keySet()) {
             String duration = effects.get(effect);
             drawString(effect + " " + duration);
+        }
+    }
+
+    /**
+     * Renders time until the next spawn of diamond and emerald on this GUI.
+     */
+    private void renderGensInfo() {
+        if (GameManager.getInstance() != null) {
+            drawString("Next diamond: " + GameManager.getInstance()
+                    .getNextDiamond());
+            drawString("Next emerald: " + GameManager.getInstance()
+                    .getNextEmerald());
         }
     }
 
