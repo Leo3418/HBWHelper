@@ -18,9 +18,12 @@
 
 package io.github.leo3418.hbwhelper;
 
+import io.github.leo3418.hbwhelper.event.ClientRejoinGameEvent;
+import io.github.leo3418.hbwhelper.event.GameStartEvent;
 import io.github.leo3418.hbwhelper.event.TickCounterTimeUpEvent;
 import io.github.leo3418.hbwhelper.gui.HudGui;
 import io.github.leo3418.hbwhelper.util.GameDetector;
+import io.github.leo3418.hbwhelper.util.GameManager;
 import io.github.leo3418.hbwhelper.util.HypixelDetector;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
@@ -115,5 +118,17 @@ public class EventManager {
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent.Post event) {
         hudGui.render(event);
+    }
+
+    @SubscribeEvent
+    public void onGameStart(GameStartEvent event) {
+        new GameManager();
+    }
+
+    @SubscribeEvent
+    public void onClientRejoinGame(ClientRejoinGameEvent event) {
+        if (GameManager.getInstance() == null) {
+            new GameManager();
+        }
     }
 }
