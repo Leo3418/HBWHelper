@@ -42,11 +42,13 @@ Please find more information about contributing, including workspace setup
 instructions and contribution guidelines, in [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## License
-HBW Helper is free software licensed under version 3 of the GNU General Public
-License (GNU GPLv3).  
-By using, modifying, and/or redistributing this software, you agree to the terms
-in GNU GPLv3.  
-You can read the full text of the license in [`LICENSE.txt`](LICENSE.txt).
+This program is free software: you can redistribute it and/or modify it under 
+the terms of the GNU General Public License as published by the Free Software 
+Foundation, either version 3 of the License, or (at your option) any later 
+version.  
+This program is distributed in the hope that it will be useful, but WITHOUT ANY 
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+PARTICULAR PURPOSE. See [`LICENSE.txt`](LICENSE.txt) for more details.
 
 ## Obtaining Source Code of This Mod
 You can download source code of this mod as how you would when you download 
