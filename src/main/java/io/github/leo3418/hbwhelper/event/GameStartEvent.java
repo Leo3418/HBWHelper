@@ -29,6 +29,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  * join, and the game starts. When {@code ClientRejoinGameEvent} is fired,
  * however, client connects to a Bed Wars server it has connected before.
  *
+ * @author Leo
  * @see ClientRejoinGameEvent
  */
 public class GameStartEvent extends Event {
