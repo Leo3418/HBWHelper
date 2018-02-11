@@ -28,6 +28,8 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  * <li>Client leaves a Bed Wars server and returns to lobby;</li>
  * <li>Client disconnects from Hypixel.</li>
  * </ol>
+ *
+ * @author Leo
  */
 public class ClientLeaveGameEvent extends Event {
 }

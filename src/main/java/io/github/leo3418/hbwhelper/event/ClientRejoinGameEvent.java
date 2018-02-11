@@ -28,6 +28,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  * {@code GameStartEvent} is fired, however, client has joined a new Bed Wars
  * server, waited for other players to join, and the game starts.
  *
+ * @author Leo
  * @see GameStartEvent
  */
 public class ClientRejoinGameEvent extends Event {
