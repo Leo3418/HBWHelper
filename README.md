@@ -18,10 +18,7 @@ have got
 ## Installation
 Go to the [Releases](https://github.com/Leo3418/HBWHelper/releases) page, 
 download a JAR file for the Minecraft version you are using, and copy it into 
-the `mods` folder under your Minecraft game directory.  
-**Note**: Make sure you are not copying a JAR whose file name contains `sources` 
-into the `mods` folder. These files contain **source code** of this program and 
-will not be loaded by Minecraft Forge.
+the `mods` folder under your Minecraft game directory.
 
 ### Deciphering Version Number
 HBW Helper's version number tries to stick with
@@ -58,15 +55,14 @@ source code of a particular version, but the branch holding that version's
 source code has been deleted.  
 In accordance with GNU GPLv3, we are pleased to provide you source code of 
 every version of this mod. However, GitHub can only automatically add source 
-code archive of one branch to a release. Therefore, we provide an alternative 
-way of downloading source code of every version.  
-On the [Releases](https://github.com/Leo3418/HBWHelper/releases) page, you will
-find files containing `sources` in their file name. Although they are JAR files,
-they contain source code of the other JAR whose file name is identical except 
-the `sources` flag.  
-To extract the source code, please refer to 
-[this guide](https://docs.oracle.com/javase/tutorial/deployment/jar/unpack.html)
-from Oracle.  
+code archive of one branch to a release. Therefore, we provide Zip archives 
+of source code of other branches with every release.  
+On the [Releases](https://github.com/Leo3418/HBWHelper/releases) page, you
+will find two asset entries named `Source code (zip)` and 
+`Source code (tar.gz)` for every release. Those allow you to download source
+code of this mod for the **latest** Minecraft client version(s). There will 
+also be other Zip files whose name begin with `src`: these store source code of
+this mod for **older** Minecraft client versions.  
 **For contributors**: the best way for you to download a copy of this mod's 
 source code and work on it is to fork this repository and clone your fork to 
 your computer, as described in [`CONTRIBUTING.md`](CONTRIBUTING.md).
