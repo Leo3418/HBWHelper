@@ -28,8 +28,9 @@ since it contains some important information.
 ## Workspace Setup Instructions
 The following instructions assume you have correctly configured the following
 components on your computer:
-- [Java SE Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
-(a.k.a. JDK)
+- [Java SE Development Kit 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+(a.k.a. JDK 8)  
+Please do now use JDK 9 since it is not supported by Minecraft Forge.
 - An Integrated Development Environment (a.k.a. IDE) for Java SE  
 We recommend [JetBrains IntelliJ IDEA](https://www.jetbrains.com/idea/) and
 [Eclipse](https://eclipse.org) because they are officially supported by
@@ -119,7 +120,7 @@ block, and leave one blank line before that block.
 format.
 
 Most styles described above are in default code style settings in IntelliJ
-IDEA. For those that are not in the default settings, you may create a custom
+IDEA. For those that are not in the default settings, you can create a custom
 code style profile for this project and modify it to reflect those styles.
 
 ### Documentation Style
@@ -214,7 +215,7 @@ older clients*.
 the branch where you made change.
 3. Resolve any conflict occurred.
 
-Now you may test whether your code works in other Minecraft client versions.
+Now you can test whether your code works in other Minecraft client versions.
 
 [Return to top](#table-of-contents)
 
