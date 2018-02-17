@@ -45,7 +45,7 @@ public class TickCounter {
     public static final int TICKS_PER_SECOND = 40;
 
     /**
-     * {@code true} if this {@code TickCounter} is running
+     * Whether this {@code TickCounter} is running
      */
     private boolean running;
 

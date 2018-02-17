@@ -94,7 +94,7 @@ public class GameManager {
     private BlockPos emeraldGenPos;
 
     /**
-     * {@code true} when bed self-destruction occurs in 5 minutes
+     * Whether bed self-destruction occurs in 5 minutes
      */
     private boolean bedSelfDestructing;
 
@@ -104,12 +104,12 @@ public class GameManager {
     private ForgeLevel forgeLevel;
 
     /**
-     * {@code true} when the player's team has unlocked "Heal Pool" upgrade
+     * Whether the player's team has unlocked "Heal Pool" upgrade
      */
     private boolean healPool;
 
     /**
-     * {@code true} when the player's team has unlocked "Dragon Buff" upgrade
+     * Whether the player's team has unlocked "Dragon Buff" upgrade
      */
     private boolean dragonBuff;
 
@@ -237,13 +237,13 @@ public class GameManager {
 
     /**
      * Returns position of a generator (an armor stand) whose display name
-     * contains a specified string.
-     * <p>
-     * If such armor stand cannot be found, returns {@code null}.
+     * contains a specified string, or {@code null} if such armor stand cannot
+     * be found.
      *
      * @param generatorText the text that would appear above the generator
-     * @return position of the generator, or {@code null} if the generator is
-     *         not found
+     * @return position of a generator (an armor stand) whose display name
+     *         contains a specified string, or {@code null} if such armor stand
+     *         cannot be found
      */
     private BlockPos findGenerator(String generatorText) {
         List<Entity> entities = Minecraft.getMinecraft().theWorld
@@ -260,13 +260,12 @@ public class GameManager {
     }
 
     /**
-     * Returns spawn time of the generator at given position.
-     * <p>
-     * If a generator cannot be found or read at that position, returns
-     * {@code -1}.
+     * Returns spawn time of the generator at given position, or {@code -1} if
+     * a generator cannot be found or read at that position.
      *
      * @param generatorPos the position of the generator
-     * @return spawn time of the generator at given position, or {@code -1}
+     * @return spawn time of the generator at given position, or {@code -1} if
+     *         a generator cannot be found or read at that position
      */
     private int getSpawnTime(BlockPos generatorPos) {
         List<EntityArmorStand> genEntities = Minecraft.getMinecraft().theWorld
