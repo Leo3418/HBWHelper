@@ -44,7 +44,7 @@ public class HypixelDetector {
     private static volatile HypixelDetector instance;
 
     /**
-     * {@code true} when client is currently in Hypixel
+     * Whether client is currently in Hypixel
      */
     private boolean inHypixel;
 
@@ -72,9 +72,9 @@ public class HypixelDetector {
     }
 
     /**
-     * Returns {@code true} when client is currently in Hypixel, or false otherwise.
+     * Returns whether client is currently in Hypixel.
      *
-     * @return {@code true} when client is currently in Hypixel
+     * @return whether client is currently in Hypixel
      */
     public boolean isIn() {
         return inHypixel;

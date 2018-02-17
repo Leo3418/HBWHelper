@@ -40,11 +40,12 @@ public class ScoreboardReader {
     }
 
     /**
-     * If a scoreboard exists, returns its title. Otherwise, returns an empty
-     * string.
+     * Returns a scoreboard's title if the scoreboard exists, or an empty
+     * string otherwise.
      *
      * @param removeFormat whether or not to remove format from the title
-     * @return the scoreboard's title or an empty string
+     * @return a scoreboard's title if the scoreboard exists, or an empty
+     *         string otherwise
      */
     public static String getTitle(boolean removeFormat) {
         Scoreboard scoreboard = Minecraft.getMinecraft().world.getScoreboard();
@@ -72,13 +73,12 @@ public class ScoreboardReader {
     }
 
     /**
-     * Checks if any line on the scoreboard matches a piece of text.
+     * Returns whether any line on the scoreboard matches a piece of text.
      *
      * @param text the text to be matched
      * @param removeFormat whether or not to remove format from lines on the
      *         scoreboard
-     * @return {@code true} if any line matches the text, or {@code false}
-     *         otherwise
+     * @return whether any line on the scoreboard matches a piece of text.
      */
     public static boolean contains(String text, boolean removeFormat) {
         Collection<String> lines = getLines(removeFormat);
@@ -91,13 +91,12 @@ public class ScoreboardReader {
     }
 
     /**
-     * Checks if any line on the scoreboard matches a regular expression.
+     * Returns whether any line on the scoreboard matches a regular expression.
      *
      * @param regex the regular expression to be matched
      * @param removeFormat whether or not to remove format from lines on the
      *         scoreboard
-     * @return {@code true} if any line matches the regular expression, or
-     *         {@code false} otherwise
+     * @return whether any line on the scoreboard matches a regular expression
      */
     public static boolean containsRegex(String regex, boolean removeFormat) {
         Collection<String> lines = getLines(removeFormat);

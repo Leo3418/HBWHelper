@@ -19,8 +19,7 @@
 package io.github.leo3418.hbwhelper.util;
 
 /**
- * Provides methods for removing formatting codes (e.g. {@code §4}, {@code §e},
- * and {@code §m}) in a piece of text.
+ * Provides methods for removing formatting codes in a piece of text.
  *
  * @author Leo
  */
@@ -51,7 +50,6 @@ public class TextFormatRemover {
      *
      * @param text the text whose formatting codes to be removed
      * @return a copy of a piece of text whose formatting codes are removed
-     * @throws NullPointerException if the text is {@code null}
      */
     public static String removeAllFormats(String text) {
         return text.replaceAll(FORMATTING_REGEX, "");
