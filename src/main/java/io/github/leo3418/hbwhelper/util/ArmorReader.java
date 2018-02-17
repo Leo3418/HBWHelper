@@ -55,11 +55,11 @@ public class ArmorReader {
     }
 
     /**
-     * Returns the material of the player's armor. If the player does not wear
-     * armor, returns {@code null}.
+     * Returns the material of the player's armor, or {@code null} if the player
+     * does not wear armor.
      *
      * @return the material of the player's armor, or {@code null} if the player
-     *         has no armor
+     *         does not wear armor
      */
     public static ArmorMaterial getMaterial() {
         ItemArmor armor = getArmor();
@@ -70,11 +70,11 @@ public class ArmorReader {
     }
 
     /**
-     * Returns the level of Protection enchantment on the player's armor. If
-     * the player does not wear armor, returns {@code 0}.
+     * Returns the level of Protection enchantment on the player's armor, or
+     * {@code 0} if the player does not wear armor.
      *
      * @return the level of Protection enchantment on the player's armor, or
-     *         {@code 0} if the player has no armor
+     *         {@code 0} if the player does not wear armor
      */
     public static int getProtectionLevel() {
         ItemStack leggings = getArmorStack();
@@ -86,22 +86,22 @@ public class ArmorReader {
     }
 
     /**
-     * Returns an {@link ItemStack} object which represents the player's armor.
-     * If the player does not wear armor, returns {@code null}.
+     * Returns an {@link ItemStack} object which represents the player's armor,
+     * or {@code null} if the player does not wear armor.
      *
      * @return an {@link ItemStack} object which represents the player's armor,
-     *         or {@code null} if the player has no armor
+     *         or {@code null} if the player does not wear armor
      */
     private static ItemStack getArmorStack() {
         return Minecraft.getMinecraft().thePlayer.getCurrentArmor(LEGGINGS_INDEX);
     }
 
     /**
-     * Returns the player's armor. If the player does not wear armor, returns
-     * {@code null}.
+     * Returns the player's armor, or {@code null} if the player does not wear
+     * armor.
      *
-     * @return an {@link ItemArmor} object which represents the player's armor,
-     *         or {@code null} if the player has no armor
+     * @return the player's armor, or {@code null} if the player does not wear
+     *         armor
      */
     private static ItemArmor getArmor() {
         ItemStack leggings = getArmorStack();

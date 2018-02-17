@@ -66,7 +66,7 @@ public class GameDetector {
     private final HypixelDetector hypixelDetector;
 
     /**
-     * {@code true} when client is currently in a Bed Wars game
+     * Whether client is currently in a Bed Wars game
      */
     private boolean inBedWars;
 
@@ -95,10 +95,9 @@ public class GameDetector {
     }
 
     /**
-     * Returns {@code true} when the client is currently in a Bed Wars game, or
-     * {@code false} otherwise.
+     * Returns whether client is currently in a Bed Wars game.
      *
-     * @return {@code true} when the client is currently in a Bed Wars game
+     * @return whether client is currently in a Bed Wars game
      */
     public boolean isIn() {
         return inBedWars;
