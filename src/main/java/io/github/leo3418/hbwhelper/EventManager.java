@@ -25,6 +25,7 @@ import io.github.leo3418.hbwhelper.util.GameDetector;
 import io.github.leo3418.hbwhelper.util.GameManager;
 import io.github.leo3418.hbwhelper.util.HypixelDetector;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -49,6 +50,24 @@ public class EventManager {
      * The proprietary event bus of this mod
      */
     public static final EventBus EVENT_BUS = new EventBus();
+
+    /**
+     * Prompt client receives when Minecraft has been restarted, and it rejoins
+     * a Bed Wars game
+     */
+    private static final String CLIENT_RESTARTED_PROMPT =
+            "[" + HbwHelper.NAME + "] " + "We have detected that you " +
+                    "restarted your Minecraft client. Unfortunately, we " +
+                    "cannot retrieve what team upgrade you have got before.";
+
+    /**
+     * Prompt client receives when Minecraft has <b>not</b> been restarted, and
+     * it rejoins a Bed Wars game
+     */
+    private static final String CLIENT_REJOINED_PROMPT =
+            "[" + HbwHelper.NAME + "] " + "We have detected that you rejoined " +
+                    "a Bed Wars game. Any team upgrade your teammate has got " +
+                    "since your disconnection cannot be displayed.";
 
     /**
      * The only instance of this class
@@ -101,6 +120,9 @@ public class EventManager {
     @SubscribeEvent
     public void onClientChatReceived(ClientChatReceivedEvent event) {
         gameDetector.update(event);
+        if (gameDetector.isIn() && GameManager.getInstance() != null) {
+            GameManager.getInstance().update(event);
+        }
     }
 
     @SubscribeEvent
@@ -116,7 +138,14 @@ public class EventManager {
     @SubscribeEvent
     public void onClientRejoinGame(ClientRejoinGameEvent event) {
         if (GameManager.getInstance() == null) {
+            // Client is rejoining a Bed Wars game after restart of Minecraft
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new
+                    TextComponentString(CLIENT_RESTARTED_PROMPT));
             new GameManager();
+        } else {
+            // Client is rejoining a Bed Wars game, but Minecraft is not closed
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new
+                    TextComponentString(CLIENT_REJOINED_PROMPT));
         }
     }
 }
