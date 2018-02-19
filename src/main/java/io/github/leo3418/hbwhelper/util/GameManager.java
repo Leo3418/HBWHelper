@@ -23,6 +23,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.IChatComponent;
 
 import java.util.List;
 
@@ -166,10 +167,10 @@ public class GameManager {
                 .getEntitiesWithinAABB(EntityArmorStand.class,
                         new AxisAlignedBB(generatorPos, generatorPos.add(1, 1, 1)));
         for (EntityArmorStand genEntity : genEntities) {
-            String floatText = genEntity.getDisplayName().getFormattedText();
-            if (floatText.contains(GENERATOR_TEXT)) {
-                floatText = TextFormatRemover.removeAllFormats(floatText);
-                return Integer.parseInt(floatText.replaceAll("[^0-9]", ""));
+            IChatComponent floatTextComponent = genEntity.getDisplayName();
+            if (floatTextComponent.getFormattedText().contains(GENERATOR_TEXT)) {
+                return Integer.parseInt(floatTextComponent.getUnformattedText()
+                        .replaceAll("[^0-9]", ""));
             }
         }
         return -1;
