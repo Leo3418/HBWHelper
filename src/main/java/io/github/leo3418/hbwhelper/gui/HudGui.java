@@ -93,7 +93,7 @@ public class HudGui extends Gui {
                 && event.type == RenderGameOverlayEvent.ElementType.HOTBAR) {
             renderArmorInfo();
             renderEffectsInfo();
-            renderGensInfo();
+            renderGameInfo();
             // Resets height of the first line in the next rendering
             currentHeight = BEGINNING_HEIGHT;
         }
@@ -127,14 +127,28 @@ public class HudGui extends Gui {
     }
 
     /**
-     * Renders time until the next spawn of diamond and emerald on this GUI.
+     * Renders information of the current game session on this GUI.
+     * <p>
+     * For most non-tiered team upgrades, they are displayed on this GUI only
+     * when they are purchased. The "Dragon Buff" upgrade is an exception: it
+     * shows up when bed self-destruction is occurring in 5 minutes
+     * unconditionally.
      */
-    private void renderGensInfo() {
+    private void renderGameInfo() {
         if (GameManager.getInstance() != null) {
             drawString("Next diamond: " + GameManager.getInstance()
                     .getNextDiamond());
             drawString("Next emerald: " + GameManager.getInstance()
                     .getNextEmerald());
+            drawString("Forge: " + GameManager.getInstance().getForgeLevel());
+            if (GameManager.getInstance().hasHealPool()) {
+                drawString("Heal Pool: Purchased");
+            }
+            if (GameManager.getInstance().hasDragonBuff()) {
+                drawString("Dragon Buff: Purchased");
+            } else if (GameManager.getInstance().isBedSelfDestructing()) {
+                drawString("Dragon Buff: Not purchased");
+            }
         }
     }
 

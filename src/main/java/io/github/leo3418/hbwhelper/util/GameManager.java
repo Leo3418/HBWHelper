@@ -24,12 +24,14 @@ import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.IChatComponent;
+import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
 import java.util.List;
 
 /**
  * Stores information and progress of a Bed Wars game session, and allows other
- * classes to read the information, such as time until next diamond generation.
+ * classes to read the information, such as time until next diamond generation
+ * and upgrades the player's team has unlocked.
  *
  * @author Leo
  */
@@ -57,6 +59,26 @@ public class GameManager {
     private static final String EMERALD_GEN_TEXT = "\u00A72\u00A7lEmerald\u00A7r";
 
     /**
+     * Part of the prompt shown when the player's team unlocks "Heal Pool"
+     * upgrade
+     */
+    private static final String HEAL_POOL_PROMPT =
+            "\u00A7r\u00A76Heal Pool\u00A7r";
+
+    /**
+     * Part of the prompt shown when the player's team unlocks "Dragon Buff"
+     * upgrade
+     */
+    private static final String DRAGON_BUFF_PROMPT =
+            "\u00A7r\u00A76Dragon Buff\u00A7r";
+
+    /**
+     * Prompt client receives when all beds are going to destruct themselves
+     */
+    private static final String BED_SELF_DESTRUCTION_PROMPT =
+            "\u00A7cAll beds will be destroyed in 5 minutes!\u00A7r";
+
+    /**
      * A reference to the last created instance of this class
      */
     private static GameManager instance;
@@ -72,10 +94,31 @@ public class GameManager {
     private BlockPos emeraldGenPos;
 
     /**
+     * {@code true} when bed self-destruction occurs in 5 minutes
+     */
+    private boolean bedSelfDestructing;
+
+    /**
+     * Level of resource generation speed on the player's base island
+     */
+    private ForgeLevel forgeLevel;
+
+    /**
+     * {@code true} when the player's team has unlocked "Heal Pool" upgrade
+     */
+    private boolean healPool;
+
+    /**
+     * {@code true} when the player's team has unlocked "Dragon Buff" upgrade
+     */
+    private boolean dragonBuff;
+
+    /**
      * Constructs a new {@code GameManager} instance.
      */
     public GameManager() {
         instance = this;
+        forgeLevel = ForgeLevel.ORDINARY_FORGE;
     }
 
     /**
@@ -130,6 +173,69 @@ public class GameManager {
     }
 
     /**
+     * Returns level of resource generation speed on the player's base island.
+     *
+     * @return level of resource generation speed on the player's base island
+     */
+    public ForgeLevel getForgeLevel() {
+        return forgeLevel;
+    }
+
+    /**
+     * Returns whether or not the player's team has unlocked "Heal Pool"
+     * upgrade.
+     *
+     * @return whether or not the player's team has unlocked "Heal Pool"
+     *         upgrade
+     */
+    public boolean hasHealPool() {
+        return healPool;
+    }
+
+    /**
+     * Returns whether or not the player's team has unlocked "Dragon Buff"
+     * upgrade.
+     *
+     * @return whether or not the player's team has unlocked "Dragon Buff"
+     *         upgrade
+     */
+    public boolean hasDragonBuff() {
+        return dragonBuff;
+    }
+
+    /**
+     * Returns whether bed self-destruction occurs in 5 minutes.
+     *
+     * @return whether bed self-destruction occurs in 5 minutes
+     */
+    public boolean isBedSelfDestructing() {
+        return bedSelfDestructing;
+    }
+
+    /**
+     * Updates upgrades the player's team has unlocked by analyzing chat
+     * message client receives.
+     *
+     * @param event the event fired when client receives a chat message
+     */
+    public void update(ClientChatReceivedEvent event) {
+        String message = event.message.getFormattedText();
+        for (ForgeLevel level : ForgeLevel.values()) {
+            if (message.contains(level.prompt)) {
+                forgeLevel = level;
+                return;
+            }
+        }
+        if (message.contains(HEAL_POOL_PROMPT)) {
+            healPool = true;
+        } else if (message.contains(DRAGON_BUFF_PROMPT)) {
+            dragonBuff = true;
+        } else if (message.contains(BED_SELF_DESTRUCTION_PROMPT)) {
+            bedSelfDestructing = true;
+        }
+    }
+
+    /**
      * Returns position of a generator (an armor stand) whose display name
      * contains a specified string.
      * <p>
@@ -154,7 +260,7 @@ public class GameManager {
     }
 
     /**
-     * Returns spawn time of  the generator at given position.
+     * Returns spawn time of the generator at given position.
      * <p>
      * If a generator cannot be found or read at that position, returns
      * {@code -1}.
@@ -174,5 +280,62 @@ public class GameManager {
             }
         }
         return -1;
+    }
+
+    /**
+     * Enumeration of all resource generation speed levels on the player's base
+     * island in Hypixel Bed Wars.
+     */
+    private enum ForgeLevel {
+        /**
+         * The initial resource generation speed level without any upgrade
+         */
+        ORDINARY_FORGE("Not upgraded"),
+        /**
+         * Resource generation speed level with "Iron Forge" upgrade
+         */
+        IRON_FORGE("\u00A7r\u00A76Iron Forge\u00A7r"),
+        /**
+         * Resource generation speed level with "Golden Forge" upgrade
+         */
+        GOLDEN_FORGE("\u00A7r\u00A76Golden Forge\u00A7r"),
+        /**
+         * Resource generation speed level with "Emerald Forge" upgrade
+         */
+        EMERALD_FORGE("\u00A7r\u00A76Emerald Forge\u00A7r"),
+        /**
+         * Resource generation speed level with "Molten Forge" upgrade
+         */
+        MOLTEN_FORGE("\u00A7r\u00A76Molten Forge\u00A7r");
+
+        /**
+         * Part of the prompt shown when the player's team unlocks this level
+         * of resource generation speed
+         */
+        private final String prompt;
+
+        /**
+         * Constructs a new constant of resource generation speed levels.
+         *
+         * @param prompt part of the prompt shown when the player's team unlocks
+         *         this level of resource generation speed
+         */
+        ForgeLevel(String prompt) {
+            this.prompt = prompt;
+        }
+
+        /**
+         * Returns a string representation of this constant's name without
+         * formatting codes.
+         *
+         * @return a string representation of this constant's name without
+         *         formatting codes
+         * @see <a href="https://minecraft.gamepedia.com/Formatting_codes"
+         *         target="_top">Formatting codes in Minecraft</a>
+         */
+        @Override
+        public String toString() {
+            return TextFormatRemover.removeAllFormats(prompt);
+        }
     }
 }

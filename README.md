@@ -8,11 +8,11 @@ information you care about in a Hypixel Bed Wars game at a glance.
 - Show armor you are wearing and what level of Protection enchantment it has
 - Show status effects you get, their amplifier, and their remaining times
 - Show time until the next diamond/emerald generation
+- Show what team upgrades (the upgrades to be purchased with diamonds) you
+have got
 
 ## Planned Features
 These features may be added in the next update.  
-- [ ] Show what team upgrades (the upgrades to be purchased with diamonds) you
-have got
 - [ ] Display graphical icons alongside those elements displayed
 
 ## Installation
