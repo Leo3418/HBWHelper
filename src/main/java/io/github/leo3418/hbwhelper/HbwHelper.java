@@ -21,7 +21,6 @@ package io.github.leo3418.hbwhelper;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -32,7 +31,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
  * @author Leo
  */
 @Mod(name = HbwHelper.NAME, modid = HbwHelper.MOD_ID, version =
-        HbwHelper.VERSION, acceptedMinecraftVersions = "@compatible_versions@")
+        HbwHelper.VERSION, acceptedMinecraftVersions = "@compatible_versions@",
+        clientSideOnly = true)
 public class HbwHelper {
     public static final String NAME = "HBW Helper";
     public static final String MOD_ID = "hbwhelper";
@@ -41,22 +41,16 @@ public class HbwHelper {
     @Instance(MOD_ID)
     public static HbwHelper instance;
 
-    @SidedProxy(clientSide = "io.github.leo3418.hbwhelper.ClientProxy",
-            serverSide = "io.github.leo3418.hbwhelper.CommonProxy")
-    public static CommonProxy proxy;
-
     @EventHandler
     public void onFMLPreInitialization(FMLPreInitializationEvent event) {
-        proxy.onFMLPreInitialization(event);
     }
 
     @EventHandler
     public void onFMLInitialization(FMLInitializationEvent event) {
-        proxy.onFMLInitialization(event);
+        EventManager.getInstance();
     }
 
     @EventHandler
     public void onFMLPostInitialization(FMLPostInitializationEvent event) {
-        proxy.onFMLPostInitialization(event);
     }
 }
