@@ -26,7 +26,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Stores information and progress of a Bed Wars game session, and allows other
@@ -79,6 +79,11 @@ public class GameManager {
             "\u00A7cAll beds will be destroyed in 5 minutes!\u00A7r";
 
     /**
+     * Maximum number of traps a team can have in the trap queue
+     */
+    private static final int MAX_TRAPS = 3;
+
+    /**
      * A reference to the last created instance of this class
      */
     private static GameManager instance;
@@ -114,11 +119,23 @@ public class GameManager {
     private boolean dragonBuff;
 
     /**
+     * Trap queue of the player's team
+     */
+    private Queue<Trap> traps;
+
+    /**
+     * Cache of an unmodifiable copy of the trap queue
+     */
+    private Collection readOnlyTraps;
+
+    /**
      * Constructs a new {@code GameManager} instance.
      */
     public GameManager() {
         instance = this;
         forgeLevel = ForgeLevel.ORDINARY_FORGE;
+        traps = new ArrayDeque<Trap>(MAX_TRAPS);
+        readOnlyTraps = Collections.unmodifiableCollection(traps);
     }
 
     /**
@@ -213,6 +230,17 @@ public class GameManager {
     }
 
     /**
+     * Returns an <b>unmodifiable</b> copy of the trap queue of the player's
+     * team.
+     *
+     * @return an <b>unmodifiable</b> copy of the trap queue of the player's
+     *         team
+     */
+    public Collection getTraps() {
+        return readOnlyTraps;
+    }
+
+    /**
      * Updates upgrades the player's team has unlocked by analyzing chat
      * message client receives.
      *
@@ -220,18 +248,37 @@ public class GameManager {
      */
     public void update(ClientChatReceivedEvent event) {
         String message = event.message.getFormattedText();
-        for (ForgeLevel level : ForgeLevel.values()) {
-            if (message.contains(level.prompt)) {
-                forgeLevel = level;
-                return;
-            }
-        }
         if (message.contains(HEAL_POOL_PROMPT)) {
             healPool = true;
         } else if (message.contains(DRAGON_BUFF_PROMPT)) {
             dragonBuff = true;
         } else if (message.contains(BED_SELF_DESTRUCTION_PROMPT)) {
             bedSelfDestructing = true;
+        } else {
+            for (ForgeLevel level : ForgeLevel.values()) {
+                if (message.contains(level.prompt)) {
+                    forgeLevel = level;
+                    return;
+                }
+            }
+            for (Trap trap : Trap.values()) {
+                if (message.contains(trap.purchasePrompt)) {
+                    while (traps.size() >= MAX_TRAPS) {
+                        traps.remove();
+                    }
+                    traps.add(trap);
+                    return;
+                }
+                if (message.contains(trap.setOffPrompt)) {
+                    boolean removed = false;
+                    while (!removed && !traps.isEmpty()) {
+                        if (traps.remove() == trap) {
+                            removed = true;
+                        }
+                    }
+                    return;
+                }
+            }
         }
     }
 
@@ -293,19 +340,19 @@ public class GameManager {
         /**
          * Resource generation speed level with "Iron Forge" upgrade
          */
-        IRON_FORGE("\u00A7r\u00A76Iron Forge\u00A7r"),
+        IRON_FORGE("Iron Forge"),
         /**
          * Resource generation speed level with "Golden Forge" upgrade
          */
-        GOLDEN_FORGE("\u00A7r\u00A76Golden Forge\u00A7r"),
+        GOLDEN_FORGE("Golden Forge"),
         /**
          * Resource generation speed level with "Emerald Forge" upgrade
          */
-        EMERALD_FORGE("\u00A7r\u00A76Emerald Forge\u00A7r"),
+        EMERALD_FORGE("Emerald Forge"),
         /**
          * Resource generation speed level with "Molten Forge" upgrade
          */
-        MOLTEN_FORGE("\u00A7r\u00A76Molten Forge\u00A7r");
+        MOLTEN_FORGE("Molten Forge");
 
         /**
          * Part of the prompt shown when the player's team unlocks this level
@@ -314,27 +361,113 @@ public class GameManager {
         private final String prompt;
 
         /**
-         * Constructs a new constant of resource generation speed levels.
-         *
-         * @param prompt part of the prompt shown when the player's team unlocks
-         *         this level of resource generation speed
+         * Text displayed for this level on this mod's GUI
          */
-        ForgeLevel(String prompt) {
-            this.prompt = prompt;
-        }
+        private final String displayText;
 
         /**
-         * Returns a string representation of this constant's name without
-         * formatting codes.
+         * Constructs a new constant of resource generation speed levels.
          *
-         * @return a string representation of this constant's name without
-         *         formatting codes
+         * @param name the name of this trap shown in any prompt in Hypixel
+         *         without any formatting code
          * @see <a href="https://minecraft.gamepedia.com/Formatting_codes"
          *         target="_top">Formatting codes in Minecraft</a>
          */
+        ForgeLevel(String name) {
+            this.prompt = "\u00A7r\u00A76" + name + "\u00A7r";
+            this.displayText = name;
+        }
+
+        /**
+         * Returns the text displayed for this trap on this mod's GUI.
+         *
+         * @return the text displayed for this trap on this mod's GUI
+         */
         @Override
         public String toString() {
-            return TextFormatRemover.removeAllFormats(prompt);
+            return displayText;
+        }
+    }
+
+    /**
+     * Enumeration of all traps in Hypixel Bed Wars.
+     */
+    private enum Trap {
+        /**
+         * The ordinary "It's a trap!"
+         */
+        ORDINARY("It's a trap!", "Ordinary"),
+        /**
+         * The "Counter-Offensive Trap"
+         */
+        COUNTER("Counter-Offensive Trap", "Counter-Offensive"),
+        /**
+         * The "Alarm Trap"
+         * <p>
+         * This value has three arguments because Hypixel used "Alarm Trap" and
+         * "Alarm trap" at the same time.
+         */
+        ALARM("Alarm Trap", "Alarm trap", "Alarm"),
+        /**
+         * The "Miner Fatigue Trap"
+         */
+        MINER_FATIGUE("Miner Fatigue Trap", "Miner Fatigue");
+
+        /**
+         * Part of the prompt shown when the player's team purchases this trap
+         */
+        private final String purchasePrompt;
+
+        /**
+         * Part of the prompt shown when this trap is set off
+         */
+        private final String setOffPrompt;
+
+        /**
+         * Text displayed for this trap on this mod's GUI
+         */
+        private final String displayText;
+
+        /**
+         * Constructs a new constant of traps whose name is <b>consistent</b>
+         * in Hypixel Bed Wars.
+         *
+         * @param name the name of this trap shown in any prompt in Hypixel
+         *         Bed Wars without any formatting code
+         * @param displayText the text displayed for this trap on this mod's GUI
+         * @see <a href="https://minecraft.gamepedia.com/Formatting_codes"
+         *         target="_top">Formatting codes in Minecraft</a>
+         */
+        Trap(String name, String displayText) {
+            this(name, name, displayText);
+        }
+
+        /**
+         * Constructs a new constant of traps whose name is <b>inconsistent</b>
+         * in Hypixel Bed Wars.
+         *
+         * @param purchaseName the name of this trap in the prompt shown when
+         *         the player's team purchases this trap
+         * @param setOffName the name of this trap in the prompt shown when
+         *         it sets off
+         * @param displayText the text displayed for this trap on this mod's GUI
+         * @see <a href="https://minecraft.gamepedia.com/Formatting_codes"
+         *         target="_top">Formatting codes in Minecraft</a>
+         */
+        Trap(String purchaseName, String setOffName, String displayText) {
+            this.purchasePrompt = "\u00A7r\u00A76" + purchaseName + "\u00A7r";
+            this.setOffPrompt = "\u00A7c\u00A7l" + setOffName;
+            this.displayText = displayText;
+        }
+
+        /**
+         * Returns the text displayed for this trap on this mod's GUI
+         *
+         * @return the text displayed for this trap on this mod's GUI
+         */
+        @Override
+        public String toString() {
+            return displayText;
         }
     }
 }
