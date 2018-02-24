@@ -89,6 +89,16 @@ public class GameManager {
     private static GameManager instance;
 
     /**
+     * Trap queue of the player's team
+     */
+    private final Queue<Trap> traps;
+
+    /**
+     * Cache of an unmodifiable copy of the trap queue
+     */
+    private final Collection readOnlyTraps;
+
+    /**
      * Position of the diamond generator being read
      */
     private BlockPos diamondGenPos;
@@ -117,16 +127,6 @@ public class GameManager {
      * Whether the player's team has unlocked "Dragon Buff" upgrade
      */
     private boolean dragonBuff;
-
-    /**
-     * Trap queue of the player's team
-     */
-    private Queue<Trap> traps;
-
-    /**
-     * Cache of an unmodifiable copy of the trap queue
-     */
-    private Collection readOnlyTraps;
 
     /**
      * Constructs a new {@code GameManager} instance.
@@ -268,8 +268,7 @@ public class GameManager {
                     }
                     traps.add(trap);
                     return;
-                }
-                if (message.contains(trap.setOffPrompt)) {
+                } else if (message.contains(trap.setOffPrompt)) {
                     boolean removed = false;
                     while (!removed && !traps.isEmpty()) {
                         if (traps.remove() == trap) {
