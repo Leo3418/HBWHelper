@@ -57,10 +57,10 @@ You can download source code of this mod as how you would when you download
 another repository's code on GitHub, but chances are you are interested in 
 source code of a particular version, but the branch holding that version's 
 source code has been deleted.  
-In accordance with GNU GPLv3, we are pleased to provide you source code of 
-every version of this mod. However, GitHub can only automatically add source 
-code archive of one branch to a release. Therefore, we provide Zip archives 
-of source code of other branches with every release.  
+In accordance with terms of GNU General Public License, we are pleased to 
+provide you source code of every version of this mod. Since GitHub can only 
+automatically add source code archive of one branch to a release, we provide 
+Zip archives of source code of other branches with every release.  
 On the [Releases](https://github.com/Leo3418/HBWHelper/releases) page, you
 will find two asset entries named `Source code (zip)` and 
 `Source code (tar.gz)` for every release. Those allow you to download source
