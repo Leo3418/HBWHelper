@@ -4,7 +4,6 @@ Hypixel Bed Wars Helper (HBW Helper) is a Minecraft Forge mod which shows you
 information you care about in a Hypixel Bed Wars game at a glance.  
 
 ## Features
-- Detect if you are playing a Hypixel Bed Wars game
 - Show armor you are wearing and what level of Protection enchantment it has
 - Show status effects you get, their amplifier, and their remaining times
 - Show time until the next diamond/emerald generation
@@ -13,7 +12,10 @@ have got
 
 ## Planned Features
 These features may be added in the next update.  
-- [ ] Display graphical icons alongside those elements displayed
+- [ ] Replace plain text with icons and colored text
+- [ ] Internationalization
+- [ ] HUD customization (location, elements to display, etc.)
+- [ ] Bed Wars quick-join
 
 ## Installation
 Go to the [Releases](https://github.com/Leo3418/HBWHelper/releases) page, 

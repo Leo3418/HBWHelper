@@ -135,19 +135,27 @@ public class HudGui extends Gui {
      * unconditionally.
      */
     private void renderGameInfo() {
-        if (GameManager.getInstance() != null) {
-            drawString("Next diamond: " + GameManager.getInstance()
-                    .getNextDiamond());
-            drawString("Next emerald: " + GameManager.getInstance()
-                    .getNextEmerald());
-            drawString("Forge: " + GameManager.getInstance().getForgeLevel());
-            if (GameManager.getInstance().hasHealPool()) {
+        GameManager game = GameManager.getInstance();
+        if (game != null) {
+            drawString("Next diamond: " + game.getNextDiamond());
+            drawString("Next emerald: " + game.getNextEmerald());
+            drawString("Forge: " + game.getForgeLevel());
+            if (game.hasHealPool()) {
                 drawString("Heal Pool: Purchased");
             }
-            if (GameManager.getInstance().hasDragonBuff()) {
+            if (game.hasDragonBuff()) {
                 drawString("Dragon Buff: Purchased");
-            } else if (GameManager.getInstance().isBedSelfDestructing()) {
+            } else if (game.isBedSelfDestructing()) {
                 drawString("Dragon Buff: Not purchased");
+            }
+            String traps = game.getTraps().toString();
+            // Removes square brackets
+            traps = traps.substring(1, traps.length() - 1);
+            if (traps.length() > 0) {
+                drawString("Traps: ");
+                for (Object trap : game.getTraps()) {
+                    drawString("- " + trap.toString());
+                }
             }
         }
     }
