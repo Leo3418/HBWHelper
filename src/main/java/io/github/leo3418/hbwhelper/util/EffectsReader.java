@@ -37,32 +37,27 @@ public class EffectsReader {
     }
 
     /**
-     * Returns a {@code Collection} of all potion effects on the player.
+     * Returns a {@link Collection} of all potion effects on the player.
      *
-     * @return a {@code Collection} of all potion effects on the player
+     * @return a {@link Collection} of all potion effects on the player
      */
     public static Collection<PotionEffect> getEffects() {
         return Minecraft.getMinecraft().player.getActivePotionEffects();
     }
 
     /**
-     * Returns a string indicating amplifier of a potion effect.
-     *
+     * Returns the displayed amplifier of a potion effect.
+     * <p>
      * The amplifier returned is equivalent to the Roman numeral displayed in
-     * game (e.g. 2 represents II, 3 represents III).
-     *
-     * If the amplifier is level I, an empty string is returned.
+     * game (e.g. 1 represents I, 2 represents II, 3 represents III).
      *
      * @param potionEffect the potion effect whose amplifier is queried
-     * @return a string indicating amplifier of the potion effect
+     * @return the displayed amplifier of a potion effect
      */
-    public static String getAmplifier(PotionEffect potionEffect) {
-        int amplifier = potionEffect.getAmplifier();
-        // Amplifier is 0 for level I, 1 for level II, etc.
-        if (amplifier > 0) {
-            return (amplifier + 1) + "";
-        }
-        return "";
+    public static int getDisplayedAmplifier(PotionEffect potionEffect) {
+        // Internal amplifier is 0 for level I, 1 for level II, etc.
+        int internalAmplifier = potionEffect.getAmplifier();
+        return internalAmplifier + 1;
     }
 
     /**
