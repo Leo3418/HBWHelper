@@ -19,13 +19,10 @@
 package io.github.leo3418.hbwhelper.util;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Provides methods for getting the player's status effects.
@@ -40,25 +37,51 @@ public class EffectsReader {
     }
 
     /**
-     * Returns a {@link Map} storing name (including amplifier) and duration
-     * (in MM:SS format) of every effect on the player.
+     * Returns a {@code Collection} of all potion effects on the player.
      *
-     * @return a {@link Map} storing information of the player's effects
+     * @return a {@code Collection} of all potion effects on the player
      */
-    public static Map<String, String> getEffects() {
-        Map<String, String> effects = new HashMap<String, String>();
-        Collection<PotionEffect> potionEffects = Minecraft.getMinecraft()
-                .thePlayer.getActivePotionEffects();
-        for (PotionEffect potionEffect : potionEffects) {
-            String effectName = I18n.format(potionEffect.getEffectName());
-            int amplifier = potionEffect.getAmplifier();
-            // Amplifier is 0 for level I, 1 for level II, etc.
-            if (amplifier > 0) {
-                effectName += " " + (amplifier + 1);
-            }
-            String duration = Potion.getDurationString(potionEffect);
-            effects.put(effectName, duration);
+    public static Collection<PotionEffect> getEffects() {
+        return Minecraft.getMinecraft().thePlayer.getActivePotionEffects();
+    }
+
+    /**
+     * Returns a string indicating amplifier of a potion effect.
+     *
+     * The amplifier returned is equivalent to the Roman numeral displayed in
+     * game (e.g. 2 represents II, 3 represents III).
+     *
+     * If the amplifier is level I, an empty string is returned.
+     *
+     * @param potionEffect the potion effect whose amplifier is queried
+     * @return a string indicating amplifier of the potion effect
+     */
+    public static String getAmplifier(PotionEffect potionEffect) {
+        int amplifier = potionEffect.getAmplifier();
+        // Amplifier is 0 for level I, 1 for level II, etc.
+        if (amplifier > 0) {
+            return (amplifier + 1) + "";
         }
-        return effects;
+        return "";
+    }
+
+    /**
+     * Returns duration of a potion effect as how they are shown in the client.
+     *
+     * @param potionEffect the potion effect whose duration is queried
+     * @return duration of the potion effect as how they are shown in the client
+     */
+    public static String getDuration(PotionEffect potionEffect) {
+        return Potion.getDurationString(potionEffect);
+    }
+
+    /**
+     * Returns icon index of a potion effect.
+     *
+     * @param potionEffect the potion effect whose icon index is queried
+     * @return icon index of the potion effect
+     */
+    public static int getIconIndex(PotionEffect potionEffect) {
+        return Potion.potionTypes[potionEffect.getPotionID()].getStatusIconIndex();
     }
 }
