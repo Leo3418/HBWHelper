@@ -29,10 +29,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
-import java.util.ArrayDeque;
-import java.util.Collection;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * Stores information and progress of a Bed Wars game session, and allows other
@@ -89,15 +86,15 @@ public class GameManager {
     private static GameManager instance;
 
     /**
-     * Trap queue of the player's team
+     * Trap queue represented by {@link ItemStack}s whose icon represents a
+     * trap in the queue
      */
-    private final Queue<Trap> traps;
+    private final Queue<ItemStack> itemsForTrapsIcons;
 
     /**
-     * Cache of {@link ItemStack} where each item's icon represents a trap in
-     * the trap queue
+     * Cache of an unmodifiable copy of queue of items for traps' icons
      */
-    private final Queue<ItemStack> trapIcons;
+    private final Collection<ItemStack> readOnlyItemsForTrapsIcons;
 
     /**
      * Position of the diamond generator being read
@@ -110,9 +107,10 @@ public class GameManager {
     private BlockPos emeraldGenPos;
 
     /**
-     * Level of resource generation speed on the player's base island
+     * {@link ItemStack} for the item whose icon represents level of resource
+     * generation speed on the player's base island
      */
-    private ForgeLevel forgeLevel;
+    private ItemStack itemForForgeLevelIcon;
 
     /**
      * Whether the player's team has unlocked "Heal Pool" upgrade
@@ -129,9 +127,10 @@ public class GameManager {
      */
     public GameManager() {
         instance = this;
-        forgeLevel = ForgeLevel.ORDINARY_FORGE;
-        traps = new ArrayDeque<Trap>(MAX_TRAPS);
-        trapIcons = new ArrayDeque<ItemStack>(MAX_TRAPS);
+        itemForForgeLevelIcon = ForgeLevel.ORDINARY_FORGE.itemForIcon;
+        itemsForTrapsIcons = new ArrayDeque<ItemStack>(MAX_TRAPS);
+        readOnlyItemsForTrapsIcons =
+                Collections.unmodifiableCollection(itemsForTrapsIcons);
     }
 
     /**
@@ -193,7 +192,7 @@ public class GameManager {
      *         generation speed on the player's base island
      */
     public ItemStack getForgeLevelIcon() {
-        return forgeLevel.itemForIcon;
+        return itemForForgeLevelIcon;
     }
 
     /**
@@ -219,14 +218,15 @@ public class GameManager {
     }
 
     /**
-     * Returns a {@link Collection} of {@link ItemStack} where each
-     * {@code ItemStack}'s icon represents a trap in the trap queue.
+     * Returns a <b>unmodifiable</b> {@link Collection} of {@link ItemStack}
+     * where each {@code ItemStack}'s icon represents a trap in the trap queue.
      *
-     * @return a {@link Collection} of {@link ItemStack} where each
-     *         {@code ItemStack}'s icon represents a trap in the trap queue
+     * @return a <b>unmodifiable</b> {@link Collection} of {@link ItemStack}
+     *         where each {@code ItemStack}'s icon represents a trap in the
+     *         trap queue
      */
     public Collection<ItemStack> getTrapIcons() {
-        return trapIcons;
+        return readOnlyItemsForTrapsIcons;
     }
 
     /**
@@ -244,23 +244,21 @@ public class GameManager {
         } else {
             for (ForgeLevel level : ForgeLevel.values()) {
                 if (message.contains(level.prompt)) {
-                    forgeLevel = level;
+                    itemForForgeLevelIcon = level.itemForIcon;
                     return;
                 }
             }
             for (Trap trap : Trap.values()) {
                 if (message.contains(trap.purchasePrompt)) {
-                    while (traps.size() >= MAX_TRAPS) {
-                        traps.remove();
+                    while (itemsForTrapsIcons.size() >= MAX_TRAPS) {
+                        itemsForTrapsIcons.remove();
                     }
-                    traps.add(trap);
-                    trapIcons.add(trap.itemForIcon);
+                    itemsForTrapsIcons.add(trap.itemForIcon);
                     return;
                 } else if (message.contains(trap.setOffPrompt)) {
                     boolean removed = false;
-                    while (!removed && !traps.isEmpty()) {
-                        trapIcons.remove();
-                        if (traps.remove() == trap) {
+                    while (!removed && !itemsForTrapsIcons.isEmpty()) {
+                        if (itemsForTrapsIcons.remove() == trap.itemForIcon) {
                             removed = true;
                         }
                     }
