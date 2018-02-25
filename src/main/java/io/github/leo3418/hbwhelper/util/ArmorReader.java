@@ -23,7 +23,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 
 import java.util.Iterator;
@@ -33,18 +32,18 @@ import java.util.Iterator;
  * <p>
  * In a Bed Wars game, players cannot upgrade their helmet or their chestplate.
  * However, they can purchase better leggings and boots. What is more,
- * enchantment upgrades on armor also reflect on leggings. Therefore, we just
- * need to read status from the leggings to know the player's armor status in a
+ * enchantment upgrades on armor also reflect on boots. Therefore, we just
+ * need to read status from the boots to know the player's armor status in a
  * Bed Wars game. Hence, an alternative name of this class would be
- * {@code LeggingsReader}.
+ * {@code BootsReader}.
  *
  * @author Leo
  */
 public class ArmorReader {
     /**
-     * Index of leggings in the array of the player's armor
+     * Index of boots in the array of the player's armor
      */
-    private static final int LEGGINGS_INDEX = 1;
+    private static final int BOOTS_INDEX = 0;
 
     /**
      * Enchantment ID for Protection
@@ -58,21 +57,6 @@ public class ArmorReader {
     }
 
     /**
-     * Returns the material of the player's armor, or {@code null} if the player
-     * does not wear armor.
-     *
-     * @return the material of the player's armor, or {@code null} if the player
-     *         does not wear armor
-     */
-    public static ArmorMaterial getMaterial() {
-        ItemArmor armor = getArmor();
-        if (armor != null) {
-            return armor.getArmorMaterial();
-        }
-        return null;
-    }
-
-    /**
      * Returns the level of Protection enchantment on the player's armor, or
      * {@code 0} if the player does not wear armor.
      *
@@ -80,25 +64,31 @@ public class ArmorReader {
      *         {@code 0} if the player does not wear armor
      */
     public static int getProtectionLevel() {
-        ItemStack leggings = getArmorStack();
-        if (leggings != null) {
+        if (hasArmor()) {
             return EnchantmentHelper.getEnchantmentLevel(Enchantment
-                    .getEnchantmentByID(ENCHANTMENT_ID), leggings);
+                    .getEnchantmentByID(ENCHANTMENT_ID), getArmorStack());
         }
         return 0;
     }
 
     /**
-     * Returns an {@link ItemStack} object which represents the player's armor,
-     * or {@code null} if the player does not wear armor.
+     * Returns whether the player is wearing armor.
      *
-     * @return an {@link ItemStack} object which represents the player's armor,
-     *         or {@code null} if the player does not wear armor
+     * @return whether the player is wearing armor
      */
-    private static ItemStack getArmorStack() {
+    public static boolean hasArmor() {
+        return getArmor() != null;
+    }
+
+    /**
+     * Returns an {@link ItemStack} object which represents the player's armor.
+     *
+     * @return an {@link ItemStack} object which represents the player's armor
+     */
+    public static ItemStack getArmorStack() {
         Iterator<ItemStack> armorItr = Minecraft.getMinecraft().player
                 .getArmorInventoryList().iterator();
-        for (int i = 0; i < LEGGINGS_INDEX; i++) {
+        for (int i = 0; i < BOOTS_INDEX; i++) {
             armorItr.next();
         }
         return armorItr.next();
@@ -112,11 +102,11 @@ public class ArmorReader {
      *         armor
      */
     private static ItemArmor getArmor() {
-        ItemStack leggings = getArmorStack();
-        if (leggings != null) {
-            Item leggingsItem = leggings.getItem();
-            if (leggingsItem instanceof ItemArmor) {
-                return (ItemArmor) leggingsItem;
+        ItemStack boots = getArmorStack();
+        if (boots != null) {
+            Item bootsItem = boots.getItem();
+            if (bootsItem instanceof ItemArmor) {
+                return (ItemArmor) bootsItem;
             }
         }
         return null;

@@ -24,10 +24,17 @@ import io.github.leo3418.hbwhelper.util.GameDetector;
 import io.github.leo3418.hbwhelper.util.GameManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * The GUI of this mod shown in Minecraft's Head-Up Display (HUD).
@@ -53,9 +60,14 @@ public class HudGui extends Gui {
     private static final int BEGINNING_HEIGHT = 24;
 
     /**
-     * Height between two text lines on this GUI
+     * Height of a line of text on this GUI
      */
-    private static final int LINE_SPACE = 10;
+    private static final int LINE_HEIGHT = 10;
+
+    /**
+     * Height of an icon on this GUI
+     */
+    private static final int ICON_SIZE = 18;
 
     /**
      * The instance of Minecraft client
@@ -92,8 +104,8 @@ public class HudGui extends Gui {
         if (GameDetector.getInstance().isIn()
                 && event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR) {
             renderArmorInfo();
-            renderEffectsInfo();
             renderGameInfo();
+            renderEffectsInfo();
             // Resets height of the first line in the next rendering
             currentHeight = BEGINNING_HEIGHT;
         }
@@ -103,15 +115,14 @@ public class HudGui extends Gui {
      * Renders the player's armor information on this GUI.
      */
     private void renderArmorInfo() {
-        ArmorMaterial armorMaterial = ArmorReader.getMaterial();
-        if (armorMaterial != null) {
-            drawString("Wearing " + armorMaterial.toString().toLowerCase()
-                    + " armor");
+        if (ArmorReader.hasArmor()) {
             // If the player has armor, checks its enchantment
             int enchantmentLevel = ArmorReader.getProtectionLevel();
+            String level = "";
             if (enchantmentLevel > 0) {
-                drawString("Protection " + enchantmentLevel);
+                level += enchantmentLevel;
             }
+            drawItemIconAndString(ArmorReader.getArmorStack(), level);
         }
     }
 
@@ -119,61 +130,125 @@ public class HudGui extends Gui {
      * Renders the player's effects information on this GUI.
      */
     private void renderEffectsInfo() {
-        Map<String, String> effects = EffectsReader.getEffects();
-        for (String effect : effects.keySet()) {
-            String duration = effects.get(effect);
-            drawString(effect + " " + duration);
+        for (PotionEffect potionEffect : EffectsReader.getEffects()) {
+            int iconIndex = EffectsReader.getIconIndex(potionEffect);
+            // The numbers were obtained from Minecraft source code
+            int textureX = iconIndex % 8 * ICON_SIZE;
+            int textureY = 198 + iconIndex / 8 * ICON_SIZE;
+            String effectInfo = EffectsReader.getAmplifier(potionEffect);
+            if (effectInfo.length() > 0) {
+                effectInfo += " ";
+            }
+            effectInfo += EffectsReader.getDuration(potionEffect);
+            drawIconAndString(GuiContainer.INVENTORY_BACKGROUND, textureX, textureY,
+                    effectInfo);
         }
     }
 
     /**
      * Renders information of the current game session on this GUI.
-     * <p>
-     * For most non-tiered team upgrades, they are displayed on this GUI only
-     * when they are purchased. The "Dragon Buff" upgrade is an exception: it
-     * shows up when bed self-destruction is occurring in 5 minutes
-     * unconditionally.
      */
     private void renderGameInfo() {
         GameManager game = GameManager.getInstance();
         if (game != null) {
-            drawString("Next diamond: " + game.getNextDiamond());
-            drawString("Next emerald: " + game.getNextEmerald());
-            drawString("Forge: " + game.getForgeLevel());
+            drawItemIconAndString(new ItemStack(Items.DIAMOND), game.getNextDiamond());
+            drawItemIconAndString(new ItemStack(Items.EMERALD), game.getNextEmerald());
+
+            Collection<ItemStack> itemsForForgeLevels = new ArrayList<>(2);
+            itemsForForgeLevels.add(new ItemStack(Blocks.FURNACE));
+            itemsForForgeLevels.add(game.getForgeLevelIcon());
+            drawItemIcons(itemsForForgeLevels);
+
+            Collection<ItemStack> itemsForUpgrades = new ArrayList<>();
             if (game.hasHealPool()) {
-                drawString("Heal Pool: Purchased");
+                itemsForUpgrades.add(new ItemStack(Blocks.BEACON));
             }
             if (game.hasDragonBuff()) {
-                drawString("Dragon Buff: Purchased");
-            } else if (game.isBedSelfDestructing()) {
-                drawString("Dragon Buff: Not purchased");
+                itemsForUpgrades.add(new ItemStack(Blocks.DRAGON_EGG));
             }
-            String traps = game.getTraps().toString();
-            // Removes square brackets
-            traps = traps.substring(1, traps.length() - 1);
-            if (traps.length() > 0) {
-                drawString("Traps: ");
-                for (Object trap : game.getTraps()) {
-                    drawString("- " + trap.toString());
-                }
-            }
+            drawItemIcons(itemsForUpgrades);
+
+            Collection<ItemStack> itemsForTraps =
+                    new ArrayList<>(GameManager.MAX_TRAPS + 1);
+            itemsForTraps.add(new ItemStack(Items.LEATHER));
+            Collection<ItemStack> traps = game.getTrapIcons();
+            itemsForTraps.addAll(traps);
+            drawItemIcons(itemsForTraps);
         }
     }
 
     /**
-     * Renders a piece of text on this GUI with default parameters.
+     * Renders an icon with a string to its right on this GUI with default
+     * parameters.
      * <p>
-     * The text aligns its left edge, is under the previous line, and is in the
-     * default color.
+     * The icon aligns this GUI's left edge, and it is under the previous
+     * element on this GUI. The string is in the default color.
      * <p>
-     * After this line of text is rendered, sets height of the next line to be
-     * directly below this line.
+     * After this element is rendered, sets height of the next element to be
+     * directly below this element.
      *
+     * @param texture the texture containing the icon being rendered
+     * @param textureX the x-axis of the icon on the texture
+     * @param textureY the y-axis of the icon on the texture
      * @param text the text to be rendered
      */
-    private void drawString(String text) {
-        drawString(mc.fontRenderer, text, BEGINNING_WIDTH, currentHeight,
+    private void drawIconAndString(ResourceLocation texture, int textureX,
+                                   int textureY, String text) {
+        mc.getTextureManager().bindTexture(texture);
+        // Removes black background of the first icon rendered
+        GlStateManager.enableBlend();
+        drawTexturedModalRect(BEGINNING_WIDTH, currentHeight, textureX,
+                textureY, ICON_SIZE, ICON_SIZE);
+        drawString(mc.fontRenderer, " " + text, ICON_SIZE + BEGINNING_WIDTH,
+                currentHeight + (ICON_SIZE - LINE_HEIGHT) / 2 + 1,
                 TEXT_COLOR);
-        currentHeight += LINE_SPACE;
+        currentHeight += ICON_SIZE;
+    }
+
+    /**
+     * Renders an icon of an item with a string to its right on this GUI with
+     * default parameters.
+     * <p>
+     * The icon aligns this GUI's left edge, and it is under the previous
+     * element on this GUI. The string is in the default color.
+     * <p>
+     * After this element is rendered, sets height of the next element to be
+     * directly below this element.
+     *
+     * @param itemStack the {@link ItemStack} of the item
+     * @param text the text to be rendered
+     */
+    private void drawItemIconAndString(ItemStack itemStack, String text) {
+        mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack,
+                BEGINNING_WIDTH, currentHeight);
+        drawString(mc.fontRenderer, " " + text, ICON_SIZE + BEGINNING_WIDTH,
+                currentHeight + (ICON_SIZE - LINE_HEIGHT) / 2 + 1,
+                TEXT_COLOR);
+        currentHeight += ICON_SIZE;
+    }
+
+    /**
+     * Renders icons of a collection of items on this GUI in-line with default
+     * parameters.
+     * <p>
+     * The first icon aligns this GUI's left edge. The icons are under the
+     * previous element on this GUI.
+     * <p>
+     * After the icons are rendered, sets height of the next element to be
+     * directly below these icons.
+     *
+     * @param itemStacks the {@link Collection} of {@link ItemStack} of each
+     *         item
+     */
+    private void drawItemIcons(Collection<ItemStack> itemStacks) {
+        int currentWidth = BEGINNING_WIDTH;
+        for (ItemStack itemStack : itemStacks) {
+            mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack,
+                    currentWidth, currentHeight);
+            currentWidth += ICON_SIZE;
+        }
+        if (!itemStacks.isEmpty()) {
+            currentHeight += ICON_SIZE;
+        }
     }
 }

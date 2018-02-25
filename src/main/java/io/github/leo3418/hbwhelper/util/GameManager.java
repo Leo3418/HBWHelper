@@ -21,12 +21,18 @@ package io.github.leo3418.hbwhelper.util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Collection;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * Stores information and progress of a Bed Wars game session, and allows other
@@ -36,6 +42,11 @@ import java.util.*;
  * @author Leo
  */
 public class GameManager {
+    /**
+     * Maximum number of traps a team can have in the trap queue
+     */
+    public static final int MAX_TRAPS = 3;
+
     /**
      * Text returned by {@link GameManager#getNextDiamond()} and
      * {@link GameManager#getNextEmerald()} when there is no available
@@ -73,17 +84,6 @@ public class GameManager {
             "\u00A7r\u00A76Dragon Buff\u00A7r";
 
     /**
-     * Prompt client receives when all beds are going to destruct themselves
-     */
-    private static final String BED_SELF_DESTRUCTION_PROMPT =
-            "\u00A7cAll beds will be destroyed in 5 minutes!\u00A7r";
-
-    /**
-     * Maximum number of traps a team can have in the trap queue
-     */
-    private static final int MAX_TRAPS = 3;
-
-    /**
      * A reference to the last created instance of this class
      */
     private static GameManager instance;
@@ -94,9 +94,10 @@ public class GameManager {
     private final Queue<Trap> traps;
 
     /**
-     * Cache of an unmodifiable copy of the trap queue
+     * Cache of {@link ItemStack} where each item's icon represents a trap in
+     * the trap queue
      */
-    private final Collection readOnlyTraps;
+    private final Queue<ItemStack> trapIcons;
 
     /**
      * Position of the diamond generator being read
@@ -107,11 +108,6 @@ public class GameManager {
      * Position of the emerald generator being read
      */
     private BlockPos emeraldGenPos;
-
-    /**
-     * Whether bed self-destruction occurs in 5 minutes
-     */
-    private boolean bedSelfDestructing;
 
     /**
      * Level of resource generation speed on the player's base island
@@ -135,7 +131,7 @@ public class GameManager {
         instance = this;
         forgeLevel = ForgeLevel.ORDINARY_FORGE;
         traps = new ArrayDeque<>(MAX_TRAPS);
-        readOnlyTraps = Collections.unmodifiableCollection(traps);
+        trapIcons = new ArrayDeque<>(MAX_TRAPS);
     }
 
     /**
@@ -190,12 +186,14 @@ public class GameManager {
     }
 
     /**
-     * Returns level of resource generation speed on the player's base island.
+     * Returns the {@link ItemStack} whose icon represents level of resource
+     * generation speed on the player's base island.
      *
-     * @return level of resource generation speed on the player's base island
+     * @return the {@link ItemStack} whose icon represents level of resource
+     *         generation speed on the player's base island
      */
-    public ForgeLevel getForgeLevel() {
-        return forgeLevel;
+    public ItemStack getForgeLevelIcon() {
+        return forgeLevel.itemForIcon;
     }
 
     /**
@@ -221,23 +219,14 @@ public class GameManager {
     }
 
     /**
-     * Returns whether bed self-destruction occurs in 5 minutes.
+     * Returns a {@link Collection} of {@link ItemStack} where each
+     * {@code ItemStack}'s icon represents a trap in the trap queue.
      *
-     * @return whether bed self-destruction occurs in 5 minutes
+     * @return a {@link Collection} of {@link ItemStack} where each
+     *         {@code ItemStack}'s icon represents a trap in the trap queue
      */
-    public boolean isBedSelfDestructing() {
-        return bedSelfDestructing;
-    }
-
-    /**
-     * Returns an <b>unmodifiable</b> copy of the trap queue of the player's
-     * team.
-     *
-     * @return an <b>unmodifiable</b> copy of the trap queue of the player's
-     *         team
-     */
-    public Collection getTraps() {
-        return readOnlyTraps;
+    public Collection<ItemStack> getTrapIcons() {
+        return trapIcons;
     }
 
     /**
@@ -252,8 +241,6 @@ public class GameManager {
             healPool = true;
         } else if (message.contains(DRAGON_BUFF_PROMPT)) {
             dragonBuff = true;
-        } else if (message.contains(BED_SELF_DESTRUCTION_PROMPT)) {
-            bedSelfDestructing = true;
         } else {
             for (ForgeLevel level : ForgeLevel.values()) {
                 if (message.contains(level.prompt)) {
@@ -267,10 +254,12 @@ public class GameManager {
                         traps.remove();
                     }
                     traps.add(trap);
+                    trapIcons.add(trap.itemForIcon);
                     return;
                 } else if (message.contains(trap.setOffPrompt)) {
                     boolean removed = false;
                     while (!removed && !traps.isEmpty()) {
+                        trapIcons.remove();
                         if (traps.remove() == trap) {
                             removed = true;
                         }
@@ -335,23 +324,23 @@ public class GameManager {
         /**
          * The initial resource generation speed level without any upgrade
          */
-        ORDINARY_FORGE("Not upgraded"),
+        ORDINARY_FORGE("Not upgraded", new ItemStack(Blocks.AIR)),
         /**
          * Resource generation speed level with "Iron Forge" upgrade
          */
-        IRON_FORGE("Iron Forge"),
+        IRON_FORGE("Iron Forge", new ItemStack(Items.IRON_INGOT)),
         /**
          * Resource generation speed level with "Golden Forge" upgrade
          */
-        GOLDEN_FORGE("Golden Forge"),
+        GOLDEN_FORGE("Golden Forge", new ItemStack(Items.GOLD_INGOT)),
         /**
          * Resource generation speed level with "Emerald Forge" upgrade
          */
-        EMERALD_FORGE("Emerald Forge"),
+        EMERALD_FORGE("Emerald Forge", new ItemStack(Items.EMERALD)),
         /**
          * Resource generation speed level with "Molten Forge" upgrade
          */
-        MOLTEN_FORGE("Molten Forge");
+        MOLTEN_FORGE("Molten Forge", new ItemStack(Items.LAVA_BUCKET));
 
         /**
          * Part of the prompt shown when the player's team unlocks this level
@@ -360,31 +349,24 @@ public class GameManager {
         private final String prompt;
 
         /**
-         * Text displayed for this level on this mod's GUI
+         * {@link ItemStack} for the item whose icon represents this level of
+         * resource generation speed
          */
-        private final String displayText;
+        private final ItemStack itemForIcon;
 
         /**
          * Constructs a new constant of resource generation speed levels.
          *
          * @param name the name of this trap shown in any prompt in Hypixel
          *         without any formatting code
+         * @param itemForIcon the {@link ItemStack} for the item whose icon
+         *         represents this level of resource generation speed
          * @see <a href="https://minecraft.gamepedia.com/Formatting_codes"
          *         target="_top">Formatting codes in Minecraft</a>
          */
-        ForgeLevel(String name) {
+        ForgeLevel(String name, ItemStack itemForIcon) {
             this.prompt = "\u00A7r\u00A76" + name + "\u00A7r";
-            this.displayText = name;
-        }
-
-        /**
-         * Returns the text displayed for this trap on this mod's GUI.
-         *
-         * @return the text displayed for this trap on this mod's GUI
-         */
-        @Override
-        public String toString() {
-            return displayText;
+            this.itemForIcon = itemForIcon;
         }
     }
 
@@ -395,22 +377,22 @@ public class GameManager {
         /**
          * The ordinary "It's a trap!"
          */
-        ORDINARY("It's a trap!", "Ordinary"),
+        ORDINARY("It's a trap!", new ItemStack(Blocks.TRIPWIRE_HOOK)),
         /**
          * The "Counter-Offensive Trap"
          */
-        COUNTER("Counter-Offensive Trap", "Counter-Offensive"),
+        COUNTER("Counter-Offensive Trap", new ItemStack(Items.FEATHER)),
         /**
          * The "Alarm Trap"
          * <p>
          * This value has three arguments because Hypixel used "Alarm Trap" and
          * "Alarm trap" at the same time.
          */
-        ALARM("Alarm Trap", "Alarm trap", "Alarm"),
+        ALARM("Alarm Trap", "Alarm trap", new ItemStack(Blocks.REDSTONE_TORCH)),
         /**
          * The "Miner Fatigue Trap"
          */
-        MINER_FATIGUE("Miner Fatigue Trap", "Miner Fatigue");
+        MINER_FATIGUE("Miner Fatigue Trap", new ItemStack(Items.IRON_PICKAXE));
 
         /**
          * Part of the prompt shown when the player's team purchases this trap
@@ -423,9 +405,9 @@ public class GameManager {
         private final String setOffPrompt;
 
         /**
-         * Text displayed for this trap on this mod's GUI
+         * {@link ItemStack} for the item whose icon represents this trap
          */
-        private final String displayText;
+        private final ItemStack itemForIcon;
 
         /**
          * Constructs a new constant of traps whose name is <b>consistent</b>
@@ -433,12 +415,13 @@ public class GameManager {
          *
          * @param name the name of this trap shown in any prompt in Hypixel
          *         Bed Wars without any formatting code
-         * @param displayText the text displayed for this trap on this mod's GUI
+         * @param itemForIcon {@link ItemStack} for the item whose icon
+         *         represents this trap
          * @see <a href="https://minecraft.gamepedia.com/Formatting_codes"
          *         target="_top">Formatting codes in Minecraft</a>
          */
-        Trap(String name, String displayText) {
-            this(name, name, displayText);
+        Trap(String name, ItemStack itemForIcon) {
+            this(name, name, itemForIcon);
         }
 
         /**
@@ -449,24 +432,15 @@ public class GameManager {
          *         the player's team purchases this trap
          * @param setOffName the name of this trap in the prompt shown when
          *         it sets off
-         * @param displayText the text displayed for this trap on this mod's GUI
+         * @param itemForIcon {@link ItemStack} for the item whose icon
+         *         represents this trap
          * @see <a href="https://minecraft.gamepedia.com/Formatting_codes"
          *         target="_top">Formatting codes in Minecraft</a>
          */
-        Trap(String purchaseName, String setOffName, String displayText) {
+        Trap(String purchaseName, String setOffName, ItemStack itemForIcon) {
             this.purchasePrompt = "\u00A7r\u00A76" + purchaseName + "\u00A7r";
             this.setOffPrompt = "\u00A7c\u00A7l" + setOffName;
-            this.displayText = displayText;
-        }
-
-        /**
-         * Returns the text displayed for this trap on this mod's GUI
-         *
-         * @return the text displayed for this trap on this mod's GUI
-         */
-        @Override
-        public String toString() {
-            return displayText;
+            this.itemForIcon = itemForIcon;
         }
     }
 }
