@@ -134,9 +134,10 @@ public class HudGui extends Gui {
             // The numbers were obtained from Minecraft source code
             int textureX = iconIndex % 8 * ICON_SIZE;
             int textureY = 198 + iconIndex / 8 * ICON_SIZE;
-            String effectInfo = EffectsReader.getAmplifier(potionEffect);
-            if (effectInfo.length() > 0) {
-                effectInfo += " ";
+            int amplifier = EffectsReader.getDisplayedAmplifier(potionEffect);
+            String effectInfo = "";
+            if (amplifier > 1) {
+                effectInfo += amplifier + " ";
             }
             effectInfo += EffectsReader.getDuration(potionEffect);
             drawIconAndString(
