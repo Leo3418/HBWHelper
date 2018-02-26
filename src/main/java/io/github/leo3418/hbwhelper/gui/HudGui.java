@@ -58,7 +58,7 @@ public class HudGui extends Gui {
     /**
      * Height from the top edge of the window to the top edge of this GUI
      */
-    private static final int BEGINNING_HEIGHT = 24;
+    private static final int BEGINNING_HEIGHT = 2;
 
     /**
      * Height of a line of text on this GUI
@@ -66,9 +66,14 @@ public class HudGui extends Gui {
     private static final int LINE_HEIGHT = 10;
 
     /**
-     * Height of an icon on this GUI
+     * Height of icon of an item
      */
-    private static final int ICON_SIZE = 18;
+    private static final int ITEM_ICON_SIZE = 16;
+
+    /**
+     * Height of icon of a status effect
+     */
+    private static final int EFFECT_ICON_SIZE = 18;
 
     /**
      * The instance of Minecraft client
@@ -103,8 +108,8 @@ public class HudGui extends Gui {
          */
         if (GameDetector.getInstance().isIn()
                 && event.getType() == RenderGameOverlayEvent.ElementType.HOTBAR) {
-            renderArmorInfo();
             renderGameInfo();
+            renderArmorInfo();
             renderEffectsInfo();
             // Resets height of the first line in the next rendering
             currentHeight = BEGINNING_HEIGHT;
@@ -133,16 +138,16 @@ public class HudGui extends Gui {
         for (PotionEffect potionEffect : EffectsReader.getEffects()) {
             int iconIndex = EffectsReader.getIconIndex(potionEffect);
             // The numbers were obtained from Minecraft source code
-            int textureX = iconIndex % 8 * ICON_SIZE;
-            int textureY = 198 + iconIndex / 8 * ICON_SIZE;
+            int textureX = iconIndex % 8 * EFFECT_ICON_SIZE;
+            int textureY = 198 + iconIndex / 8 * EFFECT_ICON_SIZE;
             int amplifier = EffectsReader.getDisplayedAmplifier(potionEffect);
             String effectInfo = "";
             if (amplifier > 1) {
                 effectInfo += amplifier + " ";
             }
             effectInfo += EffectsReader.getDuration(potionEffect);
-            drawIconAndString(GuiContainer.INVENTORY_BACKGROUND, textureX, textureY,
-                    effectInfo);
+            drawIconAndString(GuiContainer.INVENTORY_BACKGROUND, textureX,
+                    textureY, EFFECT_ICON_SIZE, EFFECT_ICON_SIZE, effectInfo);
         }
     }
 
@@ -191,19 +196,21 @@ public class HudGui extends Gui {
      * @param texture the texture containing the icon being rendered
      * @param textureX the x-axis of the icon on the texture
      * @param textureY the y-axis of the icon on the texture
+     * @param width the width of the icon
+     * @param height the height of the icon
      * @param text the text to be rendered
      */
     private void drawIconAndString(ResourceLocation texture, int textureX,
-                                   int textureY, String text) {
+                                   int textureY, int width, int height,
+                                   String text) {
         mc.getTextureManager().bindTexture(texture);
         // Removes black background of the first icon rendered
         GlStateManager.enableBlend();
         drawTexturedModalRect(BEGINNING_WIDTH, currentHeight, textureX,
-                textureY, ICON_SIZE, ICON_SIZE);
-        drawString(mc.fontRenderer, " " + text, ICON_SIZE + BEGINNING_WIDTH,
-                currentHeight + (ICON_SIZE - LINE_HEIGHT) / 2 + 1,
-                TEXT_COLOR);
-        currentHeight += ICON_SIZE;
+                textureY, width, height);
+        drawString(mc.fontRenderer, " " + text, width + BEGINNING_WIDTH,
+                currentHeight + (height - LINE_HEIGHT) / 2 + 1, TEXT_COLOR);
+        currentHeight += height + 1;
     }
 
     /**
@@ -222,12 +229,13 @@ public class HudGui extends Gui {
     private void drawItemIconAndString(ItemStack itemStack, String text) {
         RenderHelper.enableGUIStandardItemLighting();
         mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack,
-                BEGINNING_WIDTH, currentHeight);
+                BEGINNING_WIDTH + (EFFECT_ICON_SIZE - ITEM_ICON_SIZE) / 2,
+                currentHeight);
         RenderHelper.disableStandardItemLighting();
-        drawString(mc.fontRenderer, " " + text, ICON_SIZE + BEGINNING_WIDTH,
-                currentHeight + (ICON_SIZE - LINE_HEIGHT) / 2 + 1,
+        drawString(mc.fontRenderer, " " + text, ITEM_ICON_SIZE + BEGINNING_WIDTH,
+                currentHeight + (ITEM_ICON_SIZE - LINE_HEIGHT) / 2 + 1,
                 TEXT_COLOR);
-        currentHeight += ICON_SIZE;
+        currentHeight += ITEM_ICON_SIZE + 1;
     }
 
     /**
@@ -244,16 +252,17 @@ public class HudGui extends Gui {
      *         item
      */
     private void drawItemIcons(Collection<ItemStack> itemStacks) {
-        int currentWidth = BEGINNING_WIDTH;
+        int currentWidth = BEGINNING_WIDTH
+                + (EFFECT_ICON_SIZE - ITEM_ICON_SIZE) / 2;
         for (ItemStack itemStack : itemStacks) {
             RenderHelper.enableGUIStandardItemLighting();
             mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack,
                     currentWidth, currentHeight);
             RenderHelper.disableStandardItemLighting();
-            currentWidth += ICON_SIZE;
+            currentWidth += ITEM_ICON_SIZE + 1;
         }
         if (!itemStacks.isEmpty()) {
-            currentHeight += ICON_SIZE;
+            currentHeight += ITEM_ICON_SIZE + 1;
         }
     }
 }
