@@ -81,10 +81,9 @@ public class HudGui extends Gui {
     /**
      * Constructs a new instance of this GUI.
      *
-     * @param mc the current Minecraft instance
      */
-    public HudGui(Minecraft mc) {
-        this.mc = mc;
+    public HudGui() {
+        this.mc = Minecraft.getMinecraft();
         currentHeight = BEGINNING_HEIGHT;
     }
 
