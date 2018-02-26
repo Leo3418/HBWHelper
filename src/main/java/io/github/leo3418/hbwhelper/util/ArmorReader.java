@@ -78,12 +78,15 @@ public class ArmorReader {
     }
 
     /**
-     * Returns an {@link ItemStack} object which represents the player's armor.
+     * Returns an {@link ItemStack} object which represents the player's armor,
+     * or {@code null} if the player does not wear armor.
      *
-     * @return an {@link ItemStack} object which represents the player's armor
+     * @return an {@link ItemStack} object which represents the player's armor,
+     *         or {@code null} if the player does not wear armor
      */
     public static ItemStack getArmorStack() {
-        return Minecraft.getMinecraft().thePlayer.getCurrentArmor(BOOTS_INDEX);
+        return Minecraft.getMinecraft().thePlayer.inventory
+                .armorItemInSlot(BOOTS_INDEX);
     }
 
     /**
