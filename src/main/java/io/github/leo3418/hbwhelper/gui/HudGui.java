@@ -26,6 +26,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -219,8 +220,10 @@ public class HudGui extends Gui {
      * @param text the text to be rendered
      */
     private void drawItemIconAndString(ItemStack itemStack, String text) {
+        RenderHelper.enableGUIStandardItemLighting();
         mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack,
                 BEGINNING_WIDTH, currentHeight);
+        RenderHelper.disableStandardItemLighting();
         drawString(mc.fontRenderer, " " + text, ICON_SIZE + BEGINNING_WIDTH,
                 currentHeight + (ICON_SIZE - LINE_HEIGHT) / 2 + 1,
                 TEXT_COLOR);
@@ -243,8 +246,10 @@ public class HudGui extends Gui {
     private void drawItemIcons(Collection<ItemStack> itemStacks) {
         int currentWidth = BEGINNING_WIDTH;
         for (ItemStack itemStack : itemStacks) {
+            RenderHelper.enableGUIStandardItemLighting();
             mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack,
                     currentWidth, currentHeight);
+            RenderHelper.disableStandardItemLighting();
             currentWidth += ICON_SIZE;
         }
         if (!itemStacks.isEmpty()) {
