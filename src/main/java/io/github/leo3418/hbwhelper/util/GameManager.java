@@ -218,10 +218,10 @@ public class GameManager {
     }
 
     /**
-     * Returns a <b>unmodifiable</b> {@link Collection} of {@link ItemStack}
+     * Returns an <b>unmodifiable</b> {@link Collection} of {@link ItemStack}
      * where each {@code ItemStack}'s icon represents a trap in the trap queue.
      *
-     * @return a <b>unmodifiable</b> {@link Collection} of {@link ItemStack}
+     * @return an <b>unmodifiable</b> {@link Collection} of {@link ItemStack}
      *         where each {@code ItemStack}'s icon represents a trap in the
      *         trap queue
      */
@@ -383,7 +383,7 @@ public class GameManager {
         /**
          * The "Alarm Trap"
          * <p>
-         * This value has three arguments because Hypixel used "Alarm Trap" and
+         * This value has three arguments because Hypixel uses "Alarm Trap" and
          * "Alarm trap" at the same time.
          */
         ALARM("Alarm Trap", "Alarm trap", new ItemStack(Blocks.redstone_torch)),
