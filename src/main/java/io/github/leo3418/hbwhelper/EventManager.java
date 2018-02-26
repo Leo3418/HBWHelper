@@ -85,7 +85,7 @@ public class EventManager {
     private EventManager() {
         MinecraftForge.EVENT_BUS.register(this);
         EventManager.EVENT_BUS.register(this);
-        hudGui = new HudGui(Minecraft.getMinecraft());
+        hudGui = new HudGui();
         hypixelDetector = HypixelDetector.getInstance();
         gameDetector = GameDetector.getInstance();
     }
