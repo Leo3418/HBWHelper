@@ -75,6 +75,34 @@ public class HudGui extends Gui {
     private static final int EFFECT_ICON_SIZE = 18;
 
     /**
+     * Threshold of a status effect's remaining time in seconds that if the
+     * time is shorter than this value, the remaining time displayed starts
+     * flashing
+     */
+    private static final int WEAR_OUT_THRESHOLD = 5;
+
+    /**
+     * Time between color switching in milliseconds when a status effect's
+     * remaining time flashes
+     */
+    private static final int FLASH_INTERVAL = 500;
+
+    /**
+     * The color code which changes the color of a status effect's remaining
+     * time displayed when flashing
+     * <p>
+     * The Unicode encoding for the section sign ({@code §}) must be used in
+     * place of the section sign because Minecraft does not permit directly
+     * using the section sign in most places in-game.
+     *
+     * @see <a href="https://minecraft.gamepedia.com/Formatting_codes"
+     *         target="_top">Color codes in Minecraft</a>
+     * @see <a href="https://en.wikipedia.org/wiki/Section_sign">
+     *         The section sign's information on Wikipedia</a>
+     */
+    private static final String FLASH_COLOR_PREFIX = "\u00A7c";
+
+    /**
      * The instance of Minecraft client
      */
     private final Minecraft mc;
@@ -86,7 +114,6 @@ public class HudGui extends Gui {
 
     /**
      * Constructs a new instance of this GUI.
-     *
      */
     public HudGui() {
         this.mc = Minecraft.getMinecraft();
@@ -132,6 +159,10 @@ public class HudGui extends Gui {
 
     /**
      * Renders the player's effects information on this GUI.
+     * <p>
+     * When a status effect's remaining time is lower than
+     * {@link HudGui#WEAR_OUT_THRESHOLD}, the remaining time displayed on this
+     * GUI starts to flash.
      */
     private void renderEffectsInfo() {
         for (PotionEffect potionEffect : EffectsReader.getEffects()) {
@@ -144,7 +175,17 @@ public class HudGui extends Gui {
             if (amplifier > 1) {
                 effectInfo += amplifier + " ";
             }
-            effectInfo += EffectsReader.getDuration(potionEffect);
+            int duration = EffectsReader.getDuration(potionEffect);
+            String displayedDuration =
+                    EffectsReader.getDisplayedDuration(potionEffect);
+            if (duration > 0 && duration <= WEAR_OUT_THRESHOLD) {
+                if (System.currentTimeMillis() % (FLASH_INTERVAL * 2)
+                        < FLASH_INTERVAL) {
+                    displayedDuration = FLASH_COLOR_PREFIX + displayedDuration
+                            + "\u00A7r";
+                }
+            }
+            effectInfo += displayedDuration;
             drawIconAndString(
                     new ResourceLocation("textures/gui/container/inventory.png"),
                     textureX, textureY, EFFECT_ICON_SIZE, EFFECT_ICON_SIZE,

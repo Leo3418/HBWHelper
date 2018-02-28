@@ -31,6 +31,11 @@ import java.util.Collection;
  */
 public class EffectsReader {
     /**
+     * Number of game ticks per second in Minecraft
+     */
+    private static final int TICKS_PER_SECOND = 20;
+
+    /**
      * Prevents instantiation of this class.
      */
     private EffectsReader() {
@@ -66,8 +71,23 @@ public class EffectsReader {
      * @param potionEffect the potion effect whose duration is queried
      * @return duration of the potion effect as how they are shown in the client
      */
-    public static String getDuration(PotionEffect potionEffect) {
+    public static String getDisplayedDuration(PotionEffect potionEffect) {
         return Potion.getDurationString(potionEffect);
+    }
+
+    /**
+     * Returns duration of a potion effect in seconds, or {@code -1} if it has
+     * maximum duration.
+     *
+     * @param potionEffect the potion effect whose duration is queried
+     * @return duration of the potion effect in seconds, or {@code -1} if it has
+     *         maximum duration
+     */
+    public static int getDuration(PotionEffect potionEffect) {
+        if (potionEffect.getIsPotionDurationMax()) {
+            return -1;
+        }
+        return potionEffect.getDuration() / TICKS_PER_SECOND;
     }
 
     /**
