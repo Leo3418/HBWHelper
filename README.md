@@ -12,7 +12,7 @@ have got
 
 ## Planned Features
 These features may be added in the next update.  
-- [ ] Replace plain text with icons and colored text
+- [x] Replace plain text with icons and colored text
 - [ ] Internationalization
 - [ ] HUD customization (location, elements to display, etc.)
 - [ ] Bed Wars quick-join
