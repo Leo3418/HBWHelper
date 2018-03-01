@@ -328,7 +328,7 @@ For instance, if you say "client crashes before it starts", at what specific
 time does it crash? Does client quits so instant that you don't even see the
 initialization screen, or does it crash when Forge completes initialization and
 you are about to see the main menu?  
-Another example: when you say "client crashes upon use of `/lobby` command, are
+Another example: when you say "client crashes upon use of `/lobby` command", are
 you doing that when you are in a Bed Wars game, or when you are already in a
 lobby?
 - For title, please write a concise but also clear description of the issue you
