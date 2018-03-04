@@ -56,17 +56,17 @@ public class ArmorReader {
 
     /**
      * Returns the level of Protection enchantment on the player's armor, or
-     * {@code 0} if the player does not wear armor.
+     * {@code -1} if the player does not wear armor.
      *
      * @return the level of Protection enchantment on the player's armor, or
-     *         {@code 0} if the player does not wear armor
+     *         {@code -1} if the player does not wear armor
      */
     public static int getProtectionLevel() {
         if (hasArmor()) {
             return EnchantmentHelper.getEnchantmentLevel(Enchantment
                     .getEnchantmentByID(ENCHANTMENT_ID), getArmorStack());
         }
-        return 0;
+        return -1;
     }
 
     /**
