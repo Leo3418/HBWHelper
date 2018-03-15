@@ -296,13 +296,13 @@ public class HudGui extends Gui {
     private void drawItemIcons(Collection<ItemStack> itemStacks) {
         int currentWidth = BEGINNING_WIDTH
                 + (EFFECT_ICON_SIZE - ITEM_ICON_SIZE) / 2;
+        RenderHelper.enableGUIStandardItemLighting();
         for (ItemStack itemStack : itemStacks) {
-            RenderHelper.enableGUIStandardItemLighting();
             mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack,
                     currentWidth, currentHeight);
-            RenderHelper.disableStandardItemLighting();
             currentWidth += ITEM_ICON_SIZE + 1;
         }
+        RenderHelper.disableStandardItemLighting();
         if (!itemStacks.isEmpty()) {
             currentHeight += ITEM_ICON_SIZE + 1;
         }
