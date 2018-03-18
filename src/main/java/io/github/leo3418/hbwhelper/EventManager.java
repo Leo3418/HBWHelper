@@ -20,7 +20,7 @@ package io.github.leo3418.hbwhelper;
 
 import io.github.leo3418.hbwhelper.event.ClientRejoinGameEvent;
 import io.github.leo3418.hbwhelper.event.GameStartEvent;
-import io.github.leo3418.hbwhelper.gui.HudGui;
+import io.github.leo3418.hbwhelper.gui.GuiHud;
 import io.github.leo3418.hbwhelper.util.GameDetector;
 import io.github.leo3418.hbwhelper.util.GameManager;
 import io.github.leo3418.hbwhelper.util.HypixelDetector;
@@ -76,7 +76,7 @@ public class EventManager {
 
     private final HypixelDetector hypixelDetector;
     private final GameDetector gameDetector;
-    private HudGui hudGui;
+    private GuiHud guiHud;
 
     /**
      * Implementation of Singleton design pattern, which allows only one
@@ -85,7 +85,7 @@ public class EventManager {
     private EventManager() {
         MinecraftForge.EVENT_BUS.register(this);
         EventManager.EVENT_BUS.register(this);
-        hudGui = new HudGui();
+        guiHud = new GuiHud();
         hypixelDetector = HypixelDetector.getInstance();
         gameDetector = GameDetector.getInstance();
     }
@@ -127,7 +127,7 @@ public class EventManager {
 
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent.Post event) {
-        hudGui.render(event);
+        guiHud.render(event);
     }
 
     @SubscribeEvent
