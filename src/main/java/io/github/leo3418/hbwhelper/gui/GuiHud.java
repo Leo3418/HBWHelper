@@ -45,7 +45,7 @@ import java.util.Collection;
  * @see <a href="https://minecraft.gamepedia.com/Heads-up_display"
  *         target="_top">Minecraft Wiki's introduction on Minecraft's HUD</a>
  */
-public class HudGui extends Gui {
+public class GuiHud extends Gui {
     /**
      * The color of text displayed on this GUI
      */
@@ -122,7 +122,7 @@ public class HudGui extends Gui {
     /**
      * Constructs a new instance of this GUI.
      */
-    public HudGui() {
+    public GuiHud() {
         mc = Minecraft.getMinecraft();
         gameDetector = GameDetector.getInstance();
         currentHeight = BEGINNING_HEIGHT;
@@ -183,7 +183,7 @@ public class HudGui extends Gui {
      * Renders the player's effects information on this GUI.
      * <p>
      * When a status effect's remaining time is lower than
-     * {@link HudGui#WEAR_OUT_THRESHOLD}, the remaining time displayed on this
+     * {@link GuiHud#WEAR_OUT_THRESHOLD}, the remaining time displayed on this
      * GUI starts to flash.
      */
     private void renderEffectsInfo() {
