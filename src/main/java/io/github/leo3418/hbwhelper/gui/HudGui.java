@@ -24,6 +24,7 @@ import io.github.leo3418.hbwhelper.util.GameDetector;
 import io.github.leo3418.hbwhelper.util.GameManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.init.Blocks;
@@ -108,6 +109,11 @@ public class HudGui extends Gui {
     private final Minecraft mc;
 
     /**
+     * The {@link GameDetector} instance
+     */
+    private final GameDetector gameDetector;
+
+    /**
      * Height of the next line of text that would be rendered
      */
     private int currentHeight;
@@ -116,7 +122,8 @@ public class HudGui extends Gui {
      * Constructs a new instance of this GUI.
      */
     public HudGui() {
-        this.mc = Minecraft.getMinecraft();
+        mc = Minecraft.getMinecraft();
+        gameDetector = GameDetector.getInstance();
         currentHeight = BEGINNING_HEIGHT;
     }
 
@@ -131,15 +138,29 @@ public class HudGui extends Gui {
         or some vanilla elements on the HUD might not display correctly. We
         just pick the hotbar as the object we monitor. Also, we only want this
         GUI to be displayed when the client is in Bed Wars.
+        To prevent elements on this mod covering chat box contents and debug
+        information, the HUD only renders when neither chat screen nor debug
+        screen shows.
          */
-        if (GameDetector.getInstance().isIn()
-                && event.type == RenderGameOverlayEvent.ElementType.HOTBAR) {
+        if (shouldRender() && event.type ==
+                RenderGameOverlayEvent.ElementType.HOTBAR) {
             renderGameInfo();
             renderArmorInfo();
             renderEffectsInfo();
             // Resets height of the first line in the next rendering
             currentHeight = BEGINNING_HEIGHT;
         }
+    }
+
+    /**
+     * Returns whether this GUI should be rendered.
+     *
+     * @return whether this GUI should be rendered
+     */
+    private boolean shouldRender() {
+        return gameDetector.isIn()
+                && !(mc.currentScreen instanceof GuiChat)
+                && !mc.gameSettings.showDebugInfo;
     }
 
     /**
