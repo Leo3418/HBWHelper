@@ -110,7 +110,7 @@ public class ConfigGuiFactory implements IModGuiFactory {
     /**
      * The configuration screen of this mod.
      */
-    private static class ConfigGuiScreen extends GuiConfig {
+    public static class ConfigGuiScreen extends GuiConfig {
         /**
          * The {@link ConfigManager} of this mod
          */
@@ -122,7 +122,7 @@ public class ConfigGuiFactory implements IModGuiFactory {
          *
          * @param parent the parent screen of this configuration screen
          */
-        private ConfigGuiScreen(GuiScreen parent) {
+        public ConfigGuiScreen(GuiScreen parent) {
             super(parent, getConfigElements(), HbwHelper.MOD_ID, false, false,
                     I18n.format("hbwhelper.configGui.title"));
         }
