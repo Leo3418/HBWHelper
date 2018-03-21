@@ -22,6 +22,7 @@ import io.github.leo3418.hbwhelper.ConfigManager;
 import io.github.leo3418.hbwhelper.HbwHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.fml.client.IModGuiFactory;
 import net.minecraftforge.fml.client.config.GuiConfig;
@@ -128,7 +129,7 @@ public class ConfigGuiFactory implements IModGuiFactory {
          */
         private ConfigGuiScreen(GuiScreen parent) {
             super(parent, getConfigElements(), HbwHelper.MOD_ID, false, false,
-                    "HBW Helper Settings");
+                    I18n.format("hbwhelper.configGui.title"));
         }
 
         /**

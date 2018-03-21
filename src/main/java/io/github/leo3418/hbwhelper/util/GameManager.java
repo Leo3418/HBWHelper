@@ -19,6 +19,7 @@
 package io.github.leo3418.hbwhelper.util;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.init.Blocks;
@@ -49,7 +50,8 @@ public class GameManager {
      * {@link GameManager#getNextEmerald()} when there is no available
      * generator to read
      */
-    private static final String FINDING_GEN_PROMPT = "Searching signal...";
+    private static final String FINDING_GEN_PROMPT =
+            I18n.format("hbwhelper.hudGui.findingGenerator");
 
     /**
      * Text that only appears in the line showing spawn time above a generator
