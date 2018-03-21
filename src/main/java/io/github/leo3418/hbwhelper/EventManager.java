@@ -25,6 +25,7 @@ import io.github.leo3418.hbwhelper.util.GameDetector;
 import io.github.leo3418.hbwhelper.util.GameManager;
 import io.github.leo3418.hbwhelper.util.HypixelDetector;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -57,18 +58,16 @@ public class EventManager {
      * a Bed Wars game
      */
     private static final String CLIENT_RESTARTED_PROMPT =
-            "[" + HbwHelper.NAME + "] " + "We have detected that you " +
-                    "restarted your Minecraft client. Unfortunately, we " +
-                    "cannot retrieve what team upgrade you have got before.";
+            "[" + HbwHelper.NAME + "] "
+                    + I18n.format("hbwhelper.messages.clientRestart");
 
     /**
      * Prompt client receives when Minecraft has <b>not</b> been restarted, and
      * it rejoins a Bed Wars game
      */
     private static final String CLIENT_REJOINED_PROMPT =
-            "[" + HbwHelper.NAME + "] " + "We have detected that you rejoined " +
-                    "a Bed Wars game. Any team upgrade your teammate has got " +
-                    "since your disconnection cannot be displayed.";
+            "[" + HbwHelper.NAME + "] "
+                    + I18n.format("hbwhelper.messages.clientRejoin");
 
     /**
      * The only instance of this class
