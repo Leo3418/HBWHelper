@@ -32,7 +32,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
  */
 @Mod(name = HbwHelper.NAME, modid = HbwHelper.MOD_ID, version =
         HbwHelper.VERSION, acceptedMinecraftVersions = "@compatible_versions@",
-        clientSideOnly = true)
+        clientSideOnly = true, guiFactory =
+        "io.github.leo3418.hbwhelper.gui.ConfigGuiFactory")
 public class HbwHelper {
     public static final String NAME = "HBW Helper";
     public static final String MOD_ID = "hbwhelper";
@@ -43,6 +44,7 @@ public class HbwHelper {
 
     @EventHandler
     public void onFMLPreInitialization(FMLPreInitializationEvent event) {
+        new ConfigManager(event);
     }
 
     @EventHandler
