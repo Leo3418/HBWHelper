@@ -18,6 +18,7 @@
 
 package io.github.leo3418.hbwhelper.gui;
 
+import io.github.leo3418.hbwhelper.ConfigManager;
 import io.github.leo3418.hbwhelper.util.ArmorReader;
 import io.github.leo3418.hbwhelper.util.EffectsReader;
 import io.github.leo3418.hbwhelper.util.GameDetector;
@@ -115,6 +116,11 @@ public class GuiHud extends Gui {
     private final GameDetector gameDetector;
 
     /**
+     * The {@link ConfigManager} of this mod
+     */
+    private final ConfigManager configManager;
+
+    /**
      * Height of the next line of text that would be rendered
      */
     private int currentHeight;
@@ -125,6 +131,7 @@ public class GuiHud extends Gui {
     public GuiHud() {
         mc = Minecraft.getMinecraft();
         gameDetector = GameDetector.getInstance();
+        configManager = ConfigManager.getInstance();
         currentHeight = BEGINNING_HEIGHT;
     }
 
@@ -137,17 +144,20 @@ public class GuiHud extends Gui {
         /*
         We only need to render this GUI per one object's rendering on the HUD,
         or some vanilla elements on the HUD might not display correctly. We
-        just pick the hotbar as the object we monitor. Also, we only want this
-        GUI to be displayed when the client is in Bed Wars.
+        just pick the hotbar as the object we monitor.
         To prevent elements on this mod covering chat box contents and debug
         information, the HUD only renders when neither chat screen nor debug
         screen shows.
          */
         if (shouldRender() && event.getType() ==
                 RenderGameOverlayEvent.ElementType.HOTBAR) {
-            renderGameInfo();
-            renderArmorInfo();
-            renderEffectsInfo();
+            if (gameDetector.isIn()) {
+                renderGameInfo();
+                renderArmorInfo();
+                renderEffectsInfo();
+            } else if (configManager.alwaysShowEffects()) {
+                renderEffectsInfo();
+            }
             // Resets height of the first line in the next rendering
             currentHeight = BEGINNING_HEIGHT;
         }
@@ -159,8 +169,7 @@ public class GuiHud extends Gui {
      * @return whether this GUI should be rendered
      */
     private boolean shouldRender() {
-        return gameDetector.isIn()
-                && !(mc.currentScreen instanceof GuiChat)
+        return !(mc.currentScreen instanceof GuiChat)
                 && !mc.gameSettings.showDebugInfo;
     }
 
