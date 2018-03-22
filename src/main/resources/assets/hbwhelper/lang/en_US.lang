@@ -4,5 +4,5 @@ hbwhelper.configGui.alwaysShowEffects.description=Show status effects on HUD eve
 
 hbwhelper.hudGui.findingGenerator=Searching signal...
 
-hbwhelper.messages.clientRejoin=We have detected that you restarted your Minecraft client. Unfortunately, we cannot retrieve what team upgrade you have got before.
-hbwhelper.messages.clientRestart=We have detected that you rejoined a Bed Wars game. Any team upgrade your teammate has got since your disconnection cannot be displayed.
+hbwhelper.messages.clientRejoin=We have detected that you rejoined a Bed Wars game. Any team upgrade your teammate has got since your disconnection cannot be displayed.
+hbwhelper.messages.clientRestart=We have detected that you restarted your Minecraft client. Unfortunately, we cannot retrieve what team upgrade you have got before.
