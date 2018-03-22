@@ -4,5 +4,5 @@ hbwhelper.configGui.alwaysShowEffects.description=当不在起床战争时，依
 
 hbwhelper.hudGui.findingGenerator=正在搜索信号...
 
-hbwhelper.messages.clientRejoin=检测到您已重启 Minecraft 客户端。很抱歉，您之前获得的队伍升级无法重新读取。
-hbwhelper.messages.clientRestart=检测到您重新加入了一局起床战争。您的队友在您断线期间购买的队伍升级无法显示。
+hbwhelper.messages.clientRejoin=检测到您重新加入了一局起床战争。您的队友在您断线期间购买的队伍升级无法显示。
+hbwhelper.messages.clientRestart=检测到您已重启 Minecraft 客户端。很抱歉，您之前获得的队伍升级无法重新读取。
