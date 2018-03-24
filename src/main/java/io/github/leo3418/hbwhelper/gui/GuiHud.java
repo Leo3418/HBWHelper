@@ -208,12 +208,11 @@ public class GuiHud extends Gui {
             int duration = EffectsReader.getDuration(potionEffect);
             String displayedDuration =
                     EffectsReader.getDisplayedDuration(potionEffect);
-            if (duration > 0 && duration <= WEAR_OUT_THRESHOLD) {
-                if (System.currentTimeMillis() % (FLASH_INTERVAL * 2)
-                        < FLASH_INTERVAL) {
-                    displayedDuration = FLASH_COLOR_PREFIX + displayedDuration
-                            + "\u00A7r";
-                }
+            if (duration == 0 || (duration > 0 && duration <= WEAR_OUT_THRESHOLD
+                    && System.currentTimeMillis() % (FLASH_INTERVAL * 2)
+                    < FLASH_INTERVAL)) {
+                displayedDuration = FLASH_COLOR_PREFIX + displayedDuration
+                        + "\u00A7r";
             }
             effectInfo += displayedDuration;
             drawIconAndString(
