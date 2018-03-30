@@ -143,6 +143,10 @@ public class ConfigGuiFactory implements IModGuiFactory {
             List<IConfigElement> configElements = new ArrayList<IConfigElement>();
             configElements.add(new ConfigElement(
                     CONFIG_MANAGER.getAlwaysShowEffectsProperty()));
+            configElements.add(new ConfigElement(
+                    CONFIG_MANAGER.getHudXProperty()));
+            configElements.add(new ConfigElement(
+                    CONFIG_MANAGER.getHudYProperty()));
             return configElements;
         }
     }
