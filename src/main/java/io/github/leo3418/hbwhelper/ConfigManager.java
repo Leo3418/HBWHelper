@@ -18,7 +18,11 @@
 
 package io.github.leo3418.hbwhelper;
 
+import io.github.leo3418.hbwhelper.gui.ConfigGuiFactory;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.resources.I18n;
+import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -27,15 +31,29 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 /**
  * Configuration manager of this mod, which reads from and writes to this mod's
  * configuration file.
+ * <p>
+ * This is a Singleton class. Only one instance of this class may be created
+ * per runtime.
  *
  * @author Leo
  */
 public class ConfigManager {
     /**
-     * A reference to the instance created from this class when Forge Mod
-     * Loader initializes
+     * Default width from the left edge of the Minecraft window to the left
+     * edge of {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
      */
-    private static ConfigManager instance;
+    private static final int DEFAULT_WIDTH = 2;
+
+    /**
+     * Default height from the top edge of the Minecraft window to the top edge
+     * of {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
+     */
+    private static final int DEFAULT_HEIGHT = 2;
+
+    /**
+     * The only instance of this class
+     */
+    private static volatile ConfigManager instance;
 
     /**
      * Configuration file of this mod
@@ -44,37 +62,63 @@ public class ConfigManager {
 
     /**
      * The {@link Property} object storing whether status effects
-     * should always be shown on {@link io.github.leo3418.hbwhelper.gui.GuiHud}
+     * should always be shown on {@link io.github.leo3418.hbwhelper.gui.GuiHud
+     * GuiHud}
      */
     private Property alwaysShowEffects;
 
     /**
-     * Constructs a new {@code ConfigManager} instance when Forge Mod Loader
-     * initializes.
-     *
-     * @param event the event fired before Forge Mod Loader initializes
+     * The {@link Property} object storing width from the left edge of the
+     * Minecraft window to the left edge of
+     * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
      */
-    ConfigManager(FMLPreInitializationEvent event) {
-        instance = this;
+    private Property hudX;
+
+    /**
+     * The {@link Property} object storing height from the top edge of the
+     * Minecraft window to the top edge of
+     * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
+     */
+    private Property hudY;
+
+    /**
+     * Implementation of Singleton design pattern, which allows only one
+     * instance of this class to be created.
+     */
+    private ConfigManager() {
+    }
+
+    /**
+     * Returns the instance of this class.
+     *
+     * @return the instance of this class
+     */
+    public static ConfigManager getInstance() {
+        if (instance == null) {
+            synchronized (ConfigManager.class) {
+                if (instance == null) {
+                    instance = new ConfigManager();
+                }
+            }
+        }
+        return instance;
+    }
+
+    /**
+     * Initializes configuration when Minecraft Forge is starting.
+     *
+     * @param event the event fired before Minecraft Forge's initialization
+     */
+    void init(FMLPreInitializationEvent event) {
         config = new Configuration(event.getSuggestedConfigurationFile());
         config.load();
         initConfig();
     }
 
     /**
-     * Returns the reference to the instance created from this class when Forge
-     * Mod Loader initializes.
-     *
-     * @return the reference to the instance created from this class when Forge
-     *         Mod Loader initializes
-     */
-    public static ConfigManager getInstance() {
-        return instance;
-    }
-
-    /**
      * Returns the {@link Property} object storing whether status effects
-     * should always be shown on {@link io.github.leo3418.hbwhelper.gui.GuiHud}.
+     * should always be shown on {@link io.github.leo3418.hbwhelper.gui.GuiHud
+     * GuiHud}.
      *
      * @return the {@code Property} object storing whether status effects
      *         should always be shown on {@code GuiHud}
@@ -84,13 +128,59 @@ public class ConfigManager {
     }
 
     /**
+     * Returns the {@link Property} object storing width from the left edge of
+     * the Minecraft window to the left edge of
+     * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}.
+     *
+     * @return the {@code Property} object storing width from the left edge of
+     *         the Minecraft window to the left edge of {@code GuiHud}
+     */
+    public Property getHudXProperty() {
+        return hudX;
+    }
+
+    /**
+     * Returns the {@link Property} object storing height from the top edge of
+     * the Minecraft window to the top edge of
+     * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
+     *
+     * @return the {@code Property} object storing height from the top edge of
+     *         the Minecraft window to the top edge of {@code GuiHud}
+     */
+    public Property getHudYProperty() {
+        return hudY;
+    }
+
+    /**
      * Returns whether status effects should always be shown on
-     * {@link io.github.leo3418.hbwhelper.gui.GuiHud}.
+     * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}.
      *
      * @return whether status effects should always be shown on {@code GuiHud}
      */
     public boolean alwaysShowEffects() {
         return getAlwaysShowEffectsProperty().getBoolean();
+    }
+
+    /**
+     * Returns width from the left edge of the Minecraft window to the left
+     * edge of {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}.
+     *
+     * @return width from the left edge of the Minecraft window to the left
+     *         edge of {@code GuiHud}.
+     */
+    public int getHudX() {
+        return getHudXProperty().getInt();
+    }
+
+    /**
+     * Returns height from the top edge of the Minecraft window to the top
+     * edge of {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}.
+     *
+     * @return height from the top edge of the Minecraft window to the top
+     *         edge of {@code GuiHud}.
+     */
+    public int getHudY() {
+        return getHudYProperty().getInt();
     }
 
     /**
@@ -106,6 +196,19 @@ public class ConfigManager {
     }
 
     /**
+     * When client opens up this mod's configuration, updates allowed values of
+     * HUD parameters, so they reflect the current size of the Minecraft window.
+     *
+     * @param event the event fired when this mod's configuration screen is
+     *         opened
+     */
+    public void update(GuiOpenEvent event) {
+        if (event.getGui() instanceof ConfigGuiFactory.ConfigGuiScreen) {
+            updateHudConfig();
+        }
+    }
+
+    /**
      * If the configuration file on disk is absent or incomplete, creates or
      * completes the configuration file. Then, loads the configuration file.
      */
@@ -115,6 +218,30 @@ public class ConfigManager {
                 false,
                 I18n.format("hbwhelper.configGui.alwaysShowEffects.description"))
                 .setLanguageKey("hbwhelper.configGui.alwaysShowEffects.title");
+        updateHudConfig();
         config.save();
+    }
+
+    /**
+     * Updates allowed values of HUD parameters to let them reflect the current
+     * size of the Minecraft window.
+     */
+    private void updateHudConfig() {
+        ScaledResolution scaledResolution =
+                new ScaledResolution(Minecraft.getMinecraft());
+        hudX = config.get(Configuration.CATEGORY_CLIENT,
+                "hudX",
+                DEFAULT_WIDTH,
+                I18n.format("hbwhelper.configGui.hudX.description"),
+                0,
+                scaledResolution.getScaledWidth())
+                .setLanguageKey("hbwhelper.configGui.hudX.title");
+        hudY = config.get(Configuration.CATEGORY_CLIENT,
+                "hudY",
+                DEFAULT_HEIGHT,
+                I18n.format("hbwhelper.configGui.hudY.description"),
+                0,
+                scaledResolution.getScaledHeight())
+                .setLanguageKey("hbwhelper.configGui.hudY.title");
     }
 }

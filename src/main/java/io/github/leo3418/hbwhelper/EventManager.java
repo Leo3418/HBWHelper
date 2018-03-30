@@ -76,6 +76,7 @@ public class EventManager {
 
     private final HypixelDetector hypixelDetector;
     private final GameDetector gameDetector;
+    private final ConfigManager configManager;
     private GuiHud guiHud;
 
     /**
@@ -88,6 +89,7 @@ public class EventManager {
         guiHud = new GuiHud();
         hypixelDetector = HypixelDetector.getInstance();
         gameDetector = GameDetector.getInstance();
+        configManager = ConfigManager.getInstance();
     }
 
     /**
@@ -115,6 +117,7 @@ public class EventManager {
     @SubscribeEvent
     public void onGuiOpen(GuiOpenEvent event) {
         gameDetector.update(event);
+        configManager.update(event);
     }
 
     @SubscribeEvent
@@ -151,6 +154,6 @@ public class EventManager {
 
     @SubscribeEvent
     public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-        ConfigManager.getInstance().save(event);
+        configManager.save(event);
     }
 }
