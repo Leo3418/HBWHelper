@@ -1,6 +1,10 @@
 hbwhelper.configGui.title=HBW Helper Settings
 hbwhelper.configGui.alwaysShowEffects.title=Always show status effects
 hbwhelper.configGui.alwaysShowEffects.description=Show status effects on HUD even when not in Bed Wars
+hbwhelper.configGui.hudX.title=Horizontal position of HUD
+hbwhelper.configGui.hudX.description=X-coordinate of the top-left corner of this mod's HUD GUI
+hbwhelper.configGui.hudY.title=Vertical position of HUD
+hbwhelper.configGui.hudY.description=Y-coordinate of the top-left corner of this mod's HUD GUI
 
 hbwhelper.hudGui.findingGenerator=Searching signal...
 
