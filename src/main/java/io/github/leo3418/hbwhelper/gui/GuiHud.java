@@ -167,7 +167,7 @@ public class GuiHud extends Gui {
      * Renders the player's armor information on this GUI.
      */
     private void renderArmorInfo() {
-        if (ArmorReader.hasArmor()) {
+        if (configManager.showArmorInfo() && ArmorReader.hasArmor()) {
             // If the player has armor, checks its enchantment
             int enchantmentLevel = ArmorReader.getProtectionLevel();
             String level = "";
@@ -186,28 +186,30 @@ public class GuiHud extends Gui {
      * GUI starts to flash.
      */
     private void renderEffectsInfo() {
-        for (PotionEffect potionEffect : EffectsReader.getEffects()) {
-            int iconIndex = EffectsReader.getIconIndex(potionEffect);
-            // The numbers were obtained from Minecraft source code
-            int textureX = iconIndex % 8 * EFFECT_ICON_SIZE;
-            int textureY = 198 + iconIndex / 8 * EFFECT_ICON_SIZE;
-            int amplifier = EffectsReader.getDisplayedAmplifier(potionEffect);
-            String effectInfo = "";
-            if (amplifier > 1) {
-                effectInfo += amplifier + " ";
+        if (configManager.showEffectsInfo()) {
+            for (PotionEffect potionEffect : EffectsReader.getEffects()) {
+                int iconIndex = EffectsReader.getIconIndex(potionEffect);
+                // The numbers were obtained from Minecraft source code
+                int textureX = iconIndex % 8 * EFFECT_ICON_SIZE;
+                int textureY = 198 + iconIndex / 8 * EFFECT_ICON_SIZE;
+                int amplifier = EffectsReader.getDisplayedAmplifier(potionEffect);
+                String effectInfo = "";
+                if (amplifier > 1) {
+                    effectInfo += amplifier + " ";
+                }
+                int duration = EffectsReader.getDuration(potionEffect);
+                String displayedDuration =
+                        EffectsReader.getDisplayedDuration(potionEffect);
+                if (duration == 0 || (duration > 0 && duration <= WEAR_OUT_THRESHOLD
+                        && System.currentTimeMillis() % (FLASH_INTERVAL * 2)
+                        < FLASH_INTERVAL)) {
+                    displayedDuration = FLASH_COLOR_PREFIX + displayedDuration
+                            + "\u00A7r";
+                }
+                effectInfo += displayedDuration;
+                drawIconAndString(GuiContainer.INVENTORY_BACKGROUND, textureX,
+                        textureY, EFFECT_ICON_SIZE, EFFECT_ICON_SIZE, effectInfo);
             }
-            int duration = EffectsReader.getDuration(potionEffect);
-            String displayedDuration =
-                    EffectsReader.getDisplayedDuration(potionEffect);
-            if (duration == 0 || (duration > 0 && duration <= WEAR_OUT_THRESHOLD
-                    && System.currentTimeMillis() % (FLASH_INTERVAL * 2)
-                    < FLASH_INTERVAL)) {
-                displayedDuration = FLASH_COLOR_PREFIX + displayedDuration
-                        + "\u00A7r";
-            }
-            effectInfo += displayedDuration;
-            drawIconAndString(GuiContainer.INVENTORY_BACKGROUND, textureX,
-                    textureY, EFFECT_ICON_SIZE, EFFECT_ICON_SIZE, effectInfo);
         }
     }
 
@@ -217,29 +219,33 @@ public class GuiHud extends Gui {
     private void renderGameInfo() {
         GameManager game = GameManager.getInstance();
         if (game != null) {
-            drawItemIconAndString(new ItemStack(Items.DIAMOND), game.getNextDiamond());
-            drawItemIconAndString(new ItemStack(Items.EMERALD), game.getNextEmerald());
-
-            Collection<ItemStack> itemsForForgeLevels = new ArrayList<>(2);
-            itemsForForgeLevels.add(new ItemStack(Blocks.FURNACE));
-            itemsForForgeLevels.add(game.getForgeLevelIcon());
-            drawItemIcons(itemsForForgeLevels);
-
-            Collection<ItemStack> itemsForUpgrades = new ArrayList<>();
-            if (game.hasHealPool()) {
-                itemsForUpgrades.add(new ItemStack(Blocks.BEACON));
+            if (configManager.showGenerationTimes()) {
+                drawItemIconAndString(new ItemStack(Items.DIAMOND), game.getNextDiamond());
+                drawItemIconAndString(new ItemStack(Items.EMERALD), game.getNextEmerald());
             }
-            if (game.hasDragonBuff()) {
-                itemsForUpgrades.add(new ItemStack(Blocks.DRAGON_EGG));
-            }
-            drawItemIcons(itemsForUpgrades);
 
-            Collection<ItemStack> itemsForTraps =
-                    new ArrayList<>(GameManager.MAX_TRAPS + 1);
-            itemsForTraps.add(new ItemStack(Items.LEATHER));
-            Collection<ItemStack> traps = game.getTrapIcons();
-            itemsForTraps.addAll(traps);
-            drawItemIcons(itemsForTraps);
+            if (configManager.showTeamUpgrades()) {
+                Collection<ItemStack> itemsForForgeLevels = new ArrayList<>(2);
+                itemsForForgeLevels.add(new ItemStack(Blocks.FURNACE));
+                itemsForForgeLevels.add(game.getForgeLevelIcon());
+                drawItemIcons(itemsForForgeLevels);
+
+                Collection<ItemStack> itemsForUpgrades = new ArrayList<>();
+                if (game.hasHealPool()) {
+                    itemsForUpgrades.add(new ItemStack(Blocks.BEACON));
+                }
+                if (game.hasDragonBuff()) {
+                    itemsForUpgrades.add(new ItemStack(Blocks.DRAGON_EGG));
+                }
+                drawItemIcons(itemsForUpgrades);
+
+                Collection<ItemStack> itemsForTraps =
+                        new ArrayList<>(GameManager.MAX_TRAPS + 1);
+                itemsForTraps.add(new ItemStack(Items.LEATHER));
+                Collection<ItemStack> traps = game.getTrapIcons();
+                itemsForTraps.addAll(traps);
+                drawItemIcons(itemsForTraps);
+            }
         }
     }
 

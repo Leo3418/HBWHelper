@@ -23,13 +23,9 @@ import io.github.leo3418.hbwhelper.HbwHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
-import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.fml.client.IModGuiFactory;
 import net.minecraftforge.fml.client.config.GuiConfig;
-import net.minecraftforge.fml.client.config.IConfigElement;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -112,37 +108,14 @@ public class ConfigGuiFactory implements IModGuiFactory {
      */
     public static class ConfigGuiScreen extends GuiConfig {
         /**
-         * The {@link ConfigManager} of this mod
-         */
-        private static final ConfigManager CONFIG_MANAGER =
-                ConfigManager.getInstance();
-
-        /**
          * Constructs a new configuration screen.
          *
          * @param parent the parent screen of this configuration screen
          */
         public ConfigGuiScreen(GuiScreen parent) {
-            super(parent, getConfigElements(), HbwHelper.MOD_ID, false, false,
+            super(parent, ConfigManager.getInstance().getConfigElements(),
+                    HbwHelper.MOD_ID, false, false,
                     I18n.format("hbwhelper.configGui.title"));
-        }
-
-        /**
-         * Returns a {@link List} storing settings elements to be displayed on
-         * this screen.
-         *
-         * @return a {@code List} storing settings elements to be displayed on
-         *         this screen
-         */
-        private static List<IConfigElement> getConfigElements() {
-            List<IConfigElement> configElements = new ArrayList<>();
-            configElements.add(new ConfigElement(
-                    CONFIG_MANAGER.getAlwaysShowEffectsProperty()));
-            configElements.add(new ConfigElement(
-                    CONFIG_MANAGER.getHudXProperty()));
-            configElements.add(new ConfigElement(
-                    CONFIG_MANAGER.getHudYProperty()));
-            return configElements;
         }
     }
 }

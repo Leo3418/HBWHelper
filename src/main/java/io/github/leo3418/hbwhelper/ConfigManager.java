@@ -23,10 +23,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Configuration manager of this mod, which reads from and writes to this mod's
@@ -59,6 +64,31 @@ public class ConfigManager {
      * Configuration file of this mod
      */
     private Configuration config;
+
+    /**
+     * The {@link Property} object storing whether diamond and emerald
+     * generation times should be shown on
+     * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
+     */
+    private Property showGenerationTimes;
+
+    /**
+     * The {@link Property} object storing whether team upgrades should be
+     * shown on {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
+     */
+    private Property showTeamUpgrades;
+
+    /**
+     * The {@link Property} object storing whether armor information should be
+     * shown on {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
+     */
+    private Property showArmorInfo;
+
+    /**
+     * The {@link Property} object storing whether effects information should
+     * be shown on {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
+     */
+    private Property showEffectsInfo;
 
     /**
      * The {@link Property} object storing whether status effects
@@ -116,39 +146,44 @@ public class ConfigManager {
     }
 
     /**
-     * Returns the {@link Property} object storing whether status effects
-     * should always be shown on {@link io.github.leo3418.hbwhelper.gui.GuiHud
-     * GuiHud}.
-     *
-     * @return the {@code Property} object storing whether status effects
-     *         should always be shown on {@code GuiHud}
-     */
-    public Property getAlwaysShowEffectsProperty() {
-        return alwaysShowEffects;
-    }
-
-    /**
-     * Returns the {@link Property} object storing width from the left edge of
-     * the Minecraft window to the left edge of
+     * Returns whether diamond and emerald generation times should be shown on
      * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}.
      *
-     * @return the {@code Property} object storing width from the left edge of
-     *         the Minecraft window to the left edge of {@code GuiHud}
+     * @return whether diamond and emerald generation times should be shown on
+     *         {@code GuiHud}
      */
-    public Property getHudXProperty() {
-        return hudX;
+    public boolean showGenerationTimes() {
+        return showGenerationTimes.getBoolean();
     }
 
     /**
-     * Returns the {@link Property} object storing height from the top edge of
-     * the Minecraft window to the top edge of
-     * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
+     * Returns whether team upgrades should be shown on
+     * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}.
      *
-     * @return the {@code Property} object storing height from the top edge of
-     *         the Minecraft window to the top edge of {@code GuiHud}
+     * @return whether team upgrades should be shown on {@code GuiHud}
      */
-    public Property getHudYProperty() {
-        return hudY;
+    public boolean showTeamUpgrades() {
+        return showTeamUpgrades.getBoolean();
+    }
+
+    /**
+     * Returns whether armor information should be shown on
+     * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}.
+     *
+     * @return whether armor information should be shown on {@code GuiHud}
+     */
+    public boolean showArmorInfo() {
+        return showArmorInfo.getBoolean();
+    }
+
+    /**
+     * Returns whether effects information should be shown on
+     * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}.
+     *
+     * @return whether effects information should be shown on {@code GuiHud}
+     */
+    public boolean showEffectsInfo() {
+        return showEffectsInfo.getBoolean();
     }
 
     /**
@@ -158,7 +193,7 @@ public class ConfigManager {
      * @return whether status effects should always be shown on {@code GuiHud}
      */
     public boolean alwaysShowEffects() {
-        return getAlwaysShowEffectsProperty().getBoolean();
+        return alwaysShowEffects.getBoolean();
     }
 
     /**
@@ -169,7 +204,7 @@ public class ConfigManager {
      *         edge of {@code GuiHud}.
      */
     public int getHudX() {
-        return getHudXProperty().getInt();
+        return hudX.getInt();
     }
 
     /**
@@ -180,7 +215,27 @@ public class ConfigManager {
      *         edge of {@code GuiHud}.
      */
     public int getHudY() {
-        return getHudYProperty().getInt();
+        return hudY.getInt();
+    }
+
+    /**
+     * Returns a {@link List} storing settings elements to be displayed on
+     * {@link io.github.leo3418.hbwhelper.gui.ConfigGuiFactory.ConfigGuiScreen
+     * ConfigGuiScreen}.
+     *
+     * @return a {@code List} storing settings elements to be displayed on
+     *         {@code ConfigGuiScreen}
+     */
+    public List<IConfigElement> getConfigElements() {
+        List<IConfigElement> configElements = new ArrayList<>();
+        configElements.add(new ConfigElement(showGenerationTimes));
+        configElements.add(new ConfigElement(showTeamUpgrades));
+        configElements.add(new ConfigElement(showArmorInfo));
+        configElements.add(new ConfigElement(showEffectsInfo));
+        configElements.add(new ConfigElement(alwaysShowEffects));
+        configElements.add(new ConfigElement(hudX));
+        configElements.add(new ConfigElement(hudY));
+        return configElements;
     }
 
     /**
@@ -213,6 +268,26 @@ public class ConfigManager {
      * completes the configuration file. Then, loads the configuration file.
      */
     private void initConfig() {
+        showArmorInfo = config.get(Configuration.CATEGORY_CLIENT,
+                "showArmorInfo",
+                true,
+                I18n.format("hbwhelper.configGui.showArmorInfo.description"))
+                .setLanguageKey("hbwhelper.configGui.showArmorInfo.title");
+        showEffectsInfo = config.get(Configuration.CATEGORY_CLIENT,
+                "showEffectsInfo",
+                true,
+                I18n.format("hbwhelper.configGui.showEffectsInfo.description"))
+                .setLanguageKey("hbwhelper.configGui.showEffectsInfo.title");
+        showGenerationTimes = config.get(Configuration.CATEGORY_CLIENT,
+                "showGenerationTimes",
+                true,
+                I18n.format("hbwhelper.configGui.showGenerationTimes.description"))
+                .setLanguageKey("hbwhelper.configGui.showGenerationTimes.title");
+        showTeamUpgrades = config.get(Configuration.CATEGORY_CLIENT,
+                "showTeamUpgrades",
+                true,
+                I18n.format("hbwhelper.configGui.showTeamUpgrades.description"))
+                .setLanguageKey("hbwhelper.configGui.showTeamUpgrades.title");
         alwaysShowEffects = config.get(Configuration.CATEGORY_CLIENT,
                 "alwaysShowEffects",
                 false,
