@@ -1,10 +1,18 @@
 hbwhelper.configGui.title=HBW Helper 设置
 hbwhelper.configGui.alwaysShowEffects.title=始终显示状态效果
-hbwhelper.configGui.alwaysShowEffects.description=当不在起床战争时，依然显示状态效果
+hbwhelper.configGui.alwaysShowEffects.description=当不在起床战争时，依然显示状态效果 （“始终显示状态效果”须被设为“true”）
 hbwhelper.configGui.hudX.title=平视显示器水平位置
 hbwhelper.configGui.hudX.description=此 mod 平视显示器界面左上角顶点的 x 坐标
 hbwhelper.configGui.hudY.title=平视显示器垂直位置
 hbwhelper.configGui.hudY.description=此 mod 平视显示器界面左上角顶点的 y 坐标
+hbwhelper.configGui.showArmorInfo.title=显示盔甲信息
+hbwhelper.configGui.showArmorInfo.description=显示您穿戴的盔甲和它的保护附魔等级
+hbwhelper.configGui.showEffectsInfo.title=在平视显示器上显示状态效果
+hbwhelper.configGui.showEffectsInfo.description=显示您获得的状态效果和它们的剩余时间
+hbwhelper.configGui.showGenerationTimes.title=显示资源生成时间
+hbwhelper.configGui.showGenerationTimes.description=显示距下一次钻石/绿宝石生成的剩余时间
+hbwhelper.configGui.showTeamUpgrades.title=显示团队升级
+hbwhelper.configGui.showTeamUpgrades.description=显示您的队伍已解锁的团队升级
 
 hbwhelper.hudGui.findingGenerator=正在搜索信号...
 

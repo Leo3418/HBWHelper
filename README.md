@@ -14,7 +14,7 @@ have got
 These features may be added in the next update.  
 - [x] Replace plain text with icons and colored text
 - [x] Internationalization
-- [ ] HUD customization (location, elements to display, etc.)
+- [x] HUD customization (location, elements to display, etc.)
 - [ ] Bed Wars quick-join
 
 ## Installation

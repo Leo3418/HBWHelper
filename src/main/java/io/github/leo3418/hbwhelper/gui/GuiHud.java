@@ -166,7 +166,7 @@ public class GuiHud extends Gui {
      * Renders the player's armor information on this GUI.
      */
     private void renderArmorInfo() {
-        if (ArmorReader.hasArmor()) {
+        if (configManager.showArmorInfo() && ArmorReader.hasArmor()) {
             // If the player has armor, checks its enchantment
             int enchantmentLevel = ArmorReader.getProtectionLevel();
             String level = "";
@@ -185,7 +185,8 @@ public class GuiHud extends Gui {
      * GUI starts to flash.
      */
     private void renderEffectsInfo() {
-        for (PotionEffect potionEffect : EffectsReader.getEffects()) {
+        if (configManager.showEffectsInfo()) {
+            for (PotionEffect potionEffect : EffectsReader.getEffects()) {
             int iconIndex = EffectsReader.getIconIndex(potionEffect);
             // The numbers were obtained from Minecraft source code
             int textureX = iconIndex % 8 * EFFECT_ICON_SIZE;
@@ -205,10 +206,9 @@ public class GuiHud extends Gui {
                         + "\u00A7r";
             }
             effectInfo += displayedDuration;
-            drawIconAndString(
-                    new ResourceLocation("textures/gui/container/inventory.png"),
-                    textureX, textureY, EFFECT_ICON_SIZE, EFFECT_ICON_SIZE,
-                    effectInfo);
+                drawIconAndString(new ResourceLocation("textures/gui/container/inventory.png"),
+                        textureX, textureY, EFFECT_ICON_SIZE, EFFECT_ICON_SIZE, effectInfo);
+            }
         }
     }
 
@@ -218,29 +218,33 @@ public class GuiHud extends Gui {
     private void renderGameInfo() {
         GameManager game = GameManager.getInstance();
         if (game != null) {
-            drawItemIconAndString(new ItemStack(Items.diamond), game.getNextDiamond());
-            drawItemIconAndString(new ItemStack(Items.emerald), game.getNextEmerald());
-
-            Collection<ItemStack> itemsForForgeLevels = new ArrayList<ItemStack>(2);
-            itemsForForgeLevels.add(new ItemStack(Blocks.furnace));
-            itemsForForgeLevels.add(game.getForgeLevelIcon());
-            drawItemIcons(itemsForForgeLevels);
-
-            Collection<ItemStack> itemsForUpgrades = new ArrayList<ItemStack>();
-            if (game.hasHealPool()) {
-                itemsForUpgrades.add(new ItemStack(Blocks.beacon));
+            if (configManager.showGenerationTimes()) {
+                drawItemIconAndString(new ItemStack(Items.diamond), game.getNextDiamond());
+                drawItemIconAndString(new ItemStack(Items.emerald), game.getNextEmerald());
             }
-            if (game.hasDragonBuff()) {
-                itemsForUpgrades.add(new ItemStack(Blocks.dragon_egg));
-            }
-            drawItemIcons(itemsForUpgrades);
 
-            Collection<ItemStack> itemsForTraps =
-                    new ArrayList<ItemStack>(GameManager.MAX_TRAPS + 1);
-            itemsForTraps.add(new ItemStack(Items.leather));
-            Collection<ItemStack> traps = game.getTrapIcons();
-            itemsForTraps.addAll(traps);
-            drawItemIcons(itemsForTraps);
+            if (configManager.showTeamUpgrades()) {
+                Collection<ItemStack> itemsForForgeLevels = new ArrayList<ItemStack>(2);
+                itemsForForgeLevels.add(new ItemStack(Blocks.furnace));
+                itemsForForgeLevels.add(game.getForgeLevelIcon());
+                drawItemIcons(itemsForForgeLevels);
+
+                Collection<ItemStack> itemsForUpgrades = new ArrayList<ItemStack>();
+                if (game.hasHealPool()) {
+                    itemsForUpgrades.add(new ItemStack(Blocks.beacon));
+                }
+                if (game.hasDragonBuff()) {
+                    itemsForUpgrades.add(new ItemStack(Blocks.dragon_egg));
+                }
+                drawItemIcons(itemsForUpgrades);
+
+                Collection<ItemStack> itemsForTraps =
+                        new ArrayList<ItemStack>(GameManager.MAX_TRAPS + 1);
+                itemsForTraps.add(new ItemStack(Items.leather));
+                Collection<ItemStack> traps = game.getTrapIcons();
+                itemsForTraps.addAll(traps);
+                drawItemIcons(itemsForTraps);
+            }
         }
     }
 
