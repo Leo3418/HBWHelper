@@ -19,12 +19,8 @@
 package io.github.leo3418.hbwhelper.util;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -44,14 +40,6 @@ public class GameManager {
      * Maximum number of traps a team can have in the trap queue
      */
     public static final int MAX_TRAPS = 3;
-
-    /**
-     * Text returned by {@link GameManager#getNextDiamond()} and
-     * {@link GameManager#getNextEmerald()} when there is no available
-     * generator to read
-     */
-    private static final String FINDING_GEN_PROMPT =
-            I18n.format("hbwhelper.hudGui.findingGenerator");
 
     /**
      * Text that only appears in the line showing spawn time above a generator
@@ -88,15 +76,14 @@ public class GameManager {
     private static GameManager instance;
 
     /**
-     * Trap queue represented by {@link ItemStack}s whose icon represents a
-     * trap in the queue
+     * The trap queue
      */
-    private final Queue<ItemStack> itemsForTrapsIcons;
+    private final Queue<Trap> traps;
 
     /**
-     * Cache of an unmodifiable copy of queue of items for traps' icons
+     * Cache of an unmodifiable copy of the trap queue
      */
-    private final Collection<ItemStack> readOnlyItemsForTrapsIcons;
+    private final Collection<Trap> readOnlyTraps;
 
     /**
      * Position of the diamond generator being read
@@ -109,10 +96,9 @@ public class GameManager {
     private BlockPos emeraldGenPos;
 
     /**
-     * {@link ItemStack} for the item whose icon represents level of resource
-     * generation speed on the player's base island
+     * Level of resource generation speed on the player's base island
      */
-    private ItemStack itemForForgeLevelIcon;
+    private ForgeLevel forgeLevel;
 
     /**
      * Whether the player's team has unlocked "Heal Pool" upgrade
@@ -129,10 +115,10 @@ public class GameManager {
      */
     public GameManager() {
         instance = this;
-        itemForForgeLevelIcon = ForgeLevel.ORDINARY_FORGE.itemForIcon;
-        itemsForTrapsIcons = new ArrayDeque<>(MAX_TRAPS);
-        readOnlyItemsForTrapsIcons =
-                Collections.unmodifiableCollection(itemsForTrapsIcons);
+        forgeLevel = ForgeLevel.ORDINARY_FORGE;
+        traps = new ArrayDeque<>(MAX_TRAPS);
+        readOnlyTraps =
+                Collections.unmodifiableCollection(traps);
     }
 
     /**
@@ -145,56 +131,56 @@ public class GameManager {
     }
 
     /**
-     * Returns a string showing spawn time of next diamond, or
-     * {@link GameManager#FINDING_GEN_PROMPT} if there is no diamond generator
-     * that can be read.
+     * Returns spawn time of next diamond, or {@code -1} if there is no diamond
+     * generator that can be read.
      *
-     * @return a string showing spawn time of next diamond, or
-     *         {@link GameManager#FINDING_GEN_PROMPT}
+     * @return spawn time of next diamond, or {@code -1} if there is no diamond
+     *         generator that can be read
      */
-    public String getNextDiamond() {
+    public int getNextDiamond() {
+        int time;
         if (diamondGenPos != null) {
-            int time = getSpawnTime(diamondGenPos);
-            if (time != -1) {
-                return time + "s";
-            }
+            time = getSpawnTime(diamondGenPos);
+        } else {
+            time = -1;
         }
         // When position of diamond generator not set or the current generator's
         // display name is no longer readable, find a new diamond generator
-        diamondGenPos = findGenerator(DIAMOND_GEN_TEXT);
-        return FINDING_GEN_PROMPT;
+        if (time == -1) {
+            diamondGenPos = findGenerator(DIAMOND_GEN_TEXT);
+        }
+        return time;
     }
 
     /**
-     * Returns a string showing spawn time of next emerald, or
-     * {@link GameManager#FINDING_GEN_PROMPT} if there is no emerald generator
-     * that can be read.
+     * Returns spawn time of next emerald, or {@code -1} if there is no emerald
+     * generator that can be read.
      *
-     * @return a string showing spawn time of next emerald, or
-     *         {@link GameManager#FINDING_GEN_PROMPT}
+     * @return spawn time of next emerald, or {@code -1} if there is no emerald
+     *         generator that can be read
      */
-    public String getNextEmerald() {
+    public int getNextEmerald() {
+        int time;
         if (emeraldGenPos != null) {
-            int time = getSpawnTime(emeraldGenPos);
-            if (time != -1) {
-                return time + "s";
-            }
+            time = getSpawnTime(emeraldGenPos);
+        } else {
+            time = -1;
         }
         // When position of emerald generator not set or the current generator's
         // display name is no longer readable, find a new emerald generator
-        emeraldGenPos = findGenerator(EMERALD_GEN_TEXT);
-        return FINDING_GEN_PROMPT;
+        if (time == -1) {
+            emeraldGenPos = findGenerator(EMERALD_GEN_TEXT);
+        }
+        return time;
     }
 
     /**
-     * Returns the {@link ItemStack} whose icon represents level of resource
-     * generation speed on the player's base island.
+     * Returns level of resource generation speed on the player's base island.
      *
-     * @return the {@link ItemStack} whose icon represents level of resource
-     *         generation speed on the player's base island
+     * @return level of resource generation speed on the player's base island
      */
-    public ItemStack getForgeLevelIcon() {
-        return itemForForgeLevelIcon;
+    public ForgeLevel getForgeLevel() {
+        return forgeLevel;
     }
 
     /**
@@ -220,15 +206,14 @@ public class GameManager {
     }
 
     /**
-     * Returns an <b>unmodifiable</b> {@link Collection} of {@link ItemStack}
-     * where each {@code ItemStack}'s icon represents a trap in the trap queue.
+     * Returns an <b>unmodifiable</b> {@link Collection} derived from the trap
+     * queue.
      *
-     * @return an <b>unmodifiable</b> {@link Collection} of {@link ItemStack}
-     *         where each {@code ItemStack}'s icon represents a trap in the
-     *         trap queue
+     * @return an <b>unmodifiable</b> {@link Collection} derived from the trap
+     *         queue
      */
-    public Collection<ItemStack> getTrapIcons() {
-        return readOnlyItemsForTrapsIcons;
+    public Collection<Trap> getTraps() {
+        return readOnlyTraps;
     }
 
     /**
@@ -246,21 +231,21 @@ public class GameManager {
         } else {
             for (ForgeLevel level : ForgeLevel.values()) {
                 if (message.contains(level.prompt)) {
-                    itemForForgeLevelIcon = level.itemForIcon;
+                    forgeLevel = level;
                     return;
                 }
             }
             for (Trap trap : Trap.values()) {
                 if (message.contains(trap.purchasePrompt)) {
-                    while (itemsForTrapsIcons.size() >= MAX_TRAPS) {
-                        itemsForTrapsIcons.remove();
+                    while (traps.size() >= MAX_TRAPS) {
+                        traps.remove();
                     }
-                    itemsForTrapsIcons.add(trap.itemForIcon);
+                    traps.add(trap);
                     return;
                 } else if (message.contains(trap.setOffPrompt)) {
                     boolean removed = false;
-                    while (!removed && !itemsForTrapsIcons.isEmpty()) {
-                        if (itemsForTrapsIcons.remove() == trap.itemForIcon) {
+                    while (!removed && !traps.isEmpty()) {
+                        if (traps.remove() == trap) {
                             removed = true;
                         }
                     }
@@ -320,27 +305,27 @@ public class GameManager {
      * Enumeration of all resource generation speed levels on the player's base
      * island in Hypixel Bed Wars.
      */
-    private enum ForgeLevel {
+    public enum ForgeLevel {
         /**
          * The initial resource generation speed level without any upgrade
          */
-        ORDINARY_FORGE("Not upgraded", new ItemStack(Blocks.AIR)),
+        ORDINARY_FORGE("Not upgraded"),
         /**
          * Resource generation speed level with "Iron Forge" upgrade
          */
-        IRON_FORGE("Iron Forge", new ItemStack(Items.IRON_INGOT)),
+        IRON_FORGE("Iron Forge"),
         /**
          * Resource generation speed level with "Golden Forge" upgrade
          */
-        GOLDEN_FORGE("Golden Forge", new ItemStack(Items.GOLD_INGOT)),
+        GOLDEN_FORGE("Golden Forge"),
         /**
          * Resource generation speed level with "Emerald Forge" upgrade
          */
-        EMERALD_FORGE("Emerald Forge", new ItemStack(Items.EMERALD)),
+        EMERALD_FORGE("Emerald Forge"),
         /**
          * Resource generation speed level with "Molten Forge" upgrade
          */
-        MOLTEN_FORGE("Molten Forge", new ItemStack(Items.LAVA_BUCKET));
+        MOLTEN_FORGE("Molten Forge");
 
         /**
          * Part of the prompt shown when the player's team unlocks this level
@@ -349,50 +334,41 @@ public class GameManager {
         private final String prompt;
 
         /**
-         * {@link ItemStack} for the item whose icon represents this level of
-         * resource generation speed
-         */
-        private final ItemStack itemForIcon;
-
-        /**
          * Constructs a new constant of resource generation speed levels.
          *
          * @param name the name of this trap shown in any prompt in Hypixel
          *         without any formatting code
-         * @param itemForIcon the {@link ItemStack} for the item whose icon
-         *         represents this level of resource generation speed
          * @see <a href="https://minecraft.gamepedia.com/Formatting_codes"
          *         target="_top">Formatting codes in Minecraft</a>
          */
-        ForgeLevel(String name, ItemStack itemForIcon) {
+        ForgeLevel(String name) {
             this.prompt = "\u00A7r\u00A76" + name + "\u00A7r";
-            this.itemForIcon = itemForIcon;
         }
     }
 
     /**
      * Enumeration of all traps in Hypixel Bed Wars.
      */
-    private enum Trap {
+    public enum Trap {
         /**
          * The ordinary "It's a trap!"
          */
-        ORDINARY("It's a trap!", new ItemStack(Blocks.TRIPWIRE_HOOK)),
+        ORDINARY("It's a trap!"),
         /**
          * The "Counter-Offensive Trap"
          */
-        COUNTER("Counter-Offensive Trap", new ItemStack(Items.FEATHER)),
+        COUNTER("Counter-Offensive Trap"),
         /**
          * The "Alarm Trap"
          * <p>
          * This value has three arguments because Hypixel uses "Alarm Trap" and
          * "Alarm trap" at the same time.
          */
-        ALARM("Alarm Trap", "Alarm trap", new ItemStack(Blocks.REDSTONE_TORCH)),
+        ALARM("Alarm Trap", "Alarm trap"),
         /**
          * The "Miner Fatigue Trap"
          */
-        MINER_FATIGUE("Miner Fatigue Trap", new ItemStack(Items.IRON_PICKAXE));
+        MINER_FATIGUE("Miner Fatigue Trap");
 
         /**
          * Part of the prompt shown when the player's team purchases this trap
@@ -405,23 +381,16 @@ public class GameManager {
         private final String setOffPrompt;
 
         /**
-         * {@link ItemStack} for the item whose icon represents this trap
-         */
-        private final ItemStack itemForIcon;
-
-        /**
          * Constructs a new constant of traps whose name is <b>consistent</b>
          * in Hypixel Bed Wars.
          *
          * @param name the name of this trap shown in any prompt in Hypixel
          *         Bed Wars without any formatting code
-         * @param itemForIcon {@link ItemStack} for the item whose icon
-         *         represents this trap
          * @see <a href="https://minecraft.gamepedia.com/Formatting_codes"
          *         target="_top">Formatting codes in Minecraft</a>
          */
-        Trap(String name, ItemStack itemForIcon) {
-            this(name, name, itemForIcon);
+        Trap(String name) {
+            this(name, name);
         }
 
         /**
@@ -432,15 +401,12 @@ public class GameManager {
          *         the player's team purchases this trap
          * @param setOffName the name of this trap in the prompt shown when
          *         it sets off
-         * @param itemForIcon {@link ItemStack} for the item whose icon
-         *         represents this trap
          * @see <a href="https://minecraft.gamepedia.com/Formatting_codes"
          *         target="_top">Formatting codes in Minecraft</a>
          */
-        Trap(String purchaseName, String setOffName, ItemStack itemForIcon) {
+        Trap(String purchaseName, String setOffName) {
             this.purchasePrompt = "\u00A7r\u00A76" + purchaseName + "\u00A7r";
             this.setOffPrompt = "\u00A7c\u00A7l" + setOffName;
-            this.itemForIcon = itemForIcon;
         }
     }
 }
