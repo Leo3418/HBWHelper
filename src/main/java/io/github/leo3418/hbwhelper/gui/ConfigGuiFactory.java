@@ -26,6 +26,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.client.IModGuiFactory;
 import net.minecraftforge.fml.client.config.GuiConfig;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -93,7 +94,7 @@ public class ConfigGuiFactory implements IModGuiFactory {
      *         if none
      */
     public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
-        return null;
+        return new HashSet<RuntimeOptionCategoryElement>();
     }
 
     /**
