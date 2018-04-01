@@ -29,8 +29,7 @@ import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
@@ -38,6 +37,9 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import static net.minecraft.init.Blocks.*;
+import static net.minecraft.init.Items.*;
 
 /**
  * The GUI of this mod shown in Minecraft's Head-Up Display (HUD).
@@ -94,6 +96,13 @@ public class GuiHud extends Gui {
      *         The section sign's information on Wikipedia</a>
      */
     private static final String FLASH_COLOR_PREFIX = "\u00A7c";
+
+    /**
+     * Text shown on this GUI when there is no available diamond/emerald
+     * generator to read
+     */
+    private static final String FINDING_GEN_PROMPT =
+            I18n.format("hbwhelper.hudGui.findingGenerator");
 
     /**
      * The instance of Minecraft client
@@ -220,30 +229,71 @@ public class GuiHud extends Gui {
         GameManager game = GameManager.getInstance();
         if (game != null) {
             if (configManager.showGenerationTimes()) {
-                drawItemIconAndString(new ItemStack(Items.DIAMOND), game.getNextDiamond());
-                drawItemIconAndString(new ItemStack(Items.EMERALD), game.getNextEmerald());
+                String nextDiamond;
+                if (game.getNextDiamond() != -1) {
+                    nextDiamond = game.getNextDiamond() + "s";
+                } else {
+                    nextDiamond = FINDING_GEN_PROMPT;
+                }
+                String nextEmerald;
+                if (game.getNextEmerald() != -1) {
+                    nextEmerald = game.getNextEmerald() + "s";
+                } else {
+                    nextEmerald = FINDING_GEN_PROMPT;
+                }
+                drawItemIconAndString(new ItemStack(DIAMOND), nextDiamond);
+                drawItemIconAndString(new ItemStack(EMERALD), nextEmerald);
             }
 
             if (configManager.showTeamUpgrades()) {
                 Collection<ItemStack> itemsForForgeLevels = new ArrayList<ItemStack>(2);
-                itemsForForgeLevels.add(new ItemStack(Blocks.FURNACE));
-                itemsForForgeLevels.add(game.getForgeLevelIcon());
+                itemsForForgeLevels.add(new ItemStack(FURNACE));
+                switch (game.getForgeLevel()) {
+                    case ORDINARY_FORGE:
+                        break;
+                    case IRON_FORGE:
+                        itemsForForgeLevels.add(new ItemStack(IRON_INGOT));
+                        break;
+                    case GOLDEN_FORGE:
+                        itemsForForgeLevels.add(new ItemStack(GOLD_INGOT));
+                        break;
+                    case EMERALD_FORGE:
+                        itemsForForgeLevels.add(new ItemStack(EMERALD));
+                        break;
+                    case MOLTEN_FORGE:
+                        itemsForForgeLevels.add(new ItemStack(LAVA_BUCKET));
+                        break;
+                }
                 drawItemIcons(itemsForForgeLevels);
 
                 Collection<ItemStack> itemsForUpgrades = new ArrayList<ItemStack>();
                 if (game.hasHealPool()) {
-                    itemsForUpgrades.add(new ItemStack(Blocks.BEACON));
+                    itemsForUpgrades.add(new ItemStack(BEACON));
                 }
                 if (game.hasDragonBuff()) {
-                    itemsForUpgrades.add(new ItemStack(Blocks.DRAGON_EGG));
+                    itemsForUpgrades.add(new ItemStack(DRAGON_EGG));
                 }
                 drawItemIcons(itemsForUpgrades);
 
                 Collection<ItemStack> itemsForTraps =
                         new ArrayList<ItemStack>(GameManager.MAX_TRAPS + 1);
-                itemsForTraps.add(new ItemStack(Items.LEATHER));
-                Collection<ItemStack> traps = game.getTrapIcons();
-                itemsForTraps.addAll(traps);
+                itemsForTraps.add(new ItemStack(LEATHER));
+                for (GameManager.Trap trap : game.getTraps()) {
+                    switch (trap) {
+                        case ORDINARY:
+                            itemsForTraps.add(new ItemStack(TRIPWIRE_HOOK));
+                            break;
+                        case COUNTER:
+                            itemsForTraps.add(new ItemStack(FEATHER));
+                            break;
+                        case ALARM:
+                            itemsForTraps.add(new ItemStack(REDSTONE_TORCH));
+                            break;
+                        case MINER_FATIGUE:
+                            itemsForTraps.add(new ItemStack(IRON_PICKAXE));
+                            break;
+                    }
+                }
                 drawItemIcons(itemsForTraps);
             }
         }
