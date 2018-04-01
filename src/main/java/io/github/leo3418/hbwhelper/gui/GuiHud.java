@@ -35,7 +35,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import static net.minecraft.init.Blocks.*;
 import static net.minecraft.init.Items.*;
@@ -196,25 +196,25 @@ public class GuiHud extends Gui {
     private void renderEffectsInfo() {
         if (configManager.showEffectsInfo()) {
             for (PotionEffect potionEffect : EffectsReader.getEffects()) {
-            int iconIndex = EffectsReader.getIconIndex(potionEffect);
-            // The numbers were obtained from Minecraft source code
-            int textureX = iconIndex % 8 * EFFECT_ICON_SIZE;
-            int textureY = 198 + iconIndex / 8 * EFFECT_ICON_SIZE;
-            int amplifier = EffectsReader.getDisplayedAmplifier(potionEffect);
-            String effectInfo = "";
-            if (amplifier > 1) {
-                effectInfo += amplifier + " ";
-            }
-            int duration = EffectsReader.getDuration(potionEffect);
-            String displayedDuration =
-                    EffectsReader.getDisplayedDuration(potionEffect);
-            if (duration == 0 || (duration > 0 && duration <= WEAR_OUT_THRESHOLD
-                    && System.currentTimeMillis() % (FLASH_INTERVAL * 2)
-                    < FLASH_INTERVAL)) {
-                displayedDuration = FLASH_COLOR_PREFIX + displayedDuration
-                        + "\u00A7r";
-            }
-            effectInfo += displayedDuration;
+                int iconIndex = EffectsReader.getIconIndex(potionEffect);
+                // The numbers were obtained from Minecraft source code
+                int textureX = iconIndex % 8 * EFFECT_ICON_SIZE;
+                int textureY = 198 + iconIndex / 8 * EFFECT_ICON_SIZE;
+                int amplifier = EffectsReader.getDisplayedAmplifier(potionEffect);
+                String effectInfo = "";
+                if (amplifier > 1) {
+                    effectInfo += amplifier + " ";
+                }
+                int duration = EffectsReader.getDuration(potionEffect);
+                String displayedDuration =
+                        EffectsReader.getDisplayedDuration(potionEffect);
+                if (duration == 0 || (duration > 0 && duration <= WEAR_OUT_THRESHOLD
+                        && System.currentTimeMillis() % (FLASH_INTERVAL * 2)
+                        < FLASH_INTERVAL)) {
+                    displayedDuration = FLASH_COLOR_PREFIX + displayedDuration
+                            + "\u00A7r";
+                }
+                effectInfo += displayedDuration;
                 drawIconAndString(new ResourceLocation("textures/gui/container/inventory.png"),
                         textureX, textureY, EFFECT_ICON_SIZE, EFFECT_ICON_SIZE, effectInfo);
             }
@@ -245,7 +245,7 @@ public class GuiHud extends Gui {
             }
 
             if (configManager.showTeamUpgrades()) {
-                Collection<ItemStack> itemsForForgeLevels = new ArrayList<ItemStack>(2);
+                List<ItemStack> itemsForForgeLevels = new ArrayList<ItemStack>(2);
                 itemsForForgeLevels.add(new ItemStack(furnace));
                 switch (game.getForgeLevel()) {
                     case ORDINARY_FORGE:
@@ -265,7 +265,7 @@ public class GuiHud extends Gui {
                 }
                 drawItemIcons(itemsForForgeLevels);
 
-                Collection<ItemStack> itemsForUpgrades = new ArrayList<ItemStack>();
+                List<ItemStack> itemsForUpgrades = new ArrayList<ItemStack>();
                 if (game.hasHealPool()) {
                     itemsForUpgrades.add(new ItemStack(beacon));
                 }
@@ -274,7 +274,7 @@ public class GuiHud extends Gui {
                 }
                 drawItemIcons(itemsForUpgrades);
 
-                Collection<ItemStack> itemsForTraps =
+                List<ItemStack> itemsForTraps =
                         new ArrayList<ItemStack>(GameManager.MAX_TRAPS + 1);
                 itemsForTraps.add(new ItemStack(leather));
                 for (GameManager.Trap trap : game.getTraps()) {
@@ -354,7 +354,7 @@ public class GuiHud extends Gui {
     }
 
     /**
-     * Renders icons of a collection of items on this GUI in-line with default
+     * Renders icons of a {@link List} of items on this GUI in-line with default
      * parameters.
      * <p>
      * The first icon aligns this GUI's left edge. The icons are under the
@@ -363,10 +363,9 @@ public class GuiHud extends Gui {
      * After the icons are rendered, sets height of the next element to be
      * directly below these icons.
      *
-     * @param itemStacks the {@link Collection} of {@link ItemStack} of each
-     *         item
+     * @param itemStacks the {@code List} of {@link ItemStack} of each item
      */
-    private void drawItemIcons(Collection<ItemStack> itemStacks) {
+    private void drawItemIcons(List<ItemStack> itemStacks) {
         int currentWidth = configManager.getHudX()
                 + (EFFECT_ICON_SIZE - ITEM_ICON_SIZE) / 2;
         RenderHelper.enableGUIStandardItemLighting();
