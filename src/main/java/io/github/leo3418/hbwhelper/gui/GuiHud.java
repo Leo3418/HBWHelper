@@ -36,7 +36,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import static net.minecraft.init.Blocks.*;
 import static net.minecraft.init.Items.*;
@@ -246,7 +246,7 @@ public class GuiHud extends Gui {
             }
 
             if (configManager.showTeamUpgrades()) {
-                Collection<ItemStack> itemsForForgeLevels = new ArrayList<>(2);
+                List<ItemStack> itemsForForgeLevels = new ArrayList<>(2);
                 itemsForForgeLevels.add(new ItemStack(FURNACE));
                 switch (game.getForgeLevel()) {
                     case ORDINARY_FORGE:
@@ -266,7 +266,7 @@ public class GuiHud extends Gui {
                 }
                 drawItemIcons(itemsForForgeLevels);
 
-                Collection<ItemStack> itemsForUpgrades = new ArrayList<>();
+                List<ItemStack> itemsForUpgrades = new ArrayList<>();
                 if (game.hasHealPool()) {
                     itemsForUpgrades.add(new ItemStack(BEACON));
                 }
@@ -275,7 +275,7 @@ public class GuiHud extends Gui {
                 }
                 drawItemIcons(itemsForUpgrades);
 
-                Collection<ItemStack> itemsForTraps =
+                List<ItemStack> itemsForTraps =
                         new ArrayList<>(GameManager.MAX_TRAPS + 1);
                 itemsForTraps.add(new ItemStack(LEATHER));
                 for (GameManager.Trap trap : game.getTraps()) {
@@ -355,7 +355,7 @@ public class GuiHud extends Gui {
     }
 
     /**
-     * Renders icons of a collection of items on this GUI in-line with default
+     * Renders icons of a {@link List} of items on this GUI in-line with default
      * parameters.
      * <p>
      * The first icon aligns this GUI's left edge. The icons are under the
@@ -364,10 +364,9 @@ public class GuiHud extends Gui {
      * After the icons are rendered, sets height of the next element to be
      * directly below these icons.
      *
-     * @param itemStacks the {@link Collection} of {@link ItemStack} of each
-     *         item
+     * @param itemStacks the {@code List} of {@link ItemStack} of each item
      */
-    private void drawItemIcons(Collection<ItemStack> itemStacks) {
+    private void drawItemIcons(List<ItemStack> itemStacks) {
         int currentWidth = configManager.getHudX()
                 + (EFFECT_ICON_SIZE - ITEM_ICON_SIZE) / 2;
         RenderHelper.enableGUIStandardItemLighting();
