@@ -19,7 +19,7 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = compatible_minecraft_versions + "-" + mod_version
+version = mod_version
 group = "io.github.leo3418.hbwhelper"
 archivesBaseName = "hbwhelper"
 
@@ -86,3 +86,7 @@ processResources
                 exclude 'mcmod.info'
             }
         }
+
+jar {
+    version compatible_minecraft_versions + "-" + mod_version
+}
