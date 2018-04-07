@@ -22,17 +22,14 @@ Go to the [Releases](https://github.com/Leo3418/HBWHelper/releases) page,
 download a JAR file for the Minecraft version you are using, and copy it into 
 the `mods` folder under your Minecraft game directory.
 
-### Deciphering Version Number
-HBW Helper's version number tries to stick with
-[Minecraft Forge's suggested versioning
-scheme](https://mcforge.readthedocs.io/en/latest/conventions/versioning/).
-The version number's format is `MCVERSION-MODVERSION`.
+### Deciphering JAR File Names
+The format of file names on the Releases page is `MCVERSION-MODVERSION`.
 - `MCVERSION` indicates the Minecraft client version(s) that this JAR file
 supports.  
 Sometimes, one JAR file supports multiple Minecraft client versions. In this
-case, this field's format will be `[OLDESTVERSION, LATESTVERSION]`. The client
+case, this field's format will be `.OLDESTVERSION.LATESTVERSION.`. The client
 versions supported are from `OLDESTVERSION` to `LATESTVERSION` (inclusive). For
-example, `[1.11, 1.12.2]` means this JAR file supports 1.11, 1.12.2, and all
+example, `.1.11.1.12.2.` means this JAR file supports 1.11, 1.12.2, and all
 other versions between them.
 - `MODVERSION` indicates this mod's version. Two JAR files with the same mod
 version number means they have the same or similar features but are tailored

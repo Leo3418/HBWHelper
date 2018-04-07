@@ -30,10 +30,15 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
  *
  * @author Leo
  */
-@Mod(name = HbwHelper.NAME, modid = HbwHelper.MOD_ID, version =
-        HbwHelper.VERSION, acceptedMinecraftVersions = "@compatible_versions@",
-        clientSideOnly = true, guiFactory =
-        "io.github.leo3418.hbwhelper.gui.ConfigGuiFactory")
+@Mod(
+        name = HbwHelper.NAME,
+        modid = HbwHelper.MOD_ID,
+        version = HbwHelper.VERSION,
+        acceptedMinecraftVersions = "@compatible_versions@",
+        clientSideOnly = true,
+        guiFactory = "io.github.leo3418.hbwhelper.gui.ConfigGuiFactory",
+        updateJSON = "https://leo3418.github.io/HBWHelper/promotions.json"
+)
 public class HbwHelper {
     public static final String NAME = "HBW Helper";
     public static final String MOD_ID = "hbwhelper";
