@@ -41,6 +41,7 @@ public class ConfigGuiFactory implements IModGuiFactory {
      *
      * @param minecraftInstance the instance
      */
+    @Override
     public void initialize(Minecraft minecraftInstance) {
     }
 
@@ -49,6 +50,7 @@ public class ConfigGuiFactory implements IModGuiFactory {
      *
      * @return {@code true}
      */
+    @Override
     public boolean hasConfigGui() {
         return true;
     }
@@ -74,6 +76,7 @@ public class ConfigGuiFactory implements IModGuiFactory {
      * @return A class that will be instantiated on clicks on the config button
      *         or {@code null} if no GUI is desired
      */
+    @Override
     public GuiScreen createConfigGui(GuiScreen parentScreen) {
         return new ConfigGuiScreen(parentScreen);
     }
@@ -100,6 +103,7 @@ public class ConfigGuiFactory implements IModGuiFactory {
      * @return the set of options this mod wishes to have available, or empty
      *         if none
      */
+    @Override
     public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
         return new HashSet<>();
     }
