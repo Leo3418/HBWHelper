@@ -105,6 +105,7 @@ public class ConfigGuiFactory implements IModGuiFactory {
      * @param element The element we wish to paint for
      * @return The Handler for painting it
      */
+    @SuppressWarnings("deprecation")
     public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
         return null;
     }
