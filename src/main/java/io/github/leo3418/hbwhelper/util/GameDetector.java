@@ -19,7 +19,6 @@
 package io.github.leo3418.hbwhelper.util;
 
 import io.github.leo3418.hbwhelper.EventManager;
-import io.github.leo3418.hbwhelper.event.ClientLeaveGameEvent;
 import io.github.leo3418.hbwhelper.event.ClientRejoinGameEvent;
 import io.github.leo3418.hbwhelper.event.GameStartEvent;
 import net.minecraft.client.gui.GuiDownloadTerrain;
@@ -108,18 +107,12 @@ public class GameDetector {
      * server to another.
      * <p>
      * The screen with dirt background will show up. when client transfers.
-     * <p>
-     * If client leaves game, fires a {@link ClientLeaveGameEvent} on this
-     * mod's event bus.
      *
      * @param event the event fired when the screen with dirt background shows up
-     * @see ClientLeaveGameEvent
-     * @see EventManager#EVENT_BUS
      */
     public void update(GuiOpenEvent event) {
         if (inBedWars && event.getGui() instanceof GuiDownloadTerrain) {
             inBedWars = false;
-            EventManager.EVENT_BUS.post(new ClientLeaveGameEvent());
         }
     }
 
@@ -131,12 +124,8 @@ public class GameDetector {
      * {@code ClientDisconnectionFromServerEvent}, which is fired when client
      * disconnects.
      * <p>
-     * If client leaves game, fires a {@link ClientLeaveGameEvent} on this
-     * mod's event bus.
      *
      * @param event the event fired when client joins or leaves a server
-     * @see ClientLeaveGameEvent
-     * @see EventManager#EVENT_BUS
      */
     public void update(FMLNetworkEvent event) {
         if (inBedWars && event instanceof ClientDisconnectionFromServerEvent) {
@@ -145,7 +134,6 @@ public class GameDetector {
             to detect ClientDisconnectionFromServerEvent
              */
             inBedWars = false;
-            EventManager.EVENT_BUS.post(new ClientLeaveGameEvent());
         }
     }
 
