@@ -18,3 +18,14 @@ hbwhelper.hudGui.findingGenerator=Searching signal...
 
 hbwhelper.messages.clientRejoin=We have detected that you rejoined a Bed Wars game. Any team upgrade your teammate has got since your disconnection cannot be displayed.
 hbwhelper.messages.clientRestart=We have detected that you restarted your Minecraft client. Unfortunately, we cannot retrieve what team upgrade you have got before.
+
+hbwhelper.quickJoinGui.title=Bed Wars Quick Join
+hbwhelper.quickJoinGui.solo=Play Bed Wars Solo
+hbwhelper.quickJoinGui.doubles=Play Bed Wars Doubles
+hbwhelper.quickJoinGui.3v3v3v3=Play Bed Wars 3v3v3v3
+hbwhelper.quickJoinGui.4v4v4v4=Play Bed Wars 4v4v4v4
+hbwhelper.quickJoinGui.capture.noParties=Play Bed Wars Capture (No Parties)
+hbwhelper.quickJoinGui.capture.parties=Play Bed Wars Capture (Parties)
+hbwhelper.quickJoinGui.backToGame=Back to Game
+
+key.hbwhelper.quickJoin=Bed Wars quick join menu
