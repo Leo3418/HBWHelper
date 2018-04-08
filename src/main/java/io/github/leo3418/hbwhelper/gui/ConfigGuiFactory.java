@@ -21,12 +21,14 @@ package io.github.leo3418.hbwhelper.gui;
 import io.github.leo3418.hbwhelper.ConfigManager;
 import io.github.leo3418.hbwhelper.HbwHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.client.IModGuiFactory;
 import net.minecraftforge.fml.client.config.GuiConfig;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -106,7 +108,23 @@ public class ConfigGuiFactory implements IModGuiFactory {
      * @return The Handler for painting it
      */
     public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
-        return null;
+        return new RuntimeOptionGuiHandler() {
+            @Override
+            public void addWidgets(List<Gui> widgetList, int x, int y, int w, int h) {
+            }
+
+            @Override
+            public void paint(int x, int y, int w, int h) {
+            }
+
+            @Override
+            public void actionCallback(int actionId) {
+            }
+
+            @Override
+            public void close() {
+            }
+        };
     }
 
     /**
