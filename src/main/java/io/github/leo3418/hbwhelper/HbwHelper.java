@@ -20,9 +20,7 @@ package io.github.leo3418.hbwhelper;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 /**
@@ -44,9 +42,6 @@ public class HbwHelper {
     public static final String MOD_ID = "hbwhelper";
     public static final String VERSION = "@version@";
 
-    @Instance(MOD_ID)
-    public static HbwHelper instance;
-
     @EventHandler
     public void onFMLPreInitialization(FMLPreInitializationEvent event) {
         ConfigManager.getInstance().init(event);
@@ -56,9 +51,5 @@ public class HbwHelper {
     public void onFMLInitialization(FMLInitializationEvent event) {
         EventManager.getInstance();
         KeyBindingManager.registerBindings();
-    }
-
-    @EventHandler
-    public void onFMLPostInitialization(FMLPostInitializationEvent event) {
     }
 }
