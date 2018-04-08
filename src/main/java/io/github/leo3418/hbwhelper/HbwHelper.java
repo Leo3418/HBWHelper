@@ -55,6 +55,7 @@ public class HbwHelper {
     @EventHandler
     public void onFMLInitialization(FMLInitializationEvent event) {
         EventManager.getInstance();
+        KeyBindingManager.registerBindings();
     }
 
     @EventHandler

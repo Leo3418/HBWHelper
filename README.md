@@ -9,13 +9,8 @@ information you care about in a Hypixel Bed Wars game at a glance.
 - Show time until the next diamond/emerald generation
 - Show what team upgrades (the upgrades to be purchased with diamonds) you
 have got
-
-## Planned Features
-These features may be added in the next update.  
-- [x] Replace plain text with icons and colored text
-- [x] Internationalization
-- [x] HUD customization (location, elements to display, etc.)
-- [ ] Bed Wars quick-join
+- Quickly join a Bed Wars game everywhere on Hypixel with only a single click 
+in menu
 
 ## Installation
 Go to the [Releases](https://github.com/Leo3418/HBWHelper/releases) page, 

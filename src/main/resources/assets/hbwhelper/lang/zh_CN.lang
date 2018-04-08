@@ -18,3 +18,14 @@ hbwhelper.hudGui.findingGenerator=正在搜索信号...
 
 hbwhelper.messages.clientRejoin=检测到您重新加入了一局起床战争。您的队友在您断线期间购买的队伍升级无法显示。
 hbwhelper.messages.clientRestart=检测到您已重启 Minecraft 客户端。很抱歉，您之前获得的队伍升级无法重新读取。
+
+hbwhelper.quickJoinGui.title=起床战争快速加入
+hbwhelper.quickJoinGui.solo=加入起床战争单挑模式
+hbwhelper.quickJoinGui.doubles=加入起床战争双人模式
+hbwhelper.quickJoinGui.3v3v3v3=加入起床战争 3v3v3v3 模式
+hbwhelper.quickJoinGui.4v4v4v4=加入起床战争 4v4v4v4 模式
+hbwhelper.quickJoinGui.capture.noParties=加入起床战争 Capture 模式 （无组队）
+hbwhelper.quickJoinGui.capture.parties=加入起床战争 Capture 模式 （组队）
+hbwhelper.quickJoinGui.backToGame=回到游戏
+
+key.hbwhelper.quickJoin=起床战争快速加入菜单
