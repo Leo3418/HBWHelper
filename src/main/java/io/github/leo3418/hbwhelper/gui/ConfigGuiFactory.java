@@ -43,6 +43,7 @@ public class ConfigGuiFactory implements IModGuiFactory {
      *
      * @param minecraftInstance the instance
      */
+    @Override
     public void initialize(Minecraft minecraftInstance) {
     }
 
@@ -69,6 +70,7 @@ public class ConfigGuiFactory implements IModGuiFactory {
      * @return A class that will be instantiated on clicks on the config button
      *         or null if no GUI is desired.
      */
+    @Override
     public Class<? extends GuiScreen> mainConfigGuiClass() {
         return ConfigGuiScreen.class;
     }
@@ -95,6 +97,7 @@ public class ConfigGuiFactory implements IModGuiFactory {
      * @return the set of options this mod wishes to have available, or empty
      *         if none
      */
+    @Override
     public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
         return new HashSet<RuntimeOptionCategoryElement>();
     }
@@ -107,6 +110,7 @@ public class ConfigGuiFactory implements IModGuiFactory {
      * @param element The element we wish to paint for
      * @return The Handler for painting it
      */
+    @Override
     @SuppressWarnings("deprecation")
     public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
         return new RuntimeOptionGuiHandler() {
