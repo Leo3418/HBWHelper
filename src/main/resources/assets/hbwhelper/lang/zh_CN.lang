@@ -1,6 +1,6 @@
 hbwhelper.configGui.title=HBW Helper 设置
 hbwhelper.configGui.alwaysShowEffects.title=始终显示状态效果
-hbwhelper.configGui.alwaysShowEffects.description=当不在起床战争时，依然显示状态效果 （“始终显示状态效果”须被设为“true”）
+hbwhelper.configGui.alwaysShowEffects.description=当不在起床战争时，依然显示状态效果 （“在平视显示器上显示状态效果”须被设为“true”）
 hbwhelper.configGui.hudX.title=平视显示器水平位置
 hbwhelper.configGui.hudX.description=此 mod 平视显示器界面左上角顶点的 x 坐标
 hbwhelper.configGui.hudY.title=平视显示器垂直位置
