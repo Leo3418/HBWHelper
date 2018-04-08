@@ -21,6 +21,7 @@ package io.github.leo3418.hbwhelper;
 import io.github.leo3418.hbwhelper.event.ClientRejoinGameEvent;
 import io.github.leo3418.hbwhelper.event.GameStartEvent;
 import io.github.leo3418.hbwhelper.gui.GuiHud;
+import io.github.leo3418.hbwhelper.gui.GuiQuickJoinMenu;
 import io.github.leo3418.hbwhelper.util.GameDetector;
 import io.github.leo3418.hbwhelper.util.GameManager;
 import io.github.leo3418.hbwhelper.util.HypixelDetector;
@@ -34,6 +35,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 /**
@@ -155,5 +157,12 @@ public class EventManager {
     @SubscribeEvent
     public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
         configManager.save(event);
+    }
+
+    @SubscribeEvent
+    public void onKeyInput(InputEvent.KeyInputEvent event) {
+        if (hypixelDetector.isIn() && KeyBindingManager.QUICK_JOIN.isPressed()) {
+            Minecraft.getMinecraft().displayGuiScreen(new GuiQuickJoinMenu());
+        }
     }
 }
