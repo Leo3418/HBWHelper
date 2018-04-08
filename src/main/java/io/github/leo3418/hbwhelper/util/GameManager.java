@@ -309,22 +309,27 @@ public class GameManager {
         /**
          * The initial resource generation speed level without any upgrade
          */
+        @SuppressWarnings("unused")
         ORDINARY_FORGE("Not upgraded"),
         /**
          * Resource generation speed level with "Iron Forge" upgrade
          */
+        @SuppressWarnings("unused")
         IRON_FORGE("Iron Forge"),
         /**
          * Resource generation speed level with "Golden Forge" upgrade
          */
+        @SuppressWarnings("unused")
         GOLDEN_FORGE("Golden Forge"),
         /**
          * Resource generation speed level with "Emerald Forge" upgrade
          */
+        @SuppressWarnings("unused")
         EMERALD_FORGE("Emerald Forge"),
         /**
          * Resource generation speed level with "Molten Forge" upgrade
          */
+        @SuppressWarnings("unused")
         MOLTEN_FORGE("Molten Forge");
 
         /**
@@ -353,10 +358,12 @@ public class GameManager {
         /**
          * The ordinary "It's a trap!"
          */
+        @SuppressWarnings("unused")
         ORDINARY("It's a trap!"),
         /**
          * The "Counter-Offensive Trap"
          */
+        @SuppressWarnings("unused")
         COUNTER("Counter-Offensive Trap"),
         /**
          * The "Alarm Trap"
@@ -364,10 +371,12 @@ public class GameManager {
          * This value has three arguments because Hypixel uses "Alarm Trap" and
          * "Alarm trap" at the same time.
          */
+        @SuppressWarnings("unused")
         ALARM("Alarm Trap", "Alarm trap"),
         /**
          * The "Miner Fatigue Trap"
          */
+        @SuppressWarnings("unused")
         MINER_FATIGUE("Miner Fatigue Trap");
 
         /**

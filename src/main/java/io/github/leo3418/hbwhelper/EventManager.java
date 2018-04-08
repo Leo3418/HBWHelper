@@ -111,18 +111,21 @@ public class EventManager {
     }
 
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public void onFMLNetworkEvent(FMLNetworkEvent event) {
         hypixelDetector.update(event);
         gameDetector.update(event);
     }
 
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public void onGuiOpen(GuiOpenEvent event) {
         gameDetector.update(event);
         configManager.update(event);
     }
 
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public void onClientChatReceived(ClientChatReceivedEvent event) {
         gameDetector.update(event);
         if (gameDetector.isIn() && GameManager.getInstance() != null) {
@@ -131,16 +134,19 @@ public class EventManager {
     }
 
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public void onRenderGameOverlay(RenderGameOverlayEvent.Post event) {
         guiHud.render(event);
     }
 
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public void onGameStart(GameStartEvent event) {
         new GameManager();
     }
 
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public void onClientRejoinGame(ClientRejoinGameEvent event) {
         if (GameManager.getInstance() == null) {
             // Client is rejoining a Bed Wars game after restart of Minecraft
@@ -155,11 +161,13 @@ public class EventManager {
     }
 
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
         configManager.save(event);
     }
 
     @SubscribeEvent
+    @SuppressWarnings("unused")
     public void onKeyInput(InputEvent.KeyInputEvent event) {
         if (hypixelDetector.isIn() && KeyBindingManager.QUICK_JOIN.isPressed()) {
             Minecraft.getMinecraft().displayGuiScreen(new GuiQuickJoinMenu());
