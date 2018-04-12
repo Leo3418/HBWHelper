@@ -98,13 +98,6 @@ public class GuiHud extends Gui {
     private static final String FLASH_COLOR_PREFIX = "\u00A7c";
 
     /**
-     * Text shown on this GUI when there is no available diamond/emerald
-     * generator to read
-     */
-    private static final String FINDING_GEN_PROMPT =
-            I18n.format("hbwhelper.hudGui.findingGenerator");
-
-    /**
      * The instance of Minecraft client
      */
     private final Minecraft mc;
@@ -233,13 +226,15 @@ public class GuiHud extends Gui {
                 if (game.getNextDiamond() != -1) {
                     nextDiamond = game.getNextDiamond() + "s";
                 } else {
-                    nextDiamond = FINDING_GEN_PROMPT;
+                    nextDiamond =
+                            I18n.format("hbwhelper.hudGui.findingGenerator");
                 }
                 String nextEmerald;
                 if (game.getNextEmerald() != -1) {
                     nextEmerald = game.getNextEmerald() + "s";
                 } else {
-                    nextEmerald = FINDING_GEN_PROMPT;
+                    nextEmerald =
+                            I18n.format("hbwhelper.hudGui.findingGenerator");
                 }
                 drawItemIconAndString(new ItemStack(DIAMOND), nextDiamond);
                 drawItemIconAndString(new ItemStack(EMERALD), nextEmerald);
