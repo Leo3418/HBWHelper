@@ -32,7 +32,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import java.util.ArrayList;
@@ -191,11 +190,9 @@ public class GuiHud extends Gui {
         if (configManager.showEffectsInfo()) {
             for (PotionEffect potionEffect : EffectsReader.getEffects()) {
                 int iconIndex = EffectsReader.getIconIndex(potionEffect);
-                // The numbers were obtained from Minecraft source code
-                int textureX = iconIndex % 8 * EFFECT_ICON_SIZE;
-                int textureY = 198 + iconIndex / 8 * EFFECT_ICON_SIZE;
-                int amplifier = EffectsReader.getDisplayedAmplifier(potionEffect);
+
                 String effectInfo = "";
+                int amplifier = EffectsReader.getDisplayedAmplifier(potionEffect);
                 if (amplifier > 1) {
                     effectInfo += amplifier + " ";
                 }
@@ -209,8 +206,8 @@ public class GuiHud extends Gui {
                             + "\u00A7r";
                 }
                 effectInfo += displayedDuration;
-                drawIconAndString(GuiContainer.INVENTORY_BACKGROUND, textureX,
-                        textureY, EFFECT_ICON_SIZE, EFFECT_ICON_SIZE, effectInfo);
+
+                drawEffectIconAndString(iconIndex, effectInfo);
             }
         }
     }
@@ -295,8 +292,7 @@ public class GuiHud extends Gui {
     }
 
     /**
-     * Renders an icon with a string to its right on this GUI with default
-     * parameters.
+     * Renders icon of a status effect with a string to its right on this GUI.
      * <p>
      * The icon aligns this GUI's left edge, and it is under the previous
      * element on this GUI. The string is in the default color.
@@ -304,24 +300,23 @@ public class GuiHud extends Gui {
      * After this element is rendered, sets height of the next element to be
      * directly below this element.
      *
-     * @param texture the texture containing the icon being rendered
-     * @param textureX the x-axis of the icon on the texture
-     * @param textureY the y-axis of the icon on the texture
-     * @param width the width of the icon
-     * @param height the height of the icon
+     * @param iconIndex the index of the status effect's icon
      * @param text the text to be rendered
      */
-    private void drawIconAndString(ResourceLocation texture, int textureX,
-                                   int textureY, int width, int height,
-                                   String text) {
-        mc.getTextureManager().bindTexture(texture);
+    private void drawEffectIconAndString(int iconIndex, String text) {
+        mc.getTextureManager().bindTexture(GuiContainer.INVENTORY_BACKGROUND);
+        // The numbers were obtained from Minecraft source code
+        int textureX = iconIndex % 8 * EFFECT_ICON_SIZE;
+        int textureY = 198 + iconIndex / 8 * EFFECT_ICON_SIZE;
         // Removes black background of the first icon rendered
         GlStateManager.enableBlend();
         drawTexturedModalRect(configManager.hudX(), currentHeight, textureX,
-                textureY, width, height);
-        drawString(mc.fontRenderer, " " + text, width + configManager.hudX(),
-                currentHeight + (height - LINE_HEIGHT) / 2 + 1, TEXT_COLOR);
-        currentHeight += height + 1;
+                textureY, EFFECT_ICON_SIZE, EFFECT_ICON_SIZE);
+        drawString(mc.fontRenderer, " " + text,
+                EFFECT_ICON_SIZE + configManager.hudX(),
+                currentHeight + (EFFECT_ICON_SIZE - LINE_HEIGHT) / 2 + 1,
+                TEXT_COLOR);
+        currentHeight += EFFECT_ICON_SIZE + 1;
     }
 
     /**
