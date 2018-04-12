@@ -124,7 +124,7 @@ public class GuiHud extends Gui {
         mc = Minecraft.getMinecraft();
         gameDetector = GameDetector.getInstance();
         configManager = ConfigManager.getInstance();
-        currentHeight = configManager.getHudY();
+        currentHeight = configManager.hudY();
     }
 
     /**
@@ -151,7 +151,7 @@ public class GuiHud extends Gui {
                 renderEffectsInfo();
             }
             // Resets height of the first line in the next rendering
-            currentHeight = configManager.getHudY();
+            currentHeight = configManager.hudY();
         }
     }
 
@@ -317,9 +317,9 @@ public class GuiHud extends Gui {
         mc.getTextureManager().bindTexture(texture);
         // Removes black background of the first icon rendered
         GlStateManager.enableBlend();
-        drawTexturedModalRect(configManager.getHudX(), currentHeight, textureX,
+        drawTexturedModalRect(configManager.hudX(), currentHeight, textureX,
                 textureY, width, height);
-        drawString(mc.fontRenderer, " " + text, width + configManager.getHudX(),
+        drawString(mc.fontRenderer, " " + text, width + configManager.hudX(),
                 currentHeight + (height - LINE_HEIGHT) / 2 + 1, TEXT_COLOR);
         currentHeight += height + 1;
     }
@@ -340,10 +340,10 @@ public class GuiHud extends Gui {
     private void drawItemIconAndString(ItemStack itemStack, String text) {
         RenderHelper.enableGUIStandardItemLighting();
         mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack,
-                configManager.getHudX() + (EFFECT_ICON_SIZE - ITEM_ICON_SIZE) / 2,
+                configManager.hudX() + (EFFECT_ICON_SIZE - ITEM_ICON_SIZE) / 2,
                 currentHeight);
         RenderHelper.disableStandardItemLighting();
-        drawString(mc.fontRenderer, " " + text, ITEM_ICON_SIZE + configManager.getHudX(),
+        drawString(mc.fontRenderer, " " + text, ITEM_ICON_SIZE + configManager.hudX(),
                 currentHeight + (ITEM_ICON_SIZE - LINE_HEIGHT) / 2 + 1,
                 TEXT_COLOR);
         currentHeight += ITEM_ICON_SIZE + 1;
@@ -362,7 +362,7 @@ public class GuiHud extends Gui {
      * @param itemStacks the {@code List} of {@link ItemStack} of each item
      */
     private void drawItemIcons(List<ItemStack> itemStacks) {
-        int currentWidth = configManager.getHudX()
+        int currentWidth = configManager.hudX()
                 + (EFFECT_ICON_SIZE - ITEM_ICON_SIZE) / 2;
         RenderHelper.enableGUIStandardItemLighting();
         for (ItemStack itemStack : itemStacks) {

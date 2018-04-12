@@ -203,7 +203,7 @@ public class ConfigManager {
      * @return width from the left edge of the Minecraft window to the left
      *         edge of {@code GuiHud}.
      */
-    public int getHudX() {
+    public int hudX() {
         return hudX.getInt();
     }
 
@@ -214,7 +214,7 @@ public class ConfigManager {
      * @return height from the top edge of the Minecraft window to the top
      *         edge of {@code GuiHud}.
      */
-    public int getHudY() {
+    public int hudY() {
         return hudY.getInt();
     }
 
