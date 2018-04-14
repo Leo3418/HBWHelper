@@ -160,7 +160,7 @@ public class EventManager {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onKeyInput(InputEvent.KeyInputEvent event) {
-        if (hypixelDetector.isIn() && KeyBindingManager.QUICK_JOIN.isPressed()) {
+        if (hypixelDetector.isIn() && KeyBindings.QUICK_JOIN.isPressed()) {
             Minecraft.getMinecraft().displayGuiScreen(new GuiQuickJoinMenu());
         }
     }
