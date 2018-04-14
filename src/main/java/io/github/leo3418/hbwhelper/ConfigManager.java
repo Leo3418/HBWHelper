@@ -132,7 +132,7 @@ public class ConfigManager {
      *
      * @param event the event fired before Minecraft Forge's initialization
      */
-    void init(FMLPreInitializationEvent event) {
+    void initConfig(FMLPreInitializationEvent event) {
         config = new Configuration(event.getSuggestedConfigurationFile());
         config.load();
         initConfig();

@@ -44,7 +44,7 @@ public class HbwHelper {
 
     @EventHandler
     public void onFMLPreInitialization(FMLPreInitializationEvent event) {
-        ConfigManager.getInstance().init(event);
+        ConfigManager.getInstance().initConfig(event);
     }
 
     @EventHandler
