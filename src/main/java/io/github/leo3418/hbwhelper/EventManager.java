@@ -68,14 +68,14 @@ public class EventManager {
     private final HypixelDetector hypixelDetector;
     private final GameDetector gameDetector;
     private final ConfigManager configManager;
-    private GuiHud guiHud;
+    private final GuiHud guiHud;
 
     /**
      * Implementation of Singleton design pattern, which allows only one
      * instance of this class to be created.
      */
     private EventManager() {
-        guiHud = new GuiHud();
+        guiHud = GuiHud.getInstance();
         hypixelDetector = HypixelDetector.getInstance();
         gameDetector = GameDetector.getInstance();
         configManager = ConfigManager.getInstance();
