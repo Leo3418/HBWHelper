@@ -57,7 +57,7 @@ public class GameDetector {
     /**
      * The only instance of this class
      */
-    private static volatile GameDetector instance;
+    private static final GameDetector INSTANCE = new GameDetector();
 
     /**
      * The {@code HypixelDetector} instance
@@ -83,14 +83,7 @@ public class GameDetector {
      * @return the instance of this class
      */
     public static GameDetector getInstance() {
-        if (instance == null) {
-            synchronized (GameDetector.class) {
-                if (instance == null) {
-                    instance = new GameDetector();
-                }
-            }
-        }
-        return instance;
+        return INSTANCE;
     }
 
     /**

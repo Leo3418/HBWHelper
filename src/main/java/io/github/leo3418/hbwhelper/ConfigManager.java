@@ -58,7 +58,7 @@ public class ConfigManager {
     /**
      * The only instance of this class
      */
-    private static volatile ConfigManager instance;
+    private static final ConfigManager INSTANCE = new ConfigManager();
 
     /**
      * Configuration file of this mod
@@ -124,14 +124,7 @@ public class ConfigManager {
      * @return the instance of this class
      */
     public static ConfigManager getInstance() {
-        if (instance == null) {
-            synchronized (ConfigManager.class) {
-                if (instance == null) {
-                    instance = new ConfigManager();
-                }
-            }
-        }
-        return instance;
+        return INSTANCE;
     }
 
     /**

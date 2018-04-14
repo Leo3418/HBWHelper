@@ -63,7 +63,7 @@ public class EventManager {
     /**
      * The only instance of this class
      */
-    private static volatile EventManager instance;
+    private static final EventManager INSTANCE = new EventManager();
 
     private final HypixelDetector hypixelDetector;
     private final GameDetector gameDetector;
@@ -75,8 +75,6 @@ public class EventManager {
      * instance of this class to be created.
      */
     private EventManager() {
-        MinecraftForge.EVENT_BUS.register(this);
-        EventManager.EVENT_BUS.register(this);
         guiHud = new GuiHud();
         hypixelDetector = HypixelDetector.getInstance();
         gameDetector = GameDetector.getInstance();
@@ -89,14 +87,16 @@ public class EventManager {
      * @return the instance of this class
      */
     public static EventManager getInstance() {
-        if (instance == null) {
-            synchronized (EventManager.class) {
-                if (instance == null) {
-                    instance = new EventManager();
-                }
-            }
-        }
-        return instance;
+        return INSTANCE;
+    }
+
+    /**
+     * Registers this class as listener of Minecraft Forge's event bus and this
+     * mod's {@link #EVENT_BUS proprietary event bus}.
+     */
+    void registerOnEventBus() {
+        MinecraftForge.EVENT_BUS.register(this);
+        EventManager.EVENT_BUS.register(this);
     }
 
     @SubscribeEvent
