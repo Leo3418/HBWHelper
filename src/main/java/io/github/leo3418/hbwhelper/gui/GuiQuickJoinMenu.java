@@ -18,7 +18,7 @@
 
 package io.github.leo3418.hbwhelper.gui;
 
-import io.github.leo3418.hbwhelper.KeyBindingManager;
+import io.github.leo3418.hbwhelper.KeyBindings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -137,7 +137,7 @@ public class GuiQuickJoinMenu extends GuiScreen {
      */
     @Override
     protected void keyTyped(char typedChar, int keyCode) {
-        if (keyCode == 1 || keyCode == KeyBindingManager.QUICK_JOIN.getKeyCode()) {
+        if (keyCode == 1 || keyCode == KeyBindings.QUICK_JOIN.getKeyCode()) {
             close();
         }
     }
