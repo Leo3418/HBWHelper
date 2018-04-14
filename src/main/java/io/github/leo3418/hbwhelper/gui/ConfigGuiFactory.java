@@ -117,7 +117,7 @@ public class ConfigGuiFactory implements IModGuiFactory {
          *
          * @param parent the parent screen of this configuration screen
          */
-        public ConfigGuiScreen(GuiScreen parent) {
+        private ConfigGuiScreen(GuiScreen parent) {
             super(parent, ConfigManager.getInstance().getConfigElements(),
                     HbwHelper.MOD_ID, false, false,
                     I18n.format("hbwhelper.configGui.title"));
