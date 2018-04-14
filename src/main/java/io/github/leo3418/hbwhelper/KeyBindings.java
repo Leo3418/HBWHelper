@@ -23,12 +23,12 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import org.lwjgl.input.Keyboard;
 
 /**
- * Key binding manager of this mod, which stores all custom key bindings of
- * this mod and provides a method for registering those key bindings.
+ * Stores all custom key bindings of this mod and provides a method for
+ * registering those key bindings.
  *
  * @author Leo
  */
-public class KeyBindingManager {
+public class KeyBindings {
     /**
      * Key binding for toggling Bed Wars quick join menu
      */
@@ -39,7 +39,7 @@ public class KeyBindingManager {
     /**
      * Prevents instantiation of this class.
      */
-    private KeyBindingManager() {
+    private KeyBindings() {
     }
 
     /**
