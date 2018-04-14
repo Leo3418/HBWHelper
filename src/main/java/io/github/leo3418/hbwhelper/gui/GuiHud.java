@@ -42,6 +42,9 @@ import static net.minecraft.init.Items.*;
 
 /**
  * The GUI of this mod shown in Minecraft's Head-Up Display (HUD).
+ * <p>
+ * This is a Singleton class. Only one instance of this class may be created
+ * per runtime.
  *
  * @author Leo
  * @see <a href="https://minecraft.gamepedia.com/Heads-up_display"
@@ -97,6 +100,11 @@ public class GuiHud extends Gui {
     private static final String FLASH_COLOR_PREFIX = "\u00A7c";
 
     /**
+     * The only instance of this class
+     */
+    private static final GuiHud INSTANCE = new GuiHud();
+
+    /**
      * The instance of Minecraft client
      */
     private final Minecraft mc;
@@ -117,13 +125,23 @@ public class GuiHud extends Gui {
     private int currentHeight;
 
     /**
-     * Constructs a new instance of this GUI.
+     * Implementation of Singleton design pattern, which allows only one
+     * instance of this class to be created.
      */
-    public GuiHud() {
+    private GuiHud() {
         mc = Minecraft.getMinecraft();
         gameDetector = GameDetector.getInstance();
         configManager = ConfigManager.getInstance();
         currentHeight = configManager.hudY();
+    }
+
+    /**
+     * Returns the instance of this class.
+     *
+     * @return the instance of this class
+     */
+    public static GuiHud getInstance() {
+        return INSTANCE;
     }
 
     /**
