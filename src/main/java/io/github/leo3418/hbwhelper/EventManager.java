@@ -86,7 +86,7 @@ public class EventManager {
      *
      * @return the instance of this class
      */
-    public static EventManager getInstance() {
+    static EventManager getInstance() {
         return INSTANCE;
     }
 

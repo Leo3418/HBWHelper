@@ -237,7 +237,7 @@ public class ConfigManager {
      *
      * @param event the event fired when configuration of any mod changes
      */
-    public void save(ConfigChangedEvent.OnConfigChangedEvent event) {
+    void save(ConfigChangedEvent.OnConfigChangedEvent event) {
         if (event.modID.equals(HbwHelper.MOD_ID)) {
             config.save();
         }
@@ -250,7 +250,7 @@ public class ConfigManager {
      * @param event the event fired when this mod's configuration screen is
      *         opened
      */
-    public void update(GuiOpenEvent event) {
+    void update(GuiOpenEvent event) {
         if (event.gui instanceof ConfigGuiFactory.ConfigGuiScreen) {
             updateHudConfig();
         }
