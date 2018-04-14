@@ -41,7 +41,7 @@ public class HypixelDetector {
     /**
      * The only instance of this class
      */
-    private static volatile HypixelDetector instance;
+    private static final HypixelDetector INSTANCE = new HypixelDetector();
 
     /**
      * Whether client is currently in Hypixel
@@ -61,14 +61,7 @@ public class HypixelDetector {
      * @return the instance of this class
      */
     public static HypixelDetector getInstance() {
-        if (instance == null) {
-            synchronized (HypixelDetector.class) {
-                if (instance == null) {
-                    instance = new HypixelDetector();
-                }
-            }
-        }
-        return instance;
+        return INSTANCE;
     }
 
     /**
