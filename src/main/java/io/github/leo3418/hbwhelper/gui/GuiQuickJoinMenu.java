@@ -177,7 +177,7 @@ public class GuiQuickJoinMenu extends GuiScreen {
          * immediately when this button is pressed, and nothing else will be
          * done.
          */
-        private String command;
+        private final String command;
 
         /**
          * Constructs a new button for this GUI.
