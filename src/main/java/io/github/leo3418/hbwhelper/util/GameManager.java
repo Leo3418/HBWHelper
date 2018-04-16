@@ -114,11 +114,11 @@ public class GameManager {
      * Constructs a new {@code GameManager} instance.
      */
     public GameManager() {
-        instance = this;
         forgeLevel = ForgeLevel.ORDINARY_FORGE;
         traps = new ArrayDeque<Trap>(MAX_TRAPS);
         readOnlyTraps =
                 Collections.unmodifiableCollection(traps);
+        instance = this;
     }
 
     /**
