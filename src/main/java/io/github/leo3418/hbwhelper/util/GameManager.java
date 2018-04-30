@@ -30,8 +30,30 @@ import java.util.*;
 
 /**
  * Stores information and progress of a Bed Wars game session, and allows other
- * classes to read the information, such as time until next diamond generation
- * and upgrades the player's team has unlocked.
+ * classes to read information such as time until next diamond generation and
+ * upgrades the player's team has unlocked.
+ * <p>
+ * When the client joins a new Bed Wars game, a new {@code GameManager} object
+ * should be created for the game. The object can be reused if the client
+ * disconnects from the game and rejoins it later unless Minecraft is restarted
+ * in the meanwhile.
+ * <p>
+ * When a player leaves a Bed Wars game and joins another game on Hypixel, they
+ * will no longer be able to rejoin the previous game they were playing, so the
+ * previous {@code GameManager} object can and <b>should</b> be discarded, and
+ * a new object should be created for the new game.
+ * <p>
+ * An object of this class can be created by one of these manners:
+ * <ul>
+ * <li>Merely call the constructor and not assign the new object to a variable,
+ * and retrieve the last created object with {@link #getInstance()}</li>
+ * <li>Call the constructor and assign the new object to a variable, then
+ * assign all objects created later to that variable</li>
+ * </ul>
+ * Like some other classes under this package, this class is designed <b>to be
+ * used only when the client is in a Minecraft world</b>. Calling some methods
+ * when the client is not in a Minecraft world (e.g. in the main menu) might
+ * produce {@link NullPointerException}.
  *
  * @author Leo
  */
@@ -71,12 +93,12 @@ public class GameManager {
             "\u00A7r\u00A76Dragon Buff\u00A7r";
 
     /**
-     * A reference to the last created instance of this class
+     * Reference to the last created instance of this class
      */
     private static GameManager instance;
 
     /**
-     * The trap queue
+     * Trap queue
      */
     private final Queue<Trap> traps;
 
@@ -122,9 +144,19 @@ public class GameManager {
     }
 
     /**
-     * Returns a reference to the last created instance of this class.
+     * Returns a reference to the last created instance of this class, or
+     * {@code null} if an instance has never been created.
+     * <p>
+     * The returned reference <b>should not</b> be stored into a variable
+     * because it is only useful for the current game the client is playing.
+     * When the client joins another game, this method will return reference to
+     * another instance of this class, and the previous instance should be
+     * discarded and recycled by the garbage collector. If a reference to the
+     * previous instance were still stored in a variable, it would prevent the
+     * garbage collection on the instance, causing memory leak.
      *
-     * @return a reference to the last created instance of this class
+     * @return a reference to the last created instance of this class, or
+     *         {@code null} if an instance has never been created
      */
     public static GameManager getInstance() {
         return instance;
@@ -209,7 +241,7 @@ public class GameManager {
      * Returns an <b>unmodifiable</b> {@link Collection} derived from the trap
      * queue.
      *
-     * @return an <b>unmodifiable</b> {@link Collection} derived from the trap
+     * @return an <b>unmodifiable</b> {@code Collection} derived from the trap
      *         queue
      */
     public Collection<Trap> getTraps() {
@@ -219,6 +251,9 @@ public class GameManager {
     /**
      * Updates upgrades the player's team has unlocked by analyzing chat
      * message client receives.
+     * <p>
+     * This method should be called when the client is in Bed Wars, and a
+     * {@link ClientChatReceivedEvent} is fired.
      *
      * @param event the event fired when client receives a chat message
      */
@@ -236,13 +271,28 @@ public class GameManager {
                 }
             }
             for (Trap trap : Trap.values()) {
+                /*
+                If client temporarily leaves the current game, and a trap is
+                set off before the client rejoins, the local trap queue will
+                not be updated. Therefore, some while loops are used here to
+                update the local trap queue correctly after client rejoins a
+                game.
+                 */
                 if (message.contains(trap.purchasePrompt)) {
+                    /*
+                    If the local trap queue is full but new trap is purchased,
+                    some traps must have been set off since client leaves
+                     */
                     while (traps.size() >= MAX_TRAPS) {
                         traps.remove();
                     }
                     traps.add(trap);
                     return;
                 } else if (message.contains(trap.setOffPrompt)) {
+                    /*
+                    Removes all traps at the front of the trap queue that have
+                    already been set off since client leaves
+                     */
                     boolean removed = false;
                     while (!removed && !traps.isEmpty()) {
                         if (traps.remove() == trap) {
@@ -368,8 +418,8 @@ public class GameManager {
         /**
          * The "Alarm Trap"
          * <p>
-         * This value has three arguments because Hypixel uses "Alarm Trap" and
-         * "Alarm trap" at the same time.
+         * This value has an extra argument because Hypixel uses "Alarm Trap"
+         * and "Alarm trap" at the same time.
          */
         @SuppressWarnings("unused")
         ALARM("Alarm Trap", "Alarm trap"),

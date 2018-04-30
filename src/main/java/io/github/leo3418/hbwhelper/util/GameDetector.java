@@ -100,8 +100,11 @@ public class GameDetector {
      * server to another.
      * <p>
      * The screen with dirt background will show up. when client transfers.
+     * <p>
+     * This method should be called when a {@link GuiOpenEvent} is fired.
      *
-     * @param event the event fired when the screen with dirt background shows up
+     * @param event the event fired when the screen with dirt background shows
+     *         up
      */
     public void update(GuiOpenEvent event) {
         if (inBedWars && event.gui instanceof GuiDownloadTerrain) {
@@ -112,11 +115,13 @@ public class GameDetector {
     /**
      * Updates whether client is in a Bed Wars game upon connection change.
      * <p>
-     * Because {@code GuiOpenEvent} will not be called when
-     * client disconnects, this method is implemented to detect
-     * {@code ClientDisconnectionFromServerEvent}, which is fired when client
+     * Because {@link GuiOpenEvent} will not be called when client disconnects,
+     * this method is implemented to detect
+     * {@link ClientDisconnectionFromServerEvent
+     * ClientDisconnectionFromServerEvent}, which is fired when client
      * disconnects.
      * <p>
+     * This method should be called whenever a {@link FMLNetworkEvent} is fired.
      *
      * @param event the event fired when client joins or leaves a server
      */
@@ -135,15 +140,16 @@ public class GameDetector {
      * client receives.
      * <p>
      * If a Bed Wars game starts, fires a {@link GameStartEvent} on this mod's
-     * event bus.
+     * {@link EventManager#EVENT_BUS proprietary event bus.}
      * <p>
      * If client is rejoining a Bed Wars game, fires a
-     * {@link ClientRejoinGameEvent} on this mod's event bus.
+     * {@link ClientRejoinGameEvent} on this mod's
+     * {@link EventManager#EVENT_BUS proprietary event bus.}
+     * <p>
+     * This method should be called whenever a {@link ClientChatReceivedEvent}
+     * is fired.
      *
      * @param event the event fired when client receives a chat message
-     * @see GameStartEvent
-     * @see ClientRejoinGameEvent
-     * @see EventManager#EVENT_BUS
      */
     public void update(ClientChatReceivedEvent event) {
         if (hypixelDetector.isIn() && !inBedWars) {

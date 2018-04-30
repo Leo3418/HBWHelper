@@ -41,6 +41,7 @@ import java.util.List;
  * per runtime.
  *
  * @author Leo
+ * @see ConfigGuiFactory
  */
 public class ConfigManager {
     /**
@@ -129,6 +130,9 @@ public class ConfigManager {
 
     /**
      * Initializes configuration when Minecraft Forge is starting.
+     * <p>
+     * This method should be called when a {@link FMLPreInitializationEvent} is
+     * fired.
      *
      * @param event the event fired before Minecraft Forge's initialization
      */
@@ -234,6 +238,10 @@ public class ConfigManager {
     /**
      * When configuration of this mod changes, save it to the configuration
      * file.
+     * <p>
+     * This method should be called whenever an
+     * {@link ConfigChangedEvent.OnConfigChangedEvent OnConfigChangedEvent}
+     * is fired.
      *
      * @param event the event fired when configuration of any mod changes
      */
@@ -246,6 +254,8 @@ public class ConfigManager {
     /**
      * When client opens up this mod's configuration, updates allowed values of
      * HUD parameters, so they reflect the current size of the Minecraft window.
+     * <p>
+     * This method should be called whenever a {@link GuiOpenEvent} is fired.
      *
      * @param event the event fired when this mod's configuration screen is
      *         opened
