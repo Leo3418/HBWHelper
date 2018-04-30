@@ -32,9 +32,10 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * The factory for making this mod's GUI configuration screen.
+ * The factory of this mod's GUI configuration screen.
  *
  * @author Leo
+ * @see ConfigManager
  */
 public class ConfigGuiFactory implements IModGuiFactory {
     /**

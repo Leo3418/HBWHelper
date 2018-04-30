@@ -26,6 +26,11 @@ import java.util.Collection;
 
 /**
  * Provides methods for getting the player's status effects.
+ * <p>
+ * Like some other classes under this package, this class is designed <b>to be
+ * used only when the client is in a Minecraft world</b>. Calling some methods
+ * when the client is not in a Minecraft world (e.g. in the main menu) might
+ * produce {@link NullPointerException}.
  *
  * @author Leo
  */
@@ -44,7 +49,7 @@ public class EffectsReader {
     /**
      * Returns a {@link Collection} of all potion effects on the player.
      *
-     * @return a {@link Collection} of all potion effects on the player
+     * @return a {@code Collection} of all potion effects on the player
      */
     public static Collection<PotionEffect> getEffects() {
         return Minecraft.getMinecraft().thePlayer.getActivePotionEffects();

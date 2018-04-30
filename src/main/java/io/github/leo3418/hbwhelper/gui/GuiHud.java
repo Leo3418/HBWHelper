@@ -52,7 +52,7 @@ import static net.minecraft.init.Items.*;
  */
 public class GuiHud extends Gui {
     /**
-     * The color of text displayed on this GUI
+     * Color of text displayed on this GUI
      */
     private static final int TEXT_COLOR = 0xFFFFFF;
 
@@ -85,8 +85,8 @@ public class GuiHud extends Gui {
     private static final int FLASH_INTERVAL = 500;
 
     /**
-     * The color code which changes the color of a status effect's remaining
-     * time displayed when flashing
+     * Color code which changes the color of a status effect's remaining time
+     * displayed when flashing
      * <p>
      * The Unicode encoding for the section sign ({@code §}) must be used in
      * place of the section sign because Minecraft does not permit directly
@@ -146,6 +146,9 @@ public class GuiHud extends Gui {
 
     /**
      * When vanilla Minecraft's HUD is rendered, renders this GUI on the HUD.
+     * <p>
+     * This method should be called whenever {@link RenderGameOverlayEvent.Post}
+     * is fired.
      *
      * @param event the event called when an element on the HUD is rendered
      */
@@ -217,6 +220,8 @@ public class GuiHud extends Gui {
                 int duration = EffectsReader.getDuration(potionEffect);
                 String displayedDuration =
                         EffectsReader.getDisplayedDuration(potionEffect);
+                // Changes color of the remaining time string when the effect
+                // is expiring
                 if (duration == 0 || (duration > 0 && duration <= WEAR_OUT_THRESHOLD
                         && System.currentTimeMillis() % (FLASH_INTERVAL * 2)
                         < FLASH_INTERVAL)) {
@@ -256,6 +261,7 @@ public class GuiHud extends Gui {
             }
 
             if (configManager.showTeamUpgrades()) {
+                // Level of resource generation speed
                 List<ItemStack> itemsForForgeLevels = new ArrayList<ItemStack>(2);
                 itemsForForgeLevels.add(new ItemStack(FURNACE));
                 switch (game.getForgeLevel()) {
@@ -276,6 +282,7 @@ public class GuiHud extends Gui {
                 }
                 drawItemIcons(itemsForForgeLevels);
 
+                // Other team upgrades
                 List<ItemStack> itemsForUpgrades = new ArrayList<ItemStack>();
                 if (game.hasHealPool()) {
                     itemsForUpgrades.add(new ItemStack(BEACON));
@@ -285,6 +292,7 @@ public class GuiHud extends Gui {
                 }
                 drawItemIcons(itemsForUpgrades);
 
+                // Trap queue
                 List<ItemStack> itemsForTraps =
                         new ArrayList<ItemStack>(GameManager.MAX_TRAPS + 1);
                 itemsForTraps.add(new ItemStack(LEATHER));
@@ -313,7 +321,8 @@ public class GuiHud extends Gui {
      * Renders icon of a status effect with a string to its right on this GUI.
      * <p>
      * The icon aligns this GUI's left edge, and it is under the previous
-     * element on this GUI. The string is in the default color.
+     * element on this GUI. The string's color is defined by
+     * {@link #TEXT_COLOR}.
      * <p>
      * After this element is rendered, sets height of the next element to be
      * directly below this element.
@@ -338,16 +347,16 @@ public class GuiHud extends Gui {
     }
 
     /**
-     * Renders an icon of an item with a string to its right on this GUI with
-     * default parameters.
+     * Renders an icon of an item with a string to its right on this GUI.
      * <p>
      * The icon aligns this GUI's left edge, and it is under the previous
-     * element on this GUI. The string is in the default color.
+     * element on this GUI. The string's color is defined by
+     * {@link #TEXT_COLOR}.
      * <p>
      * After this element is rendered, sets height of the next element to be
      * directly below this element.
      *
-     * @param itemStack the {@link ItemStack} of the item
+     * @param itemStack the {@link ItemStack} for the item
      * @param text the text to be rendered
      */
     private void drawItemIconAndString(ItemStack itemStack, String text) {
@@ -363,8 +372,7 @@ public class GuiHud extends Gui {
     }
 
     /**
-     * Renders icons of a {@link List} of items on this GUI in-line with default
-     * parameters.
+     * Renders icons of a {@link List} of items on this GUI in a single line.
      * <p>
      * The first icon aligns this GUI's left edge. The icons are under the
      * previous element on this GUI.
@@ -372,7 +380,7 @@ public class GuiHud extends Gui {
      * After the icons are rendered, sets height of the next element to be
      * directly below these icons.
      *
-     * @param itemStacks the {@code List} of {@link ItemStack} of each item
+     * @param itemStacks the {@code List} of {@link ItemStack} for each item
      */
     private void drawItemIcons(List<ItemStack> itemStacks) {
         int currentWidth = configManager.hudX()

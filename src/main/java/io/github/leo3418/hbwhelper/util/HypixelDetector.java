@@ -77,6 +77,8 @@ public class HypixelDetector {
      * When client connects to a server, checks and tracks if the server is
      * Hypixel. Or, when client disconnects from a server, remembers that
      * the player is no longer in Hypixel.
+     * <p>
+     * This method should be called whenever a {@link FMLNetworkEvent} is fired.
      *
      * @param event the event fired when client joins or leaves a server
      */

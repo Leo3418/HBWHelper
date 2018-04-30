@@ -43,11 +43,14 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent;
  * Minecraft Forge's event bus and this mod's {@link EventManager#EVENT_BUS
  * proprietary event bus}, and also holds that proprietary event bus.
  * <p>
+ * This class is the place where most core behaviors of this mod is defined. It
+ * decides what actions to take upon each kind of event, whereas other classes
+ * define the actions' details and complete the actions.
+ * <p>
  * This is a Singleton class. Only one instance of this class may be created
  * per runtime.
  *
  * @author Leo
- * @see EventManager#EVENT_BUS
  */
 public class EventManager {
     /**
@@ -56,7 +59,7 @@ public class EventManager {
     public static final EventBus EVENT_BUS = new EventBus();
 
     /**
-     * Prefix of prompt client receives from this mod
+     * Prefix of prompt sent from this mod to the client
      */
     private static final String PROMPT_PREFIX = "[" + HbwHelper.NAME + "] ";
 
@@ -65,9 +68,24 @@ public class EventManager {
      */
     private static final EventManager INSTANCE = new EventManager();
 
+    /**
+     * The {@link HypixelDetector} instance
+     */
     private final HypixelDetector hypixelDetector;
+
+    /**
+     * The {@link GameDetector} instance
+     */
     private final GameDetector gameDetector;
+
+    /**
+     * The {@link ConfigManager} instance
+     */
     private final ConfigManager configManager;
+
+    /**
+     * The {@link GuiHud} instance
+     */
     private final GuiHud guiHud;
 
     /**
