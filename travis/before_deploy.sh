@@ -20,47 +20,55 @@
 # Release branches for older clients
 OLD_CLIENT_BRANCHES="1.9-1.10.2 1.8.9"
 
-if ! [ "$TRAVIS" = true ]; then
-    echo "This script is intended to be run only in a Travis CI build environment. You should not run this in any other environment."
-    echo "If you intend to do so, please run 'export TRAVIS=true' first."
-    exit
-fi
+# Performs pre-deployment tasks.
+pre_deploy() {
+    # Builds JAR artifacts and source archives for old client versions
+    for branch in ${OLD_CLIENT_BRANCHES}; do
+        git checkout ${branch}
+        ./gradlew setupCiWorkspace
+        ./gradlew build
+        zip_name="build/libs/src-$branch-$TRAVIS_BRANCH.zip"
+        zip -r -q ${zip_name} .
+        zip -d -q ${zip_name} ".git/*"
+        zip -d -q ${zip_name} ".gradle/*"
+        zip -d -q ${zip_name} "build/*"
+    done
 
-if [ -f before_deploy_complete ]; then
-    echo "Pre-deployment tasks already done"
-else # Perform pre-deployment tasks
+    # Deletes source JARs
+    (
+        cd build/libs
+        find . -type f -iregex ".*-sources\.jar" -delete
+    )
 
-# Builds JAR artifacts and source archives for old client versions
-for branch in ${OLD_CLIENT_BRANCHES}; do
-    git checkout ${branch}
-    ./gradlew setupCiWorkspace
-    ./gradlew build
-    zip_name="build/libs/src-$branch-$TRAVIS_BRANCH.zip"
-    zip -r -q ${zip_name} .
-    zip -d -q ${zip_name} ".git/*"
-    zip -d -q ${zip_name} ".gradle/*"
-    zip -d -q ${zip_name} "build/*"
-done
+    # Gets version tags of the latest development build and the latest release
+    # build
+    local latest_dev_tag=$(curl -s "https://api.github.com/repos/Leo3418/HBWHelper/releases/tags/$TRAVIS_BRANCH" | jq -r '.tag_name')
+    local latest_rel_tag=$(curl -s "https://api.github.com/repos/Leo3418/HBWHelper/releases/latest" | jq -r '.tag_name')
 
-# Deletes source JARs
-(
-    cd build/libs
-    find . -type f -iregex ".*-sources\.jar" -delete
-)
+    # Removes the "v" prefix of the version tags
+    local latest_dev_tag=${latest_dev_tag:1:${#latest_dev_tag}}
+    local latest_rel_tag=${latest_rel_tag:1:${#latest_rel_tag}}
 
-# Gets version tags of the latest development build and the latest release build
-LATEST_DEV_TAG=$(curl -s "https://api.github.com/repos/Leo3418/HBWHelper/releases/tags/$TRAVIS_BRANCH" | jq -r '.tag_name')
-LATEST_REL_TAG=$(curl -s "https://api.github.com/repos/Leo3418/HBWHelper/releases/latest" | jq -r '.tag_name')
+    # Replaces placeholders in update JSON file with release information
+    sed -i -e "s/<dev-ver>/$latest_dev_tag/g" travis/pages/promotions.json
+    sed -i -e "s/<rel-ver>/$latest_rel_tag/g" travis/pages/promotions.json
 
-# Removes the "v" prefix of the version tags
-LATEST_DEV_TAG=${LATEST_DEV_TAG:1:${#LATEST_DEV_TAG}}
-LATEST_REL_TAG=${LATEST_REL_TAG:1:${#LATEST_REL_TAG}}
+    # Marks completion of pre-deployment tasks
+    touch before_deploy_complete
+}
 
-# Replaces placeholders in update JSON file with release information
-sed -i -e "s/<dev-ver>/$LATEST_DEV_TAG/g" travis/pages/promotions.json
-sed -i -e "s/<rel-ver>/$LATEST_REL_TAG/g" travis/pages/promotions.json
+main() {
+    if ! [ "$TRAVIS" = true ]; then
+        echo "This script is intended to be run only in a Travis CI build environment. You should not run this in any other environment."
+        echo "If you intend to do so, please run 'export TRAVIS=true' first."
+        exit 1
+    fi
 
-# Marks completion of pre-deployment tasks
-touch before_deploy_complete
+    if [ -f before_deploy_complete ]; then
+        echo "Pre-deployment tasks already done"
+    else
+        pre_deploy
+    fi
+}
 
-fi
+main
