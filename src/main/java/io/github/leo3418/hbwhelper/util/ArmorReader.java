@@ -34,6 +34,11 @@ import net.minecraft.item.ItemStack;
  * need to read status from the boots to know the player's armor status in a
  * Bed Wars game. Hence, an alternative name of this class would be
  * {@code BootsReader}.
+ * <p>
+ * Like some other classes under this package, this class is designed <b>to be
+ * used only when the client is in a Minecraft world</b>. Calling some methods
+ * when the client is not in a Minecraft world (e.g. in the main menu) might
+ * produce {@link NullPointerException}.
  *
  * @author Leo
  */
@@ -81,7 +86,7 @@ public class ArmorReader {
     /**
      * Returns an {@link ItemStack} object which represents the player's armor.
      *
-     * @return an {@link ItemStack} object which represents the player's armor
+     * @return an {@code ItemStack} object which represents the player's armor
      */
     public static ItemStack getArmorStack() {
         return Minecraft.getMinecraft().player.inventory

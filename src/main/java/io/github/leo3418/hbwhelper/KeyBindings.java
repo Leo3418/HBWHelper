@@ -23,7 +23,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import org.lwjgl.input.Keyboard;
 
 /**
- * Stores all custom key bindings of this mod and provides a method for
+ * Stores all custom key bindings of this mod, and provides a method for
  * registering those key bindings.
  *
  * @author Leo

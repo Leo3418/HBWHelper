@@ -52,8 +52,8 @@ public class GuiQuickJoinMenu extends GuiScreen {
     private static final int BUTTONS_INTERVAL = 4;
 
     /**
-     * Vertical distance between the top of a button and the top of the
-     * button right below it
+     * Vertical distance between the top of a button and the top of the button
+     * right below it
      */
     private static final int BUTTONS_TRANSLATION_INTERVAL =
             BUTTON_HEIGHT + BUTTONS_INTERVAL;
