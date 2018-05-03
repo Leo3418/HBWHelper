@@ -1,0 +1,7 @@
+{
+    "pack": {
+        "description": "Resources for HBW Helper",
+        "pack_format": 2,
+        "_comment": "Although pack format of 3 should be used starting with Minecraft 1.11, because HBW Helper supports pre-1.11 and post-1.11 versions at the same time, the pack format is set to 2 to make file names of resources under this branch consistent with the names under legacy branches holding code for pre-1.11 versions. Once support to those legacy branches ceases, the pack format should be updated."
+    }
+}
