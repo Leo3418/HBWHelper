@@ -89,9 +89,6 @@ public class HypixelDetector {
             if (currentServer != null) {
                 String serverAddress = currentServer.serverIP.toLowerCase();
                 inHypixel = serverAddress.contains(HYPIXEL_DOMAIN);
-            } else {
-                // Client is playing in single player mode
-                inHypixel = false;
             }
         } else if (event instanceof ClientDisconnectionFromServerEvent) {
             inHypixel = false;
