@@ -48,13 +48,13 @@ public class ConfigManager {
      * Default width from the left edge of the Minecraft window to the left
      * edge of {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
      */
-    private static final int DEFAULT_WIDTH = 2;
+    private static final int DEFAULT_HUD_X = 2;
 
     /**
      * Default height from the top edge of the Minecraft window to the top edge
      * of {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
      */
-    private static final int DEFAULT_HEIGHT = 2;
+    private static final int DEFAULT_HUD_Y = 2;
 
     /**
      * The only instance of this class
@@ -309,14 +309,14 @@ public class ConfigManager {
                 new ScaledResolution(Minecraft.getMinecraft());
         hudX = config.get(Configuration.CATEGORY_CLIENT,
                 "hudX",
-                DEFAULT_WIDTH,
+                DEFAULT_HUD_X,
                 I18n.format("hbwhelper.configGui.hudX.description"),
                 0,
                 scaledResolution.getScaledWidth())
                 .setLanguageKey("hbwhelper.configGui.hudX.title");
         hudY = config.get(Configuration.CATEGORY_CLIENT,
                 "hudY",
-                DEFAULT_HEIGHT,
+                DEFAULT_HUD_Y,
                 I18n.format("hbwhelper.configGui.hudY.description"),
                 0,
                 scaledResolution.getScaledHeight())
