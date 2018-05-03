@@ -93,10 +93,10 @@ public class EventManager {
      * instance of this class to be created.
      */
     private EventManager() {
-        guiHud = GuiHud.getInstance();
         hypixelDetector = HypixelDetector.getInstance();
         gameDetector = GameDetector.getInstance();
         configManager = ConfigManager.getInstance();
+        guiHud = GuiHud.getInstance();
     }
 
     /**
