@@ -166,11 +166,6 @@ public class GuiQuickJoinMenu extends GuiScreen {
      */
     private class QuickJoinGuiButton extends GuiButton {
         /**
-         * The instance of Minecraft client
-         */
-        private final Minecraft mc;
-
-        /**
          * The command being run when this button is clicked
          * <p>
          * If this field is set to {@code null}, then this GUI will be closed
@@ -191,7 +186,6 @@ public class GuiQuickJoinMenu extends GuiScreen {
         private QuickJoinGuiButton(int x, int y, String buttonText,
                                    String command) {
             super(0, x, y, buttonText);
-            this.mc = GuiQuickJoinMenu.this.mc;
             this.command = command;
         }
 
@@ -202,7 +196,7 @@ public class GuiQuickJoinMenu extends GuiScreen {
         private void performAction() {
             if (command != null) {
                 // Runs the command by sending it to the chat box
-                mc.thePlayer.sendChatMessage(command);
+                Minecraft.getMinecraft().thePlayer.sendChatMessage(command);
             }
             GuiQuickJoinMenu.this.close();
         }
