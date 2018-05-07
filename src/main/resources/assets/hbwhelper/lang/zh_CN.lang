@@ -20,12 +20,14 @@ hbwhelper.messages.clientRejoin=检测到您重新加入了一局起床战争。
 hbwhelper.messages.clientRestart=检测到您已重启 Minecraft 客户端。很抱歉，您之前获得的队伍升级无法重新读取。
 
 hbwhelper.quickJoinGui.title=起床战争快速加入
-hbwhelper.quickJoinGui.solo=加入起床战争单挑模式
-hbwhelper.quickJoinGui.doubles=加入起床战争双人模式
-hbwhelper.quickJoinGui.3v3v3v3=加入起床战争 3v3v3v3 模式
-hbwhelper.quickJoinGui.4v4v4v4=加入起床战争 4v4v4v4 模式
-hbwhelper.quickJoinGui.capture.noParties=加入起床战争 Capture 模式 （无组队）
-hbwhelper.quickJoinGui.capture.parties=加入起床战争 Capture 模式 （组队）
+hbwhelper.quickJoinGui.solo=单挑模式
+hbwhelper.quickJoinGui.doubles=双人模式
+hbwhelper.quickJoinGui.3v3v3v3=3v3v3v3 模式
+hbwhelper.quickJoinGui.4v4v4v4=4v4v4v4 模式
+hbwhelper.quickJoinGui.capture.noParties=Capture 模式 （无组队）
+hbwhelper.quickJoinGui.capture.parties=Capture 模式 （组队）
+hbwhelper.quickJoinGui.rush.doubles=Rush 双人模式
+hbwhelper.quickJoinGui.rush.4v4v4v4=Rush 4v4v4v4 模式
 hbwhelper.quickJoinGui.backToGame=回到游戏
 
 key.hbwhelper.quickJoin=起床战争快速加入菜单

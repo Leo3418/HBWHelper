@@ -36,20 +36,25 @@ public class GuiQuickJoinMenu extends GuiScreen {
     private static final int TITLE_HEIGHT = 40;
 
     /**
-     * Width of buttons on this GUI
+     * Vertical distance between borders of two adjacent buttons
      */
-    private static final int BUTTON_WIDTH = 200;
+    private static final int BUTTONS_INTERVAL = 4;
+
+    /**
+     * Width of long buttons on this GUI
+     */
+    private static final int LONG_BUTTON_WIDTH = 200;
+
+    /**
+     * Width of short buttons on this GUI
+     */
+    private static final int SHORT_BUTTON_WIDTH =
+            (LONG_BUTTON_WIDTH - BUTTONS_INTERVAL) / 2;
 
     /**
      * Height of buttons on this GUI
      */
     private static final int BUTTON_HEIGHT = 20;
-
-    /**
-     * Vertical distance between the bottom of a button and the top of the
-     * button right below it
-     */
-    private static final int BUTTONS_INTERVAL = 4;
 
     /**
      * Vertical distance between the top of a button and the top of the button
@@ -63,39 +68,68 @@ public class GuiQuickJoinMenu extends GuiScreen {
      */
     @Override
     public void initGui() {
-        int buttonX = (this.width - BUTTON_WIDTH) / 2;
+        int buttonX = (this.width - LONG_BUTTON_WIDTH) / 2;
         int firstButtonY = this.height / 4 + BUTTONS_INTERVAL;
-        // Number of buttons added so far, used for calculating height of the
-        // next button
-        int buttonIndex = 0;
-        this.buttonList.add(new QuickJoinGuiButton(buttonX,
-                firstButtonY + (buttonIndex++ * BUTTONS_TRANSLATION_INTERVAL),
+        // Number of lines of buttons added so far, used for calculating height
+        // of the next button
+        int line = 0;
+        this.buttonList.add(QuickJoinGuiButton.getButton(
+                QuickJoinGuiButton.Variant.LONG,
+                buttonX, firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
                 I18n.format("hbwhelper.quickJoinGui.solo"),
-                "/play bedwars_eight_one"));
-        this.buttonList.add(new QuickJoinGuiButton(buttonX,
-                firstButtonY + (buttonIndex++ * BUTTONS_TRANSLATION_INTERVAL),
+                "/play bedwars_eight_one"
+        ));
+        this.buttonList.add(QuickJoinGuiButton.getButton(
+                QuickJoinGuiButton.Variant.LONG,
+                buttonX, firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
                 I18n.format("hbwhelper.quickJoinGui.doubles"),
-                "/play bedwars_eight_two"));
-        this.buttonList.add(new QuickJoinGuiButton(buttonX,
-                firstButtonY + (buttonIndex++ * BUTTONS_TRANSLATION_INTERVAL),
+                "/play bedwars_eight_two"
+        ));
+        this.buttonList.add(QuickJoinGuiButton.getButton(
+                QuickJoinGuiButton.Variant.LONG,
+                buttonX, firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
                 I18n.format("hbwhelper.quickJoinGui.3v3v3v3"),
-                "/play bedwars_four_three"));
-        this.buttonList.add(new QuickJoinGuiButton(buttonX,
-                firstButtonY + (buttonIndex++ * BUTTONS_TRANSLATION_INTERVAL),
+                "/play bedwars_four_three"
+        ));
+        this.buttonList.add(QuickJoinGuiButton.getButton(
+                QuickJoinGuiButton.Variant.LONG,
+                buttonX, firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
                 I18n.format("hbwhelper.quickJoinGui.4v4v4v4"),
-                "/play bedwars_four_four"));
-        this.buttonList.add(new QuickJoinGuiButton(buttonX,
-                firstButtonY + (buttonIndex++ * BUTTONS_TRANSLATION_INTERVAL),
+                "/play bedwars_four_four"
+        ));
+        this.buttonList.add(QuickJoinGuiButton.getButton(
+                QuickJoinGuiButton.Variant.SHORT,
+                buttonX, firstButtonY + (line * BUTTONS_TRANSLATION_INTERVAL),
                 I18n.format("hbwhelper.quickJoinGui.capture.noParties"),
-                "/play bedwars_capture_solo"));
-        this.buttonList.add(new QuickJoinGuiButton(buttonX,
-                firstButtonY + (buttonIndex++ * BUTTONS_TRANSLATION_INTERVAL),
+                "/play bedwars_capture_solo"
+        ));
+        this.buttonList.add(QuickJoinGuiButton.getButton(
+                QuickJoinGuiButton.Variant.SHORT,
+                (this.width + BUTTONS_INTERVAL) / 2,
+                firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
                 I18n.format("hbwhelper.quickJoinGui.capture.parties"),
-                "/play bedwars_capture_party"));
-        this.buttonList.add(new QuickJoinGuiButton(buttonX,
-                firstButtonY + (buttonIndex * BUTTONS_TRANSLATION_INTERVAL),
+                "/play bedwars_capture_party"
+        ));
+        this.buttonList.add(QuickJoinGuiButton.getButton(
+                QuickJoinGuiButton.Variant.SHORT,
+                buttonX, firstButtonY + (line * BUTTONS_TRANSLATION_INTERVAL),
+                I18n.format("hbwhelper.quickJoinGui.rush.doubles"),
+                "/play bedwars_eight_two_rush"
+        ));
+        this.buttonList.add(QuickJoinGuiButton.getButton(
+                QuickJoinGuiButton.Variant.SHORT,
+                (this.width + BUTTONS_INTERVAL) / 2,
+                firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
+                I18n.format("hbwhelper.quickJoinGui.rush.4v4v4v4"),
+                "/play bedwars_four_four_rush"
+        ));
+        // The following should always be the last button
+        this.buttonList.add(QuickJoinGuiButton.getButton(
+                QuickJoinGuiButton.Variant.LONG,
+                buttonX, firstButtonY + (line * BUTTONS_TRANSLATION_INTERVAL),
                 I18n.format("hbwhelper.quickJoinGui.backToGame"),
-                null));
+                null
+        ));
     }
 
     /**
@@ -123,7 +157,7 @@ public class GuiQuickJoinMenu extends GuiScreen {
     @Override
     protected void actionPerformed(GuiButton button) {
         if (button instanceof QuickJoinGuiButton) {
-            ((QuickJoinGuiButton) button).performAction();
+            ((QuickJoinGuiButton) button).performAction(this);
         }
     }
 
@@ -164,7 +198,7 @@ public class GuiQuickJoinMenu extends GuiScreen {
      * string, so it makes better sense to make the command a property of the
      * button instead of deciding what action to take in the client program.
      */
-    private class QuickJoinGuiButton extends GuiButton {
+    private static class QuickJoinGuiButton extends GuiButton {
         /**
          * The command being run when this button is clicked
          * <p>
@@ -179,26 +213,79 @@ public class GuiQuickJoinMenu extends GuiScreen {
          *
          * @param x the horizontal location of this button on the GUI
          * @param y the vertical location of this button on the GUI
+         * @param width the width of this button
          * @param buttonText the text shown on this button
          * @param command the command being run in game when this button is
          *         pressed
          */
-        private QuickJoinGuiButton(int x, int y, String buttonText,
+        private QuickJoinGuiButton(int x, int y, int width, String buttonText,
                                    String command) {
-            super(0, x, y, buttonText);
+            super(0, x, y, width, BUTTON_HEIGHT, buttonText);
             this.command = command;
+        }
+
+        /**
+         * Returns a button for this GUI with specified variant of the button's
+         * width.
+         *
+         * @param variant the variant of the button's width
+         * @param x the horizontal location of this button on the GUI
+         * @param y the vertical location of this button on the GUI
+         * @param buttonText the text shown on this button
+         * @param command the command being run in game when this button is
+         *         pressed
+         * @return a button for this GUI with the specified variant
+         */
+        private static QuickJoinGuiButton getButton(Variant variant,
+                                                    int x, int y,
+                                                    String buttonText,
+                                                    String command) {
+            return new QuickJoinGuiButton(x, y, variant.width, buttonText,
+                    command);
         }
 
         /**
          * If a command is defined for this button, runs the command. Then,
          * closes this GUI.
+         *
+         * @param gui the object for this GUI
          */
-        private void performAction() {
+        private void performAction(GuiQuickJoinMenu gui) {
             if (command != null) {
                 // Runs the command by sending it to the chat box
                 Minecraft.getMinecraft().player.sendChatMessage(command);
             }
-            GuiQuickJoinMenu.this.close();
+            gui.close();
+        }
+
+        /**
+         * Enumeration of variants of the button.
+         */
+        private enum Variant {
+            /**
+             * Long button, whose width is the same as a default Minecraft
+             * button
+             */
+            LONG(LONG_BUTTON_WIDTH),
+            /**
+             * Short button, whose width times 2 plus the default interval
+             * between two Minecraft buttons would be the same as a long button
+             */
+            SHORT(SHORT_BUTTON_WIDTH);
+
+            /**
+             * Width of a button of this variant
+             */
+            private final int width;
+
+            /**
+             * Constructs a new constant of variants of the button.
+             *
+             * @param width the width of a button of this variant
+             */
+            Variant(int width) {
+                this.width = width;
+            }
         }
     }
 }
