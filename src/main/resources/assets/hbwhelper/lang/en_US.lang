@@ -20,12 +20,14 @@ hbwhelper.messages.clientRejoin=We have detected that you rejoined a Bed Wars ga
 hbwhelper.messages.clientRestart=We have detected that you restarted your Minecraft client. Unfortunately, we cannot retrieve what team upgrade you have got before.
 
 hbwhelper.quickJoinGui.title=Bed Wars Quick Join
-hbwhelper.quickJoinGui.solo=Play Bed Wars Solo
-hbwhelper.quickJoinGui.doubles=Play Bed Wars Doubles
-hbwhelper.quickJoinGui.3v3v3v3=Play Bed Wars 3v3v3v3
-hbwhelper.quickJoinGui.4v4v4v4=Play Bed Wars 4v4v4v4
-hbwhelper.quickJoinGui.capture.noParties=Play Bed Wars Capture (No Parties)
-hbwhelper.quickJoinGui.capture.parties=Play Bed Wars Capture (Parties)
+hbwhelper.quickJoinGui.solo=Solo
+hbwhelper.quickJoinGui.doubles=Doubles
+hbwhelper.quickJoinGui.3v3v3v3=3v3v3v3
+hbwhelper.quickJoinGui.4v4v4v4=4v4v4v4
+hbwhelper.quickJoinGui.capture.noParties=Capt. (No Parties)
+hbwhelper.quickJoinGui.capture.parties=Capture (Parties)
+hbwhelper.quickJoinGui.rush.doubles=Rush Doubles
+hbwhelper.quickJoinGui.rush.4v4v4v4=Rush 4v4v4v4
 hbwhelper.quickJoinGui.backToGame=Back to Game
 
 key.hbwhelper.quickJoin=Bed Wars quick join menu
