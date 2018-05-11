@@ -39,7 +39,7 @@ import java.util.Set;
  */
 public class ConfigGuiFactory implements IModGuiFactory {
     /**
-     * Called when instantiated to initialize with the active minecraft
+     * Called when instantiated to initialize with the active Minecraft
      * instance.
      *
      * @param minecraftInstance the instance
