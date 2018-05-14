@@ -225,16 +225,16 @@ public class GuiQuickJoinMenu extends GuiScreen {
         }
 
         /**
-         * Returns a button for this GUI with specified variant of the button's
+         * Returns a button for this GUI in specified variant of the button's
          * width.
          *
-         * @param variant the variant of the button's width
+         * @param variant the {@link Variant Variant} of the button's width
          * @param x the horizontal location of this button on the GUI
          * @param y the vertical location of this button on the GUI
          * @param buttonText the text shown on this button
          * @param command the command being run in game when this button is
          *         pressed
-         * @return a button for this GUI with the specified variant
+         * @return a button for this GUI in the specified variant
          */
         private static QuickJoinGuiButton getButton(Variant variant,
                                                     int x, int y,
