@@ -49,6 +49,12 @@ public class GameDetector {
             "\u00A7r\u00A7f\u00A7lTo win a game of Bed Wars Capture\u00A7r";
 
     /**
+     * Prompt client received in chat when a game in Dream Mode starts
+     */
+    private static final String DREAM_START_TEXT =
+            "\u00A7r\u00A7f\u00A7lBed Wars Ultimate\u00A7r";
+
+    /**
      * Prompt client received in chat when it rejoins a game
      */
     private static final String REJOIN_TEXT =
@@ -155,7 +161,8 @@ public class GameDetector {
         if (hypixelDetector.isIn() && !inBedWars) {
             String message = event.getMessage().getFormattedText();
             if ((message.contains(ORDINARY_START_TEXT)
-                    || message.contains(CAPTURE_START_TEXT))) {
+                    || message.contains(CAPTURE_START_TEXT))
+                    || message.contains(DREAM_START_TEXT)) {
                 // A Bed Wars game starts
                 inBedWars = true;
                 EventManager.EVENT_BUS.post(new GameStartEvent());
