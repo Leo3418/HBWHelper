@@ -262,7 +262,7 @@ public class ConfigManager {
      */
     void update(GuiOpenEvent event) {
         if (event.getGui() instanceof ConfigGuiFactory.ConfigGuiScreen) {
-            updateHudConfig();
+            updateHudParamRanges();
         }
     }
 
@@ -296,7 +296,7 @@ public class ConfigManager {
                 false,
                 I18n.format("hbwhelper.configGui.alwaysShowEffects.description"))
                 .setLanguageKey("hbwhelper.configGui.alwaysShowEffects.title");
-        updateHudConfig();
+        updateHudParamRanges();
         config.save();
     }
 
@@ -304,7 +304,7 @@ public class ConfigManager {
      * Updates allowed values of HUD parameters to let them reflect the current
      * size of the Minecraft window.
      */
-    private void updateHudConfig() {
+    private void updateHudParamRanges() {
         ScaledResolution scaledResolution =
                 new ScaledResolution(Minecraft.getMinecraft());
         hudX = config.get(Configuration.CATEGORY_CLIENT,
