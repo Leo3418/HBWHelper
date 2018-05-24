@@ -393,8 +393,6 @@ public class GameManager {
          *
          * @param name the name of this trap shown in any prompt in Hypixel
          *         without any formatting code
-         * @see <a href="https://minecraft.gamepedia.com/Formatting_codes"
-         *         target="_top">Formatting codes in Minecraft</a>
          */
         ForgeLevel(String name) {
             this.prompt = "\u00A7r\u00A76" + name + "\u00A7r";
@@ -445,8 +443,6 @@ public class GameManager {
          *
          * @param name the name of this trap shown in any prompt in Hypixel
          *         Bed Wars without any formatting code
-         * @see <a href="https://minecraft.gamepedia.com/Formatting_codes"
-         *         target="_top">Formatting codes in Minecraft</a>
          */
         Trap(String name) {
             this(name, name);
@@ -460,8 +456,6 @@ public class GameManager {
          *         the player's team purchases this trap
          * @param setOffName the name of this trap in the prompt shown when
          *         it sets off
-         * @see <a href="https://minecraft.gamepedia.com/Formatting_codes"
-         *         target="_top">Formatting codes in Minecraft</a>
          */
         Trap(String purchaseName, String setOffName) {
             this.purchasePrompt = "\u00A7r\u00A76" + purchaseName + "\u00A7r";
