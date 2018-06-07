@@ -111,17 +111,10 @@ public class GuiQuickJoinMenu extends GuiScreen {
                 "/play bedwars_capture_party"
         ));
         this.buttonList.add(QuickJoinGuiButton.getButton(
-                QuickJoinGuiButton.Variant.SHORT,
-                buttonX, firstButtonY + (line * BUTTONS_TRANSLATION_INTERVAL),
-                I18n.format("hbwhelper.quickJoinGui.dream.doubles"),
-                "/play bedwars_eight_two_ultimate"
-        ));
-        this.buttonList.add(QuickJoinGuiButton.getButton(
-                QuickJoinGuiButton.Variant.SHORT,
-                (this.width + BUTTONS_INTERVAL) / 2,
-                firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
-                I18n.format("hbwhelper.quickJoinGui.dream.4v4v4v4"),
-                "/play bedwars_four_four_ultimate"
+                QuickJoinGuiButton.Variant.LONG,
+                buttonX, firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
+                I18n.format("hbwhelper.quickJoinGui.dream"),
+                "/play bedwars_castle"
         ));
         // The following should always be the last button
         this.buttonList.add(QuickJoinGuiButton.getButton(
