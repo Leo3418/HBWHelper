@@ -16,8 +16,8 @@ hbwhelper.configGui.showTeamUpgrades.description=显示您的队伍已解锁的�
 
 hbwhelper.hudGui.findingGenerator=正在搜索信号...
 
-hbwhelper.messages.clientRejoin=检测到您重新加入了一局起床战争。您的队友在您断线期间购买的队伍升级无法显示。
-hbwhelper.messages.clientRestart=检测到您已重启 Minecraft 客户端。很抱歉，您之前获得的队伍升级无法重新读取。
+hbwhelper.messages.clientRejoin=检测到您重新加入了一局起床战争，或者加入了一场正在进行中的 Bed Wars Castle 游戏。您的队友在您不在游戏期间购买的队伍升级无法显示。
+hbwhelper.messages.clientRestart=检测到您已重启 Minecraft 客户端，或者加入了一场正在进行中的 Bed Wars Castle 游戏。很抱歉，您的队伍之前获得的队伍升级无法重新读取。
 
 hbwhelper.quickJoinGui.title=起床战争快速加入
 hbwhelper.quickJoinGui.solo=单挑模式
@@ -26,8 +26,7 @@ hbwhelper.quickJoinGui.3v3v3v3=3v3v3v3 模式
 hbwhelper.quickJoinGui.4v4v4v4=4v4v4v4 模式
 hbwhelper.quickJoinGui.capture.noParties=Capture 模式 （无组队）
 hbwhelper.quickJoinGui.capture.parties=Capture 模式 （组队）
-hbwhelper.quickJoinGui.dream.doubles=Ultimate 双人模式
-hbwhelper.quickJoinGui.dream.4v4v4v4=Ultimate 4v4v4v4 模式
+hbwhelper.quickJoinGui.dream=Castle 模式
 hbwhelper.quickJoinGui.backToGame=回到游戏
 
 key.hbwhelper.quickJoin=起床战争快速加入菜单
