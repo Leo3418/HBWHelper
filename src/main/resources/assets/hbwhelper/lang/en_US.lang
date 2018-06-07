@@ -16,8 +16,8 @@ hbwhelper.configGui.showTeamUpgrades.description=Show team upgrades your team ha
 
 hbwhelper.hudGui.findingGenerator=Searching signal...
 
-hbwhelper.messages.clientRejoin=We have detected that you rejoined a Bed Wars game. Any team upgrade your teammate has got since your disconnection cannot be displayed.
-hbwhelper.messages.clientRestart=We have detected that you restarted your Minecraft client. Unfortunately, we cannot retrieve what team upgrade you have got before.
+hbwhelper.messages.clientRejoin=We have detected that you either rejoined a Bed Wars game or joined an in-progress Bed Wars Castle game. Any team upgrade your teammate has got when you were not in the game cannot be displayed.
+hbwhelper.messages.clientRestart=We have detected that you either restarted your Minecraft client or joined an in-progress Bed Wars Castle game. Unfortunately, we cannot retrieve what team upgrade your team has got before.
 
 hbwhelper.quickJoinGui.title=Bed Wars Quick Join
 hbwhelper.quickJoinGui.solo=Solo
@@ -26,8 +26,7 @@ hbwhelper.quickJoinGui.3v3v3v3=3v3v3v3
 hbwhelper.quickJoinGui.4v4v4v4=4v4v4v4
 hbwhelper.quickJoinGui.capture.noParties=Capt. (No Parties)
 hbwhelper.quickJoinGui.capture.parties=Capture (Parties)
-hbwhelper.quickJoinGui.dream.doubles=Ultimate Doubles
-hbwhelper.quickJoinGui.dream.4v4v4v4=Ultimate 4v4v4v4
+hbwhelper.quickJoinGui.dream=Castle
 hbwhelper.quickJoinGui.backToGame=Back to Game
 
 key.hbwhelper.quickJoin=Bed Wars quick join menu
