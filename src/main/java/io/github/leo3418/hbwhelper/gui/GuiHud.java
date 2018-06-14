@@ -19,10 +19,11 @@
 package io.github.leo3418.hbwhelper.gui;
 
 import io.github.leo3418.hbwhelper.ConfigManager;
+import io.github.leo3418.hbwhelper.game.CountedTrap;
+import io.github.leo3418.hbwhelper.game.GameManager;
 import io.github.leo3418.hbwhelper.util.ArmorReader;
 import io.github.leo3418.hbwhelper.util.EffectsReader;
 import io.github.leo3418.hbwhelper.util.GameDetector;
-import io.github.leo3418.hbwhelper.util.GameManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiChat;
@@ -296,8 +297,8 @@ public class GuiHud extends Gui {
                 List<ItemStack> itemsForTraps =
                         new ArrayList<ItemStack>(GameManager.MAX_TRAPS + 1);
                 itemsForTraps.add(new ItemStack(LEATHER));
-                for (GameManager.Trap trap : game.getTraps()) {
-                    switch (trap) {
+                for (CountedTrap countedTrap : game.getTraps()) {
+                    switch (countedTrap.getTrapType()) {
                         case ORDINARY:
                             itemsForTraps.add(new ItemStack(TRIPWIRE_HOOK));
                             break;

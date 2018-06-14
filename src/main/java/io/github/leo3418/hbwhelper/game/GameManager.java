@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.leo3418.hbwhelper.util;
+package io.github.leo3418.hbwhelper.game;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -98,14 +98,19 @@ public class GameManager {
     private static GameManager instance;
 
     /**
+     * Type of the current Bed Wars game
+     */
+    private final GameType gameType;
+
+    /**
      * Trap queue
      */
-    private final Queue<Trap> traps;
+    private final Queue<CountedTrap> trapQueue;
 
     /**
      * Cache of an unmodifiable copy of the trap queue
      */
-    private final Collection<Trap> readOnlyTraps;
+    private final Collection<CountedTrap> readOnlyTraps;
 
     /**
      * Position of the diamond generator being read
@@ -134,12 +139,18 @@ public class GameManager {
 
     /**
      * Constructs a new {@code GameManager} instance.
+     *
+     * @param gameType the type of the current Bed Wars game
      */
-    public GameManager() {
-        forgeLevel = ForgeLevel.ORDINARY_FORGE;
-        traps = new ArrayDeque<Trap>(MAX_TRAPS);
-        readOnlyTraps =
-                Collections.unmodifiableCollection(traps);
+    public GameManager(GameType gameType) {
+        this.gameType = gameType;
+        this.forgeLevel = gameType.initialForge;
+        this.trapQueue = new ArrayDeque<CountedTrap>(MAX_TRAPS);
+        for (CountedTrap countedTrap : gameType.initialTrapQueue) {
+            this.trapQueue.add(countedTrap.getCopy());
+        }
+        this.readOnlyTraps =
+                Collections.unmodifiableCollection(trapQueue);
         instance = this;
     }
 
@@ -160,6 +171,19 @@ public class GameManager {
      */
     public static GameManager getInstance() {
         return instance;
+    }
+
+    /**
+     * Clears the reference to the last created instance of this class, or does
+     * nothing when an instance has never been created.
+     * <p>
+     * This method is useful when you wish to recover the state of this program
+     * to the original state where no instance of this class has been created,
+     * and any of your program's behavior relies on whether the
+     * {@link #getInstance()} method returns {@code null}.
+     */
+    public static void clearInstance() {
+        instance = null;
     }
 
     /**
@@ -244,7 +268,7 @@ public class GameManager {
      * @return an <b>unmodifiable</b> {@code Collection} derived from the trap
      *         queue
      */
-    public Collection<Trap> getTraps() {
+    public Collection<CountedTrap> getTraps() {
         return readOnlyTraps;
     }
 
@@ -270,7 +294,7 @@ public class GameManager {
                     return;
                 }
             }
-            for (Trap trap : Trap.values()) {
+            for (TrapType trapType : TrapType.values()) {
                 /*
                 If client temporarily leaves the current game, and a trap is
                 set off before the client rejoins, the local trap queue will
@@ -278,25 +302,34 @@ public class GameManager {
                 update the local trap queue correctly after client rejoins a
                 game.
                  */
-                if (message.contains(trap.purchasePrompt)) {
+                if (message.contains(trapType.purchasePrompt)) {
                     /*
                     If the local trap queue is full but new trap is purchased,
                     some traps must have been set off since client leaves
                      */
-                    while (traps.size() >= MAX_TRAPS) {
-                        traps.remove();
+                    while (trapQueue.size() >= MAX_TRAPS) {
+                        trapQueue.remove();
                     }
-                    traps.add(trap);
+                    trapQueue.add(new CountedTrap(trapType, gameType.trapUses));
                     return;
-                } else if (message.contains(trap.setOffPrompt)) {
+                } else if (message.contains(trapType.setOffPrompt)) {
                     /*
                     Removes all traps at the front of the trap queue that have
                     already been set off since client leaves
                      */
-                    boolean removed = false;
-                    while (!removed && !traps.isEmpty()) {
-                        if (traps.remove() == trap) {
-                            removed = true;
+                    boolean consumed = false;
+                    while (!consumed && !trapQueue.isEmpty()) {
+                        CountedTrap firstInQueue = trapQueue.peek();
+                        @SuppressWarnings("all")
+                        TrapType firstTrapType = firstInQueue.getTrapType();
+                        if (firstTrapType == trapType) {
+                            firstInQueue.setOff();
+                            if (firstInQueue.hasUsedUp()) {
+                                trapQueue.remove();
+                            }
+                            consumed = true;
+                        } else {
+                            trapQueue.remove();
                         }
                     }
                     return;
@@ -349,117 +382,5 @@ public class GameManager {
             }
         }
         return -1;
-    }
-
-    /**
-     * Enumeration of all resource generation speed levels on the player's base
-     * island in Hypixel Bed Wars.
-     */
-    public enum ForgeLevel {
-        /**
-         * The initial resource generation speed level without any upgrade
-         */
-        @SuppressWarnings("unused")
-        ORDINARY_FORGE("Not upgraded"),
-        /**
-         * Resource generation speed level with "Iron Forge" upgrade
-         */
-        @SuppressWarnings("unused")
-        IRON_FORGE("Iron Forge"),
-        /**
-         * Resource generation speed level with "Golden Forge" upgrade
-         */
-        @SuppressWarnings("unused")
-        GOLDEN_FORGE("Golden Forge"),
-        /**
-         * Resource generation speed level with "Emerald Forge" upgrade
-         */
-        @SuppressWarnings("unused")
-        EMERALD_FORGE("Emerald Forge"),
-        /**
-         * Resource generation speed level with "Molten Forge" upgrade
-         */
-        @SuppressWarnings("unused")
-        MOLTEN_FORGE("Molten Forge");
-
-        /**
-         * Part of the prompt shown when the player's team unlocks this level
-         * of resource generation speed
-         */
-        private final String prompt;
-
-        /**
-         * Constructs a new constant of resource generation speed levels.
-         *
-         * @param name the name of this trap shown in any prompt in Hypixel
-         *         without any formatting code
-         */
-        ForgeLevel(String name) {
-            this.prompt = "\u00A7r\u00A76" + name + "\u00A7r";
-        }
-    }
-
-    /**
-     * Enumeration of all traps in Hypixel Bed Wars.
-     */
-    public enum Trap {
-        /**
-         * The ordinary "It's a trap!"
-         */
-        @SuppressWarnings("unused")
-        ORDINARY("It's a trap!"),
-        /**
-         * The "Counter-Offensive Trap"
-         */
-        @SuppressWarnings("unused")
-        COUNTER("Counter-Offensive Trap"),
-        /**
-         * The "Alarm Trap"
-         * <p>
-         * This value has an extra argument because Hypixel uses "Alarm Trap"
-         * and "Alarm trap" at the same time.
-         */
-        @SuppressWarnings("unused")
-        ALARM("Alarm Trap", "Alarm trap"),
-        /**
-         * The "Miner Fatigue Trap"
-         */
-        @SuppressWarnings("unused")
-        MINER_FATIGUE("Miner Fatigue Trap");
-
-        /**
-         * Part of the prompt shown when the player's team purchases this trap
-         */
-        private final String purchasePrompt;
-
-        /**
-         * Part of the prompt shown when this trap is set off
-         */
-        private final String setOffPrompt;
-
-        /**
-         * Constructs a new constant of traps whose name is <b>consistent</b>
-         * in Hypixel Bed Wars.
-         *
-         * @param name the name of this trap shown in any prompt in Hypixel
-         *         Bed Wars without any formatting code
-         */
-        Trap(String name) {
-            this(name, name);
-        }
-
-        /**
-         * Constructs a new constant of traps whose name is <b>inconsistent</b>
-         * in Hypixel Bed Wars.
-         *
-         * @param purchaseName the name of this trap in the prompt shown when
-         *         the player's team purchases this trap
-         * @param setOffName the name of this trap in the prompt shown when
-         *         it sets off
-         */
-        Trap(String purchaseName, String setOffName) {
-            this.purchasePrompt = "\u00A7r\u00A76" + purchaseName + "\u00A7r";
-            this.setOffPrompt = "\u00A7c\u00A7l" + setOffName;
-        }
     }
 }

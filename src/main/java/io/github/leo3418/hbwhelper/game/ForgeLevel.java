@@ -1,0 +1,64 @@
+/*
+ * HBW Helper: Hypixel Bed Wars Helper Minecraft Forge Mod
+ * Copyright (C) 2018 Leo3418
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package io.github.leo3418.hbwhelper.game;
+
+/**
+ * Enumeration of all resource generation speed levels on the player's base
+ * island in Hypixel Bed Wars.
+ *
+ * @author Leo
+ */
+public enum ForgeLevel {
+    /**
+     * The initial resource generation speed level without any upgrade
+     */
+    ORDINARY_FORGE("Not upgraded"),
+    /**
+     * Resource generation speed level with "Iron Forge" upgrade
+     */
+    IRON_FORGE("Iron Forge"),
+    /**
+     * Resource generation speed level with "Golden Forge" upgrade
+     */
+    GOLDEN_FORGE("Golden Forge"),
+    /**
+     * Resource generation speed level with "Emerald Forge" upgrade
+     */
+    EMERALD_FORGE("Emerald Forge"),
+    /**
+     * Resource generation speed level with "Molten Forge" upgrade
+     */
+    MOLTEN_FORGE("Molten Forge");
+
+    /**
+     * Part of the prompt shown when the player's team unlocks this level
+     * of resource generation speed
+     */
+    final String prompt;
+
+    /**
+     * Constructs a new constant of resource generation speed levels.
+     *
+     * @param name the name of this trap shown in any prompt in Hypixel
+     *         without any formatting code
+     */
+    ForgeLevel(String name) {
+        this.prompt = "\u00A7r\u00A76" + name + "\u00A7r";
+    }
+}
