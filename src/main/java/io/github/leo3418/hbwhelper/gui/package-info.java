@@ -17,7 +17,7 @@
  */
 
 /**
- * Classes relate to graphical user interface of this mod.
+ * Classes relating to graphical user interface of this mod.
  *
  * @author Leo
  */

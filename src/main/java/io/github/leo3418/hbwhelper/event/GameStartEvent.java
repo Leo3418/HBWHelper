@@ -23,13 +23,9 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 /**
  * The event fired when client finishes waiting for a Bed Wars game to start
  * and joins the game.
- * <p>
- * This is different from {@link ClientRejoinGameEvent}. When this event is
- * fired, client has joined a new Bed Wars server, waited for other players to
- * join, and the game starts. When {@code ClientRejoinGameEvent} is fired,
- * however, client connects to a Bed Wars server it has connected before.
  *
  * @author Leo
+ * @see ClientJoinInProgressGameEvent
  * @see ClientRejoinGameEvent
  */
 public class GameStartEvent extends Event {

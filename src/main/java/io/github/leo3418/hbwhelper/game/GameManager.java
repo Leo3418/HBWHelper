@@ -43,7 +43,7 @@ import java.util.*;
  * previous {@code GameManager} object can and <b>should</b> be discarded, and
  * a new object should be created for the new game.
  * <p>
- * An object of this class can be created by one of these manners:
+ * An object of this class can be created in one of these manners:
  * <ul>
  * <li>Merely call the constructor and not assign the new object to a variable,
  * and retrieve the last created object with {@link #getInstance()}</li>
@@ -158,9 +158,9 @@ public class GameManager {
      * Returns a reference to the last created instance of this class, or
      * {@code null} if an instance has never been created.
      * <p>
-     * The returned reference <b>should not</b> be stored into a variable
-     * because it is only useful for the current game the client is playing.
-     * When the client joins another game, this method will return reference to
+     * The returned reference <b>should not</b> be stored into a variable. The
+     * reference is only useful for the current game the client is playing. When
+     * the client joins another game, this method will return reference to
      * another instance of this class, and the previous instance should be
      * discarded and recycled by the garbage collector. If a reference to the
      * previous instance were still stored in a variable, it would prevent the
