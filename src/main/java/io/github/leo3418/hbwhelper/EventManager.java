@@ -18,12 +18,15 @@
 
 package io.github.leo3418.hbwhelper;
 
+import io.github.leo3418.hbwhelper.event.ClientJoinInProgressGameEvent;
 import io.github.leo3418.hbwhelper.event.ClientRejoinGameEvent;
 import io.github.leo3418.hbwhelper.event.GameStartEvent;
+import io.github.leo3418.hbwhelper.event.TickCounterTimeUpEvent;
+import io.github.leo3418.hbwhelper.game.GameManager;
+import io.github.leo3418.hbwhelper.game.GameTypeDetector;
 import io.github.leo3418.hbwhelper.gui.GuiHud;
 import io.github.leo3418.hbwhelper.gui.GuiQuickJoinMenu;
 import io.github.leo3418.hbwhelper.util.GameDetector;
-import io.github.leo3418.hbwhelper.util.GameManager;
 import io.github.leo3418.hbwhelper.util.HypixelDetector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -149,7 +152,14 @@ public class EventManager {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onGameStart(GameStartEvent event) {
-        new GameManager();
+        GameManager.clearInstance();
+        GameTypeDetector.prepareToReadScoreboard();
+    }
+
+    @SubscribeEvent
+    @SuppressWarnings("unused")
+    public void onClientJoinIPGame(ClientJoinInProgressGameEvent event) {
+        GameManager.clearInstance();
     }
 
     @SubscribeEvent
@@ -160,12 +170,21 @@ public class EventManager {
             Minecraft.getMinecraft().player.sendMessage(
                     new TextComponentString(PROMPT_PREFIX
                             + I18n.format("hbwhelper.messages.clientRestart")));
-            new GameManager();
+            GameTypeDetector.prepareToReadScoreboard();
         } else {
             // Client is rejoining a Bed Wars game, but Minecraft is not closed
             Minecraft.getMinecraft().player.sendMessage(
                     new TextComponentString(PROMPT_PREFIX
                             + I18n.format("hbwhelper.messages.clientRejoin")));
+        }
+    }
+
+    @SubscribeEvent
+    @SuppressWarnings("unused")
+    public void onTickCounterTimeUp(TickCounterTimeUpEvent event) {
+        if (GameTypeDetector.isTickCounterTimingUp(event)) {
+            GameTypeDetector.stopTickCounter();
+            new GameManager(GameTypeDetector.getGameType());
         }
     }
 
