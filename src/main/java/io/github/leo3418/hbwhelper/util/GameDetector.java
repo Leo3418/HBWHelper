@@ -19,6 +19,7 @@
 package io.github.leo3418.hbwhelper.util;
 
 import io.github.leo3418.hbwhelper.EventManager;
+import io.github.leo3418.hbwhelper.event.ClientJoinInProgressGameEvent;
 import io.github.leo3418.hbwhelper.event.ClientRejoinGameEvent;
 import io.github.leo3418.hbwhelper.event.GameStartEvent;
 import net.minecraft.client.gui.GuiDownloadTerrain;
@@ -37,13 +38,13 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnection
  */
 public class GameDetector {
     /**
-     * Prompt client received in chat when an ordinary game starts
+     * Prompt client received in chat when a new ordinary game starts
      */
     private static final String ORDINARY_START_TEXT =
             "\u00A7r\u00A7f\u00A7lBed Wars\u00A7r";
 
     /**
-     * Prompt client received in chat when a game in Capture Mode starts
+     * Prompt client received in chat when a new game in Capture Mode starts
      */
     private static final String CAPTURE_START_TEXT =
             "\u00A7r\u00A7f\u00A7lTo win a game of Bed Wars Capture\u00A7r";
@@ -59,6 +60,13 @@ public class GameDetector {
      */
     private static final String REJOIN_TEXT =
             "\u00A7e\u00A7lTo leave Bed Wars, type /lobby\u00A7r";
+
+    /**
+     * Prompt client received in chat when it joins an in-progress game for the
+     * first time
+     */
+    private static final String IN_PROGRESS_GAME_JOIN_TEXT =
+            "\u00A7aFound an in-progress Bed Wars game! Teleporting you to ";
 
     /**
      * The only instance of this class
@@ -143,7 +151,7 @@ public class GameDetector {
 
     /**
      * Updates whether client is in a Bed Wars game by analyzing chat message
-     * client receives.
+     * client receives, and fires corresponding events.
      * <p>
      * If a Bed Wars game starts, fires a {@link GameStartEvent} on this mod's
      * {@link EventManager#EVENT_BUS proprietary event bus.}
@@ -152,14 +160,19 @@ public class GameDetector {
      * {@link ClientRejoinGameEvent} on this mod's
      * {@link EventManager#EVENT_BUS proprietary event bus.}
      * <p>
+     * If client is joining an in-progress game which it never played before
+     * (which is different from rejoining a game), fires a
+     * {@link ClientJoinInProgressGameEvent} on this mod's
+     * {@link EventManager#EVENT_BUS proprietary event bus.}
+     * <p>
      * This method should be called whenever a {@link ClientChatReceivedEvent}
      * is fired.
      *
      * @param event the event fired when client receives a chat message
      */
     public void update(ClientChatReceivedEvent event) {
+        String message = event.message.getFormattedText();
         if (hypixelDetector.isIn() && !inBedWars) {
-            String message = event.message.getFormattedText();
             if ((message.contains(ORDINARY_START_TEXT)
                     || message.contains(CAPTURE_START_TEXT))
                     || message.contains(DREAM_START_TEXT)) {
@@ -171,6 +184,25 @@ public class GameDetector {
                 inBedWars = true;
                 EventManager.EVENT_BUS.post(new ClientRejoinGameEvent());
             }
+        } else if (message.contains(IN_PROGRESS_GAME_JOIN_TEXT)) {
+            // Client joins a Bed Wars game that is in progress
+            /*
+            There is no need to change `inBedWars` either from `true` to `false`
+            or from `false` to `true` in this branch. Both jobs are done by
+            other code in this class.
+
+            No matter whether the client is in Bed Wars or not, immediately
+            after client receives the text in this else-if branch's condition,
+            the "Downloading terrain" screen shows up, changing `inBedWars` to
+            `false`.
+
+            Because even in this case, Hypixel makes things happen like if
+            the client is rejoining a game it was in before, this else-if
+            branch should only fire event; changing `inBedWars` to `true`
+            should be done after the rejoin prompt text is sent to client.
+             */
+            EventManager.EVENT_BUS.post(
+                    new ClientJoinInProgressGameEvent());
         }
     }
 }
