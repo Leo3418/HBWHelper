@@ -113,7 +113,8 @@ public class GameDetector {
      * Updates whether client is in a Bed Wars game when it transfers from one
      * server to another.
      * <p>
-     * The screen with dirt background will show up. when client transfers.
+     * The screen with dirt background, which might be accompanied by the text
+     * "Downloading terrain", will show up when client transfers.
      * <p>
      * This method should be called when a {@link GuiOpenEvent} is fired.
      *

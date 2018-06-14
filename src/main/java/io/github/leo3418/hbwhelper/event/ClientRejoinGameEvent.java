@@ -21,14 +21,10 @@ package io.github.leo3418.hbwhelper.event;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
- * The event fired when client joins a Bed Wars server which is running a game.
- * <p>
- * This is different from {@link GameStartEvent}. When this event is fired,
- * client connects to a Bed Wars server it has connected before. When
- * {@code GameStartEvent} is fired, however, client has joined a new Bed Wars
- * server, waited for other players to join, and the game starts.
+ * The event fired when client joins a Bed Wars server it has connected before.
  *
  * @author Leo
+ * @see ClientJoinInProgressGameEvent
  * @see GameStartEvent
  */
 public class ClientRejoinGameEvent extends Event {
