@@ -50,10 +50,9 @@ import java.util.*;
  * <li>Call the constructor and assign the new object to a variable, then
  * assign all objects created later to that variable</li>
  * </ul>
- * Like some other classes under this package, this class is designed <b>to be
- * used only when the client is in a Minecraft world</b>. Calling some methods
- * when the client is not in a Minecraft world (e.g. in the main menu) might
- * produce {@link NullPointerException}.
+ * This class is designed <b>to be used only when the client is in a Minecraft
+ * world</b>. Calling some methods when the client is not in a Minecraft world
+ * (e.g. in the main menu) might produce {@link NullPointerException}.
  *
  * @author Leo
  */
