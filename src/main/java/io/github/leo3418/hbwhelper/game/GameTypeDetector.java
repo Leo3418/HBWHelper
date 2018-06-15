@@ -18,32 +18,23 @@
 
 package io.github.leo3418.hbwhelper.game;
 
-import io.github.leo3418.hbwhelper.event.TickCounterTimeUpEvent;
+import io.github.leo3418.hbwhelper.EventManager;
+import io.github.leo3418.hbwhelper.event.GameTypeDetectedEvent;
 import io.github.leo3418.hbwhelper.util.ScoreboardReader;
-import io.github.leo3418.hbwhelper.util.TickCounter;
 
 /**
  * Detects the {@link GameType} of the current Bed Wars game.
  * <p>
- * Like some other classes under this package, this class is designed <b>to be
- * used only when the client is in a Minecraft world</b>. Calling some methods
- * when the client is not in a Minecraft world (e.g. in the main menu) might
- * produce {@link NullPointerException}.
+ * This is a Singleton class. Only one instance of this class may be created
+ * per runtime.
  *
  * @author Leo
  */
 public class GameTypeDetector {
     /**
-     * Length of postponement to read scoreboard after client joins a game,
-     * whose unit is second
+     * Text that appears on scoreboard only when client is in a Bed Wars game
      */
-    private static final double READ_POSTPONEMENT = 2.0;
-
-    /**
-     * {@link TickCounter} which defers reading of scoreboard
-     */
-    private static final TickCounter TICK_COUNTER =
-            new TickCounter(READ_POSTPONEMENT);
+    private static final String GAME_SCOREBOARD_TEXT = "Kills:";
 
     /**
      * Text that appears on scoreboard only when client is in Bed Wars Castle
@@ -52,50 +43,80 @@ public class GameTypeDetector {
     private static final String CASTLE_SCOREBOARD_TEXT = "Streak Points:";
 
     /**
-     * Prevents instantiation of this class.
+     * The only instance of this class
+     */
+    private static final GameTypeDetector INSTANCE = new GameTypeDetector();
+
+    /**
+     * Whether this object should detect the current game type
+     */
+    private boolean shouldDetect;
+
+    /**
+     * Implementation of Singleton design pattern, which allows only one
+     * instance of this class to be created.
      */
     private GameTypeDetector() {
     }
 
     /**
-     * Prepares to read scoreboard.
+     * Returns the instance of this class.
+     *
+     * @return the instance of this class
+     */
+    public static GameTypeDetector getInstance() {
+        return INSTANCE;
+    }
+
+    /**
+     * Starts detection of game type.
+     */
+    public void startDetection() {
+        shouldDetect = true;
+    }
+
+    /**
+     * If a detection has been started, attempts to find the current game type.
+     * Otherwise, does nothing.
      * <p>
-     * Because scoreboard might not be available for reading immediately after
-     * a game starts, client rejoins a game, or client joins an in-progress
-     * game, this method was implemented to postpone reading of scoreboard.
+     * If the type is confirmed, fires a {@link GameTypeDetectedEvent} on this
+     * mod's {@link EventManager#EVENT_BUS proprietary event bus.}
+     * <p>
+     * Calling this method when the client is not in a Minecraft world
+     * (e.g. in the main menu) after invocation of {@link #startDetection()}
+     * method can produce {@link NullPointerException}. When the client leaves
+     * the Minecraft world, immediately call the {@link #stopDetection()}
+     * method, so execution of this method will no longer produce
+     * {@code NullPointerException} until {@link #startDetection()} is called
+     * again.
+     * <p>
+     * This method should be called whenever a
+     * {@link net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent
+     * ClientTickEvent} is fired.
      */
-    public static void prepareToReadScoreboard() {
-        TICK_COUNTER.reset();
-        TICK_COUNTER.start();
+    public void detect() {
+        if (shouldDetect) {
+            if (ScoreboardReader.contains(GAME_SCOREBOARD_TEXT)) {
+                EventManager.EVENT_BUS.post(
+                        new GameTypeDetectedEvent(getGameType()));
+                stopDetection();
+            }
+        }
     }
 
     /**
-     * Returns whether the {@link TickCounter} expiring in a
-     * {@link TickCounterTimeUpEvent} is the {@code TickCounter} initialized by
-     * this class.
+     * Stops detection of game type.
+     */
+    public void stopDetection() {
+        shouldDetect = false;
+    }
+
+    /**
+     * Returns the current {@link GameType} inferred from scoreboard.
      *
-     * @param event the event fired when a tick counter times up
-     * @return whether the {@code TickCounter} expiring in the
-     *         {@code TickCounterTimeUpEvent} is the {@code TickCounter}
-     *         initialized by this class
+     * @return the current {@link GameType} inferred from scoreboard
      */
-    public static boolean isTickCounterTimingUp(TickCounterTimeUpEvent event) {
-        return event.getExpiringCounter() == TICK_COUNTER;
-    }
-
-    /**
-     * Stops the {@link TickCounter} created by this class.
-     */
-    public static void stopTickCounter() {
-        TICK_COUNTER.stop();
-    }
-
-    /**
-     * Returns the current {@link GameType}.
-     *
-     * @return the current {@link GameType}
-     */
-    public static GameType getGameType() {
+    private GameType getGameType() {
         if (ScoreboardReader.contains(CASTLE_SCOREBOARD_TEXT)) {
             return GameType.CASTLE;
         } else {

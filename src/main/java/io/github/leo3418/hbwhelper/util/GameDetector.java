@@ -20,6 +20,7 @@ package io.github.leo3418.hbwhelper.util;
 
 import io.github.leo3418.hbwhelper.EventManager;
 import io.github.leo3418.hbwhelper.event.ClientJoinInProgressGameEvent;
+import io.github.leo3418.hbwhelper.event.ClientLeaveGameEvent;
 import io.github.leo3418.hbwhelper.event.ClientRejoinGameEvent;
 import io.github.leo3418.hbwhelper.event.GameStartEvent;
 import net.minecraft.client.gui.GuiDownloadTerrain;
@@ -116,7 +117,11 @@ public class GameDetector {
      * The screen with dirt background, which might be accompanied by the text
      * "Downloading terrain", will show up when client transfers.
      * <p>
-     * This method should be called when a {@link GuiOpenEvent} is fired.
+     * If client is leaving a Bed Wars game, fires a
+     * {@link ClientLeaveGameEvent} on this mod's {@link EventManager#EVENT_BUS
+     * proprietary event bus.}
+     * <p>
+     * This method should be called whenever a {@link GuiOpenEvent} is fired.
      *
      * @param event the event fired when the screen with dirt background shows
      *         up
@@ -124,6 +129,7 @@ public class GameDetector {
     public void update(GuiOpenEvent event) {
         if (inBedWars && event.gui instanceof GuiDownloadTerrain) {
             inBedWars = false;
+            EventManager.EVENT_BUS.post(new ClientLeaveGameEvent());
         }
     }
 
@@ -136,6 +142,9 @@ public class GameDetector {
      * ClientDisconnectionFromServerEvent}, which is fired when client
      * disconnects.
      * <p>
+     * If client is leaving a Bed Wars game, fires a
+     * {@link ClientLeaveGameEvent} on this mod's {@link EventManager#EVENT_BUS
+     * proprietary event bus.}
      * This method should be called whenever a {@link FMLNetworkEvent} is fired.
      *
      * @param event the event fired when client joins or leaves a server
@@ -147,6 +156,7 @@ public class GameDetector {
             to detect ClientDisconnectionFromServerEvent
              */
             inBedWars = false;
+            EventManager.EVENT_BUS.post(new ClientLeaveGameEvent());
         }
     }
 

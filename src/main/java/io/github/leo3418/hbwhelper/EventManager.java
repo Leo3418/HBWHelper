@@ -18,10 +18,7 @@
 
 package io.github.leo3418.hbwhelper;
 
-import io.github.leo3418.hbwhelper.event.ClientJoinInProgressGameEvent;
-import io.github.leo3418.hbwhelper.event.ClientRejoinGameEvent;
-import io.github.leo3418.hbwhelper.event.GameStartEvent;
-import io.github.leo3418.hbwhelper.event.TickCounterTimeUpEvent;
+import io.github.leo3418.hbwhelper.event.*;
 import io.github.leo3418.hbwhelper.game.GameManager;
 import io.github.leo3418.hbwhelper.game.GameTypeDetector;
 import io.github.leo3418.hbwhelper.gui.GuiHud;
@@ -39,6 +36,7 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 /**
@@ -82,6 +80,11 @@ public class EventManager {
     private final GameDetector gameDetector;
 
     /**
+     * The {@link GameTypeDetector} instance
+     */
+    private final GameTypeDetector gameTypeDetector;
+
+    /**
      * The {@link ConfigManager} instance
      */
     private final ConfigManager configManager;
@@ -98,6 +101,7 @@ public class EventManager {
     private EventManager() {
         hypixelDetector = HypixelDetector.getInstance();
         gameDetector = GameDetector.getInstance();
+        gameTypeDetector = GameTypeDetector.getInstance();
         configManager = ConfigManager.getInstance();
         guiHud = GuiHud.getInstance();
     }
@@ -151,9 +155,15 @@ public class EventManager {
 
     @SubscribeEvent
     @SuppressWarnings("unused")
+    public void onClientTick(TickEvent.ClientTickEvent event) {
+        gameTypeDetector.detect();
+    }
+
+    @SubscribeEvent
+    @SuppressWarnings("unused")
     public void onGameStart(GameStartEvent event) {
         GameManager.clearInstance();
-        GameTypeDetector.prepareToReadScoreboard();
+        gameTypeDetector.startDetection();
     }
 
     @SubscribeEvent
@@ -170,7 +180,7 @@ public class EventManager {
             Minecraft.getMinecraft().thePlayer.addChatMessage(
                     new ChatComponentText(PROMPT_PREFIX
                             + I18n.format("hbwhelper.messages.clientRestart")));
-            GameTypeDetector.prepareToReadScoreboard();
+            gameTypeDetector.startDetection();
         } else {
             // Client is rejoining a Bed Wars game, but Minecraft is not closed
             Minecraft.getMinecraft().thePlayer.addChatMessage(
@@ -181,11 +191,14 @@ public class EventManager {
 
     @SubscribeEvent
     @SuppressWarnings("unused")
-    public void onTickCounterTimeUp(TickCounterTimeUpEvent event) {
-        if (GameTypeDetector.isTickCounterTimingUp(event)) {
-            GameTypeDetector.stopTickCounter();
-            new GameManager(GameTypeDetector.getGameType());
-        }
+    public void onClientLeaveGame(ClientLeaveGameEvent event) {
+        gameTypeDetector.stopDetection();
+    }
+
+    @SubscribeEvent
+    @SuppressWarnings("unused")
+    public void onGameTypeDetected(GameTypeDetectedEvent event) {
+        new GameManager(event.getGameType());
     }
 
     @SubscribeEvent
