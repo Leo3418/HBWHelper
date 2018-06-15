@@ -182,38 +182,40 @@ public class GameDetector {
      * @param event the event fired when client receives a chat message
      */
     public void update(ClientChatReceivedEvent event) {
-        String message = event.getMessage().getFormattedText();
-        if (hypixelDetector.isIn() && !inBedWars) {
-            if ((message.contains(ORDINARY_START_TEXT)
-                    || message.contains(CAPTURE_START_TEXT))
-                    || message.contains(DREAM_START_TEXT)) {
-                // A Bed Wars game starts
-                inBedWars = true;
-                EventManager.EVENT_BUS.post(new GameStartEvent());
-            } else if (message.contains(REJOIN_TEXT)) {
-                // Client rejoins a Bed Wars game
-                inBedWars = true;
-                EventManager.EVENT_BUS.post(new ClientRejoinGameEvent());
+        if (hypixelDetector.isIn()) {
+            String message = event.getMessage().getFormattedText();
+            if (message.contains(IN_PROGRESS_GAME_JOIN_TEXT)) {
+                // Client joins a Bed Wars game that is in progress
+                /*
+                There is no need to change `inBedWars` either from `true` to
+                `false` or from `false` to `true` here. Both jobs are done by
+                other code in this class.
+
+                No matter whether the client is in Bed Wars or not, immediately
+                after client receives the text in this if statement's condition,
+                the "Downloading terrain" screen shows up, changing `inBedWars`
+                to `false`.
+
+                Because even in this case, Hypixel makes things happen like if
+                the client is rejoining a game it was in before, this code block
+                should only fire event; changing `inBedWars` to `true` should be
+                done after the rejoin prompt text is sent to client.
+                 */
+                EventManager.EVENT_BUS.post(
+                        new ClientJoinInProgressGameEvent());
+            } else if (!inBedWars) {
+                if ((message.contains(ORDINARY_START_TEXT)
+                        || message.contains(CAPTURE_START_TEXT))
+                        || message.contains(DREAM_START_TEXT)) {
+                    // A Bed Wars game starts
+                    inBedWars = true;
+                    EventManager.EVENT_BUS.post(new GameStartEvent());
+                } else if (message.contains(REJOIN_TEXT)) {
+                    // Client rejoins a Bed Wars game
+                    inBedWars = true;
+                    EventManager.EVENT_BUS.post(new ClientRejoinGameEvent());
+                }
             }
-        } else if (message.contains(IN_PROGRESS_GAME_JOIN_TEXT)) {
-            // Client joins a Bed Wars game that is in progress
-            /*
-            There is no need to change `inBedWars` either from `true` to `false`
-            or from `false` to `true` in this branch. Both jobs are done by
-            other code in this class.
-
-            No matter whether the client is in Bed Wars or not, immediately
-            after client receives the text in this else-if branch's condition,
-            the "Downloading terrain" screen shows up, changing `inBedWars` to
-            `false`.
-
-            Because even in this case, Hypixel makes things happen like if
-            the client is rejoining a game it was in before, this else-if
-            branch should only fire event; changing `inBedWars` to `true`
-            should be done after the rejoin prompt text is sent to client.
-             */
-            EventManager.EVENT_BUS.post(
-                    new ClientJoinInProgressGameEvent());
         }
     }
 }
