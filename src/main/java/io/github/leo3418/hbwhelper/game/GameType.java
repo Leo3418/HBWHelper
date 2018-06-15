@@ -30,7 +30,7 @@ import java.util.List;
  *
  * @author Leo
  */
-enum GameType {
+public enum GameType {
     /**
      * Normal game modes in which no team upgrades will be unlocked when the
      * game starts, including:
