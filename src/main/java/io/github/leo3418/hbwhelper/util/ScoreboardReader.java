@@ -25,6 +25,7 @@ import net.minecraft.scoreboard.Scoreboard;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.regex.Pattern;
 
 /**
  * Provides methods for reading the scoreboard and getting information from it.
@@ -38,7 +39,7 @@ import java.util.Collection;
  */
 public class ScoreboardReader {
     /**
-     * Regular expression of formatting codes in Minecraft
+     * Pattern of regular expression of formatting codes in Minecraft
      * <p>
      * I have to use the Unicode encoding for the section sign ({@code §})
      * because Minecraft is so mean that it does not want the player to use
@@ -50,7 +51,8 @@ public class ScoreboardReader {
      * @see <a href="https://en.wikipedia.org/wiki/Section_sign">
      *         The section sign's information on Wikipedia</a>
      */
-    private static final String FORMATTING_REGEX = "\u00A7[0-9a-fk-or]";
+    private static final Pattern FORMATTING_PATTERN =
+            Pattern.compile("\u00A7[0-9a-fk-or]");
 
     /**
      * Prevents instantiation of this class.
@@ -93,8 +95,8 @@ public class ScoreboardReader {
      *
      * @return a {@code Collection} of all lines on the scoreboard without
      *         formatting codes
-     * @see #FORMATTING_REGEX Regular expression of formatting codes in
-     *         Minecraft
+     * @see #FORMATTING_PATTERN Pattern of regular expression of formatting
+     *         codes in Minecraft
      */
     private static Collection<String> getLines() {
         Scoreboard scoreboard = Minecraft.getMinecraft().theWorld.getScoreboard();
@@ -103,8 +105,10 @@ public class ScoreboardReader {
         for (Score score : scores) {
             ScorePlayerTeam line = scoreboard
                     .getPlayersTeam(score.getPlayerName());
-            String lineText = ScorePlayerTeam.formatPlayerName(line,
-                    score.getPlayerName()).replaceAll(FORMATTING_REGEX, "");
+            String lineText = FORMATTING_PATTERN
+                    .matcher(ScorePlayerTeam.formatPlayerName(line,
+                            score.getPlayerName()))
+                    .replaceAll("");
             lines.add(lineText);
         }
         return lines;
