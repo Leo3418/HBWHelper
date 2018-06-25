@@ -68,7 +68,7 @@ public class GameDetector {
     private static final GameDetector INSTANCE = new GameDetector();
 
     /**
-     * The {@code HypixelDetector} instance
+     * The {@link HypixelDetector} instance
      */
     private final HypixelDetector hypixelDetector;
 
@@ -112,7 +112,7 @@ public class GameDetector {
      * <p>
      * If client is leaving a Bed Wars game, fires a
      * {@link ClientLeaveGameEvent} on this mod's {@link EventManager#EVENT_BUS
-     * proprietary event bus.}
+     * proprietary event bus}.
      * <p>
      * This method should be called whenever a {@link GuiOpenEvent} is fired.
      *
@@ -137,7 +137,7 @@ public class GameDetector {
      * <p>
      * If client is leaving a Bed Wars game, fires a
      * {@link ClientLeaveGameEvent} on this mod's {@link EventManager#EVENT_BUS
-     * proprietary event bus.}
+     * proprietary event bus}.
      * This method should be called whenever a {@link FMLNetworkEvent} is fired.
      *
      * @param event the event fired when client joins or leaves a server
@@ -158,16 +158,16 @@ public class GameDetector {
      * client receives, and fires corresponding events.
      * <p>
      * If a Bed Wars game starts, fires a {@link GameStartEvent} on this mod's
-     * {@link EventManager#EVENT_BUS proprietary event bus.}
+     * {@link EventManager#EVENT_BUS proprietary event bus}.
      * <p>
      * If client is rejoining a Bed Wars game, fires a
      * {@link ClientRejoinGameEvent} on this mod's
-     * {@link EventManager#EVENT_BUS proprietary event bus.}
+     * {@link EventManager#EVENT_BUS proprietary event bus}.
      * <p>
      * If client is joining an in-progress game which it never played before
      * (which is different from rejoining a game), fires a
      * {@link ClientJoinInProgressGameEvent} on this mod's
-     * {@link EventManager#EVENT_BUS proprietary event bus.}
+     * {@link EventManager#EVENT_BUS proprietary event bus}.
      * <p>
      * This method should be called whenever a {@link ClientChatReceivedEvent}
      * is fired.
