@@ -22,7 +22,7 @@ package io.github.leo3418.hbwhelper.game;
  * Wrapper of the {@link TrapType} enumeration which provides functionality for
  * counting remaining uses of a trap.
  * <p>
- * Implementation of this class was facilitated by Hypixel's introduction of the
+ * Implementation of this class was fostered by Hypixel's introduction of the
  * Bed Wars Castle mode, in which a trap can be set off multiple times per
  * purchase. However, for other game modes in which a trap can only be used once
  * per purchase, this class also works well with {@code remainingUses} set to

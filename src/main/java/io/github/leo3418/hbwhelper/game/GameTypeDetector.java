@@ -80,7 +80,7 @@ public class GameTypeDetector {
      * Otherwise, does nothing.
      * <p>
      * If the type is confirmed, fires a {@link GameTypeDetectedEvent} on this
-     * mod's {@link EventManager#EVENT_BUS proprietary event bus.}
+     * mod's {@link EventManager#EVENT_BUS proprietary event bus}.
      * <p>
      * Calling this method when the client is not in a Minecraft world
      * (e.g. in the main menu) after invocation of {@link #startDetection()}
