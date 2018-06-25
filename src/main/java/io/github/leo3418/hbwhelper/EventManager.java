@@ -25,6 +25,7 @@ import io.github.leo3418.hbwhelper.gui.GuiHud;
 import io.github.leo3418.hbwhelper.gui.GuiQuickJoinMenu;
 import io.github.leo3418.hbwhelper.util.GameDetector;
 import io.github.leo3418.hbwhelper.util.HypixelDetector;
+import io.github.leo3418.hbwhelper.util.InProgressGameDetector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.TextComponentString;
@@ -80,6 +81,11 @@ public class EventManager {
     private final GameDetector gameDetector;
 
     /**
+     * The {@link InProgressGameDetector} instance
+     */
+    private final InProgressGameDetector ipGameDetector;
+
+    /**
      * The {@link GameTypeDetector} instance
      */
     private final GameTypeDetector gameTypeDetector;
@@ -95,12 +101,29 @@ public class EventManager {
     private final GuiHud guiHud;
 
     /**
+     * Whether the current {@link GameManager} instance returned by
+     * {@link GameManager#getInstance()} should be cleared upon the next
+     * {@link ClientLeaveGameEvent}
+     * <p>
+     * If this boolean's value is set to {@code true}, it should be changed to
+     * {@code false} when one of the following conditions is satisfied:
+     * <ul>
+     * <li>Client leaves the current Bed Wars game
+     * ({@code ClientLeaveGameEvent}) will be fired upon this action</li>
+     * <li>Client was being transferred to another in-progress Bed Wars game,
+     * but the teleport is cancelled for whatever reason</li>
+     * </ul>
+     */
+    private boolean shouldClearGMInstance;
+
+    /**
      * Implementation of Singleton design pattern, which allows only one
      * instance of this class to be created.
      */
     private EventManager() {
         hypixelDetector = HypixelDetector.getInstance();
         gameDetector = GameDetector.getInstance();
+        ipGameDetector = InProgressGameDetector.getInstance();
         gameTypeDetector = GameTypeDetector.getInstance();
         configManager = ConfigManager.getInstance();
         guiHud = GuiHud.getInstance();
@@ -142,6 +165,7 @@ public class EventManager {
     @SuppressWarnings("unused")
     public void onClientChatReceived(ClientChatReceivedEvent event) {
         gameDetector.update(event);
+        ipGameDetector.detect(event);
         if (gameDetector.isIn() && GameManager.getInstance() != null) {
             GameManager.getInstance().update(event);
         }
@@ -169,12 +193,20 @@ public class EventManager {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onClientJoinIPGame(ClientJoinInProgressGameEvent event) {
-        GameManager.clearInstance();
+        if (gameDetector.isIn()) {
+            shouldClearGMInstance = true;
+        } else {
+            GameManager.clearInstance();
+        }
     }
 
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onClientRejoinGame(ClientRejoinGameEvent event) {
+        if (shouldClearGMInstance) {
+            GameManager.clearInstance();
+            shouldClearGMInstance = false;
+        }
         if (GameManager.getInstance() == null) {
             // Client is rejoining a Bed Wars game after restart of Minecraft
             Minecraft.getMinecraft().thePlayer.addChatMessage(
@@ -199,6 +231,12 @@ public class EventManager {
     @SuppressWarnings("unused")
     public void onGameTypeDetected(GameTypeDetectedEvent event) {
         new GameManager(event.getGameType());
+    }
+
+    @SubscribeEvent
+    @SuppressWarnings("unused")
+    public void onTeleportCancelled(TeleportCancelledEvent event) {
+        shouldClearGMInstance = false;
     }
 
     @SubscribeEvent
