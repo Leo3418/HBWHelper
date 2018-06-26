@@ -102,14 +102,13 @@ public class EventManager {
 
     /**
      * Whether the current {@link GameManager} instance returned by
-     * {@link GameManager#getInstance()} should be cleared upon the next
-     * {@link ClientLeaveGameEvent}
+     * {@link GameManager#getInstance()} should be cleared when client switches
+     * to the next Bed Wars game
      * <p>
      * If this boolean's value is set to {@code true}, it should be changed to
      * {@code false} when one of the following conditions is satisfied:
      * <ul>
-     * <li>Client leaves the current Bed Wars game
-     * ({@code ClientLeaveGameEvent}) will be fired upon this action</li>
+     * <li>Client leaves the current Bed Wars game and joins the next game</li>
      * <li>Client was being transferred to another in-progress Bed Wars game,
      * but the teleport is cancelled for whatever reason</li>
      * </ul>
