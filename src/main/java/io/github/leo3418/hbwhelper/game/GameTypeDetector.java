@@ -37,8 +37,14 @@ public class GameTypeDetector {
     private static final String GAME_SCOREBOARD_TEXT = "Kills:";
 
     /**
+     * Text that appears on scoreboard only when client is in Bed Wars Rush
+     * Mode at the beginning of the game
+     */
+    private static final String RUSH_SCOREBOARD_TEXT = "Bed gone in";
+
+    /**
      * Text that appears on scoreboard only when client is in Bed Wars Castle
-     * mode
+     * Mode at the beginning of the game
      */
     private static final String CASTLE_SCOREBOARD_TEXT = "Streak Points:";
 
@@ -117,7 +123,9 @@ public class GameTypeDetector {
      * @return the current {@link GameType} inferred from scoreboard
      */
     private GameType getGameType() {
-        if (ScoreboardReader.contains(CASTLE_SCOREBOARD_TEXT)) {
+        if (ScoreboardReader.contains(RUSH_SCOREBOARD_TEXT)) {
+            return GameType.RUSH;
+        } else if (ScoreboardReader.contains(CASTLE_SCOREBOARD_TEXT)) {
             return GameType.CASTLE;
         } else {
             return GameType.NORMAL;
