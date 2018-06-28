@@ -51,9 +51,16 @@ public class GameDetector {
             "\u00A7r\u00A7f\u00A7lTo win a game of Bed Wars Capture\u00A7r";
 
     /**
-     * Prompt client received in chat when a game in Dream Mode starts
+     * Prompt client received in chat when a Bed Wars game in Rush Mode starts
      */
-    private static final String DREAM_START_TEXT =
+    private static final String RUSH_START_TEXT =
+            "\u00A7r\u00A7f\u00A7lBed Wars Rush\u00A7r";
+
+    /**
+     * Prompt client received in chat when a Bed Wars game in Ultimate Mode
+     * starts
+     */
+    private static final String ULTIMATE_START_TEXT =
             "\u00A7r\u00A7f\u00A7lBed Wars Ultimate\u00A7r";
 
     /**
@@ -179,7 +186,8 @@ public class GameDetector {
             String message = event.message.getFormattedText();
             if ((message.contains(ORDINARY_START_TEXT)
                     || message.contains(CAPTURE_START_TEXT))
-                    || message.contains(DREAM_START_TEXT)) {
+                    || message.contains(RUSH_START_TEXT)
+                    || message.contains(ULTIMATE_START_TEXT)) {
                 // A Bed Wars game starts
                 inBedWars = true;
                 EventManager.EVENT_BUS.post(new GameStartEvent());
