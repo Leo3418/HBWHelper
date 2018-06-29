@@ -18,6 +18,7 @@
 
 package io.github.leo3418.hbwhelper;
 
+import io.github.leo3418.hbwhelper.game.DreamMode;
 import io.github.leo3418.hbwhelper.gui.ConfigGuiFactory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -111,6 +112,12 @@ public class ConfigManager {
      * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
      */
     private Property hudY;
+
+    /**
+     * The {@link Property} object storing the current game for the Dream mode
+     * on Hypixel
+     */
+    private Property currentDreamMode;
 
     /**
      * Implementation of Singleton design pattern, which allows only one
@@ -216,6 +223,16 @@ public class ConfigManager {
     }
 
     /**
+     * Returns the current game for the Dream mode on Hypixel.
+     *
+     * @return the current game for the Dream mode on Hypixel
+     */
+    public DreamMode currentDreamMode() {
+        DreamMode mode = DreamMode.valueOfDisplayName(currentDreamMode.getString());
+        return mode != null ? mode : DreamMode.UNSELECTED;
+    }
+
+    /**
      * Returns a {@link List} storing settings elements to be displayed on
      * {@link io.github.leo3418.hbwhelper.gui.ConfigGuiFactory.ConfigGuiScreen
      * ConfigGuiScreen}.
@@ -232,6 +249,7 @@ public class ConfigManager {
         configElements.add(new ConfigElement(alwaysShowEffects));
         configElements.add(new ConfigElement(hudX));
         configElements.add(new ConfigElement(hudY));
+        configElements.add(new ConfigElement(currentDreamMode));
         return configElements;
     }
 
@@ -297,6 +315,16 @@ public class ConfigManager {
                 I18n.format("hbwhelper.configGui.alwaysShowEffects.description"))
                 .setLanguageKey("hbwhelper.configGui.alwaysShowEffects.title");
         updateHudParamRanges();
+        currentDreamMode = config.get(Configuration.CATEGORY_CLIENT,
+                "currentDreamMode",
+                I18n.format("hbwhelper.configGui.unselected"),
+                I18n.format("hbwhelper.configGui.currentDreamMode.description"),
+                DreamMode.displayNames())
+                .setLanguageKey("hbwhelper.configGui.currentDreamMode.title");
+        // If the setting for currentDreamMode is no longer valid, resets it
+        if (DreamMode.valueOfDisplayName(currentDreamMode.getString()) == null) {
+            currentDreamMode.setToDefault();
+        }
         config.save();
     }
 
