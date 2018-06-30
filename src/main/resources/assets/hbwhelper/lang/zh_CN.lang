@@ -32,8 +32,8 @@ hbwhelper.quickJoinGui.solo=单挑模式
 hbwhelper.quickJoinGui.doubles=双人模式
 hbwhelper.quickJoinGui.3v3v3v3=3v3v3v3 模式
 hbwhelper.quickJoinGui.4v4v4v4=4v4v4v4 模式
-hbwhelper.quickJoinGui.capture.noParties=Capture 模式 （无组队）
-hbwhelper.quickJoinGui.capture.parties=Capture 模式 （组队）
+hbwhelper.quickJoinGui.capture.noParties=Capture 模式
+hbwhelper.quickJoinGui.capture.parties=Capture 模式 组队
 hbwhelper.quickJoinGui.dream=梦幻模式
 hbwhelper.quickJoinGui.backToGame=回到游戏
 
