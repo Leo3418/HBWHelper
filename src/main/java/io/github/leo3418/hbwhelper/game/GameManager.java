@@ -261,11 +261,9 @@ public class GameManager {
     }
 
     /**
-     * Returns an <b>unmodifiable</b> {@link Collection} derived from the trap
-     * queue.
+     * Returns an <b>unmodifiable</b> {@link Collection} storing the trap queue.
      *
-     * @return an <b>unmodifiable</b> {@code Collection} derived from the trap
-     *         queue
+     * @return an <b>unmodifiable</b> {@code Collection} storing the trap queue
      */
     public Collection<CountedTrap> getTraps() {
         return readOnlyTraps;

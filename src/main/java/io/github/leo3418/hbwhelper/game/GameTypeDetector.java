@@ -120,7 +120,7 @@ public class GameTypeDetector {
     /**
      * Returns the current {@link GameType} inferred from scoreboard.
      *
-     * @return the current {@link GameType} inferred from scoreboard
+     * @return the current {@code GameType} inferred from scoreboard
      */
     private GameType getGameType() {
         if (ScoreboardReader.contains(RUSH_SCOREBOARD_TEXT)) {
