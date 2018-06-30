@@ -23,10 +23,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Enumeration of different types of Bed Wars game on Hypixel.
- * <p>
- * These types are differentiated by initial team upgrades and how team
- * upgrades are specially processed, e.g. how many times a trap can be used.
+ * Enumeration of different types of Bed Wars game on Hypixel. These types are
+ * differentiated by initial team upgrades and how team upgrades are specially
+ * processed, e.g. how many times a trap can be used.
  *
  * @author Leo
  */
