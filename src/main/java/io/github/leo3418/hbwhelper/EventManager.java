@@ -66,6 +66,23 @@ public class EventManager {
     private static final String PROMPT_PREFIX = "[" + HbwHelper.NAME + "] ";
 
     /**
+     * {@link ChatComponentText} object storing prompt being shown when client
+     * rejoins a Bed Wars game it was in before after Minecraft restarts
+     */
+    private static final ChatComponentText CLIENT_RESTART_PROMPT =
+            new ChatComponentText(PROMPT_PREFIX
+                    + I18n.format("hbwhelper.messages.clientRestart"));
+
+    /**
+     * {@link ChatComponentText} object storing prompt being shown when client
+     * rejoins a Bed Wars game it was in before, but Minecraft has not been
+     * restarted
+     */
+    private static final ChatComponentText CLIENT_REJOIN_PROMPT =
+            new ChatComponentText(PROMPT_PREFIX
+                    + I18n.format("hbwhelper.messages.clientRejoin"));
+
+    /**
      * The only instance of this class
      */
     private static final EventManager INSTANCE = new EventManager();
@@ -208,15 +225,13 @@ public class EventManager {
         }
         if (GameManager.getInstance() == null) {
             // Client is rejoining a Bed Wars game after restart of Minecraft
-            Minecraft.getMinecraft().thePlayer.addChatMessage(
-                    new ChatComponentText(PROMPT_PREFIX
-                            + I18n.format("hbwhelper.messages.clientRestart")));
+            Minecraft.getMinecraft().thePlayer
+                    .addChatMessage(CLIENT_RESTART_PROMPT);
             gameTypeDetector.startDetection();
         } else {
             // Client is rejoining a Bed Wars game, but Minecraft is not closed
-            Minecraft.getMinecraft().thePlayer.addChatMessage(
-                    new ChatComponentText(PROMPT_PREFIX
-                            + I18n.format("hbwhelper.messages.clientRejoin")));
+            Minecraft.getMinecraft().thePlayer
+                    .addChatMessage(CLIENT_REJOIN_PROMPT);
         }
     }
 
