@@ -242,7 +242,7 @@ public class EventManager {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onGameTypeDetected(GameTypeDetectedEvent event) {
-        new GameManager(event.getGameType());
+        GameManager.createInstance(event.getGameType());
     }
 
     @SubscribeEvent

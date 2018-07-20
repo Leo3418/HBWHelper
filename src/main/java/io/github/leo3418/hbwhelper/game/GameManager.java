@@ -43,13 +43,6 @@ import java.util.*;
  * previous {@code GameManager} object can and <b>should</b> be discarded, and
  * a new object should be created for the new game.
  * <p>
- * An object of this class can be created in one of these manners:
- * <ul>
- * <li>Merely call the constructor and not assign the new object to a variable,
- * and retrieve the last created object with {@link #getInstance()}</li>
- * <li>Call the constructor and assign the new object to a variable, then
- * assign all objects created later to that variable</li>
- * </ul>
  * This class is designed <b>to be used only when the client is in a Minecraft
  * world</b>. Calling some methods when the client is not in a Minecraft world
  * (e.g. in the main menu) might produce {@link NullPointerException}.
@@ -141,7 +134,7 @@ public class GameManager {
      *
      * @param gameType the type of the current Bed Wars game
      */
-    public GameManager(GameType gameType) {
+    private GameManager(GameType gameType) {
         this.gameType = gameType;
         this.forgeLevel = gameType.initialForge;
         this.trapQueue = new ArrayDeque<>(MAX_TRAPS);
@@ -150,7 +143,17 @@ public class GameManager {
         }
         this.readOnlyTraps =
                 Collections.unmodifiableCollection(trapQueue);
-        instance = this;
+    }
+
+    /**
+     * Creates a new {@code GameManager} instance. This method does not return
+     * the instance created; rather, the new instance should be accessed by
+     * calling the the {@link #getInstance()} method.
+     *
+     * @param gameType the type of the current Bed Wars game
+     */
+    public static void createInstance(GameType gameType) {
+        instance = new GameManager(gameType);
     }
 
     /**
