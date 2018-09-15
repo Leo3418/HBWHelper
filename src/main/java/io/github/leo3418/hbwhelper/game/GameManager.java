@@ -320,7 +320,6 @@ public class GameManager {
                     boolean consumed = false;
                     while (!consumed && !trapQueue.isEmpty()) {
                         CountedTrap firstInQueue = trapQueue.peek();
-                        @SuppressWarnings("all")
                         TrapType firstTrapType = firstInQueue.getTrapType();
                         if (firstTrapType == trapType) {
                             firstInQueue.setOff();
