@@ -164,17 +164,10 @@ public class GuiQuickJoinMenu extends GuiScreen {
                 CommandAction.PLAY_4V4V4V4
         ));
         this.buttonList.add(new QuickJoinGuiButton(
-                QuickJoinGuiButton.Variant.SHORT,
-                buttonX, firstButtonY + (line * BUTTONS_TRANSLATION_INTERVAL),
+                QuickJoinGuiButton.Variant.LONG,
+                buttonX, firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
                 I18n.format("hbwhelper.quickJoinGui.capture.noParties"),
                 CommandAction.PLAY_CAPTURE
-        ));
-        this.buttonList.add(new QuickJoinGuiButton(
-                QuickJoinGuiButton.Variant.SHORT,
-                (this.width + BUTTONS_INTERVAL) / 2,
-                firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
-                I18n.format("hbwhelper.quickJoinGui.capture.parties"),
-                CommandAction.PLAY_CAPTURE_PARTY
         ));
         this.buttonList.addAll(getDreamButtons(buttonX,
                 firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL)));
@@ -248,7 +241,6 @@ public class GuiQuickJoinMenu extends GuiScreen {
         PLAY_3V3V3V3("/play bedwars_four_three"),
         PLAY_4V4V4V4("/play bedwars_four_four"),
         PLAY_CAPTURE("/play bedwars_capture"),
-        PLAY_CAPTURE_PARTY("/play bedwars_capture_party"),
         PLAY_RUSH_DOUBLES("/play bedwars_eight_two_rush"),
         PLAY_RUSH_4V4V4V4("/play bedwars_four_four_rush"),
         PLAY_ULTIMATE_DOUBLES("/play bedwars_eight_two_ultimate"),
