@@ -29,4 +29,7 @@
     client versions currently supported by this mod. No additional modification
     needed? Names of some fields and methods must be changed? Or a completely
     different implementation is required on other versions?
+    If you have made an alternative implementation for other versions, please
+    upload patch files which contains the implementation for each release branch
+    for older clients.
 -->

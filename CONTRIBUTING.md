@@ -141,8 +141,8 @@ realign them if we add, change, or remove any parameter.
 ### Compatibility Concern
 We try to let HBW Helper support as many Minecraft client versions as
 possible. To help us accomplish this goal, please try to use a *universal*
-implementation, where making your code compatible with multiple client versions
-require no to a little modification.
+implementation. A universal implementation means that it can be ported to other
+Minecraft client versions with no to a little modification.
 
 For example, `Minecraft.getMinecraft().thePlayer` in 1.10.2 and previous
 versions was changed to `Minecraft.getMinecraft().player` in 1.11. Because we
@@ -150,8 +150,9 @@ only need to modify the field's name to make the code compatible with 1.11,
 this can be considered as a universal implementation.
 
 If you feel that making your code compatible with other client versions
-requires some effort, please make sure to discuss it with us when you open a
-pull request.
+requires some effort, please either [create patches](https://git-scm.com/docs/git-format-patch)
+for each other Minecraft client versions if you know how to port your code, or
+discuss it with us when you open a pull request.
 
 For more information about testing your code's compatibility, please refer to
 [this section](#testing-for-multiple-client-versions).
