@@ -13,7 +13,7 @@ have got
 in menu
 
 ## Gallery
-_Click on an image to view it in larger size_
+*Click on an image to view it in larger size*
 
 <p float="left">
 <img src="https://user-images.githubusercontent.com/14175175/45604473-5e392000-ba67-11e8-9cdd-3ab2dae60a87.PNG" width="400" alt="View information regarding your game at a glance">
