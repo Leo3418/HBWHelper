@@ -102,6 +102,7 @@ public class ArmorReader {
      * @return the player's armor, or {@code null} if the player does not wear
      *         armor
      */
+    @SuppressWarnings("ConstantConditions")
     private static ItemArmor getArmor() {
         ItemStack boots = getArmorStack();
         if (boots != null) {
