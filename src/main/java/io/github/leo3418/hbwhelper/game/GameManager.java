@@ -148,7 +148,7 @@ public class GameManager {
     /**
      * Creates a new {@code GameManager} instance. This method does not return
      * the instance created; rather, the new instance should be accessed by
-     * calling the the {@link #getInstance()} method.
+     * calling the {@link #getInstance()} method.
      *
      * @param gameType the type of the current Bed Wars game
      */
