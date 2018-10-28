@@ -31,10 +31,6 @@ import io.github.leo3418.hbwhelper.util.ScoreboardReader;
  * @author Leo
  */
 public class GameTypeDetector {
-    /**
-     * Text that appears on scoreboard only when client is in a Bed Wars game
-     */
-    private static final String GAME_SCOREBOARD_TEXT = "Kills:";
 
     /**
      * Text that appears on scoreboard only when client is in Bed Wars Rush
@@ -76,6 +72,10 @@ public class GameTypeDetector {
 
     /**
      * Starts detection of game type.
+     * <p>
+     * This method should be called whenever a
+     * {@link io.github.leo3418.hbwhelper.event.GameStartEvent} or
+     * {@link io.github.leo3418.hbwhelper.event.ClientLeaveGameEvent} is fired.
      */
     public void startDetection() {
         shouldDetect = true;
@@ -102,11 +102,9 @@ public class GameTypeDetector {
      */
     public void detect() {
         if (shouldDetect) {
-            if (ScoreboardReader.contains(GAME_SCOREBOARD_TEXT)) {
-                EventManager.EVENT_BUS.post(
-                        new GameTypeDetectedEvent(getGameType()));
-                stopDetection();
-            }
+            EventManager.EVENT_BUS.post(
+                    new GameTypeDetectedEvent(getGameType()));
+            stopDetection();
         }
     }
 
