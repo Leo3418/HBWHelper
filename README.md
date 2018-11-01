@@ -77,3 +77,4 @@ your computer, as described in [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## Links
 - [HBW Helper on Minecraft CurseForge](https://minecraft.curseforge.com/projects/hbwhelper)
+- [Discussion thread on Hypixel Forum](https://hypixel.net/threads/hypixel-bed-wars-helper-for-forge-1-8-9-1-12-2.1835479/)
