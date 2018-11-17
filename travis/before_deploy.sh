@@ -42,7 +42,10 @@ pre_deploy() {
 
     # Gets version tags of the latest development build and the latest release
     # build
-    local latest_dev_tag=$(curl -s "https://api.github.com/repos/Leo3418/HBWHelper/releases/tags/$TRAVIS_BRANCH" | jq -r '.tag_name')
+
+    # The latest development version would always be the current version being
+    # built
+    local latest_dev_tag=${TRAVIS_BRANCH}
     local latest_rel_tag=$(curl -s "https://api.github.com/repos/Leo3418/HBWHelper/releases/latest" | jq -r '.tag_name')
 
     # Removes the "v" prefix of the version tags
