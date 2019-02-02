@@ -21,7 +21,6 @@ package io.github.leo3418.hbwhelper.gui;
 import io.github.leo3418.hbwhelper.ConfigManager;
 import io.github.leo3418.hbwhelper.HbwHelper;
 import io.github.leo3418.hbwhelper.KeyBindings;
-import io.github.leo3418.hbwhelper.game.DreamMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -71,10 +70,10 @@ public class GuiQuickJoinMenu extends GuiScreen {
             BUTTON_HEIGHT + BUTTONS_INTERVAL;
 
     /**
-     * Returns a {@link List} of extra buttons related to Capture and Dream mode
-     * games. These buttons will either allow the user to join a Capture or
-     * Dream mode game, or prompt the user to select the current Dream mode on
-     * Hypixel in mod settings. These buttons occupy two rows on this GUI.
+     * Returns a {@link List} of buttons related to Dream mode games. These
+     * buttons will either allow the user to join a Dream mode game or prompt
+     * the user to select the current Dream mode on Hypixel in mod settings.
+     * These buttons occupy a single row on this GUI.
      *
      * @param x width from the left edge of the Minecraft window to the left
      *         edge of the button if the {@code List} will only have one button,
@@ -82,52 +81,21 @@ public class GuiQuickJoinMenu extends GuiScreen {
      *         {@code List} will have multiple buttons
      * @param y height from the top edge of the Minecraft window to the top
      *         edges of the buttons
-     * @return the {@code List} of buttons related to Capture and Dream mode
-     *         games
+     * @return the {@code List} of buttons related to Dream mode games
      */
-    private static List<QuickJoinGuiButton> getExtraButtons(int x, int y) {
-        List<QuickJoinGuiButton> buttons = new ArrayList<>(3);
-        DreamMode dreamMode = ConfigManager.getInstance().currentDreamMode();
-        // Capture button
-        switch (dreamMode) {
-            case RUSH:
-            case ULTIMATE:
-                buttons.add(new QuickJoinGuiButton(
-                        QuickJoinGuiButton.Variant.SHORT, x, y,
-                        I18n.format("hbwhelper.quickJoinGui.capture.noParties"),
-                        CommandAction.PLAY_CAPTURE
-                ));
-                break;
-            case CASTLE:
-            default:
-                buttons.add(new QuickJoinGuiButton(
-                        QuickJoinGuiButton.Variant.LONG, x, y,
-                        I18n.format("hbwhelper.quickJoinGui.capture.noParties"),
-                        CommandAction.PLAY_CAPTURE
-                ));
-                break;
-        }
-        // Dream mode buttons
+    private static List<QuickJoinGuiButton> getDreamButtons(int x, int y) {
+        List<QuickJoinGuiButton> buttons = new ArrayList<>(2);
         switch (ConfigManager.getInstance().currentDreamMode()) {
             case RUSH:
                 buttons.add(new QuickJoinGuiButton(
                         QuickJoinGuiButton.Variant.SHORT,
-                        x + SHORT_BUTTON_WIDTH + BUTTONS_INTERVAL,
-                        y,
-                        I18n.format("hbwhelper.dream.rush") + " " +
-                                I18n.format("hbwhelper.quickJoinGui.solo"),
-                        CommandAction.PLAY_RUSH_SOLO));
-                buttons.add(new QuickJoinGuiButton(
-                        QuickJoinGuiButton.Variant.SHORT,
-                        x,
-                        y + BUTTONS_TRANSLATION_INTERVAL,
+                        x, y,
                         I18n.format("hbwhelper.dream.rush") + " " +
                                 I18n.format("hbwhelper.quickJoinGui.doubles"),
                         CommandAction.PLAY_RUSH_DOUBLES));
                 buttons.add(new QuickJoinGuiButton(
                         QuickJoinGuiButton.Variant.SHORT,
-                        x + SHORT_BUTTON_WIDTH + BUTTONS_INTERVAL,
-                        y + BUTTONS_TRANSLATION_INTERVAL,
+                        x + SHORT_BUTTON_WIDTH + BUTTONS_INTERVAL, y,
                         I18n.format("hbwhelper.dream.rush") + " " +
                                 I18n.format("hbwhelper.quickJoinGui.4v4v4v4"),
                         CommandAction.PLAY_RUSH_4V4V4V4));
@@ -135,37 +103,26 @@ public class GuiQuickJoinMenu extends GuiScreen {
             case ULTIMATE:
                 buttons.add(new QuickJoinGuiButton(
                         QuickJoinGuiButton.Variant.SHORT,
-                        x + SHORT_BUTTON_WIDTH + BUTTONS_INTERVAL,
-                        y,
-                        I18n.format("hbwhelper.dream.ultimate") + " " +
-                                I18n.format("hbwhelper.quickJoinGui.solo"),
-                        CommandAction.PLAY_ULTIMATE_SOLO));
-                buttons.add(new QuickJoinGuiButton(
-                        QuickJoinGuiButton.Variant.SHORT,
-                        x,
-                        y + BUTTONS_TRANSLATION_INTERVAL,
+                        x, y,
                         I18n.format("hbwhelper.dream.ultimate") + " " +
                                 I18n.format("hbwhelper.quickJoinGui.doubles"),
                         CommandAction.PLAY_ULTIMATE_DOUBLES));
                 buttons.add(new QuickJoinGuiButton(
                         QuickJoinGuiButton.Variant.SHORT,
-                        x + SHORT_BUTTON_WIDTH + BUTTONS_INTERVAL,
-                        y + BUTTONS_TRANSLATION_INTERVAL,
+                        x + SHORT_BUTTON_WIDTH + BUTTONS_INTERVAL, y,
                         I18n.format("hbwhelper.dream.ultimate") + " " +
                                 I18n.format("hbwhelper.quickJoinGui.4v4v4v4"),
                         CommandAction.PLAY_ULTIMATE_4V4V4V4));
                 return buttons;
             case CASTLE:
                 buttons.add(new QuickJoinGuiButton(
-                        QuickJoinGuiButton.Variant.LONG,
-                        x, y + BUTTONS_TRANSLATION_INTERVAL,
+                        QuickJoinGuiButton.Variant.LONG, x, y,
                         I18n.format("hbwhelper.dream.castle"),
                         CommandAction.PLAY_CASTLE));
                 return buttons;
             default:
                 buttons.add(new QuickJoinGuiButton(
-                        QuickJoinGuiButton.Variant.LONG,
-                        x, y + BUTTONS_TRANSLATION_INTERVAL,
+                        QuickJoinGuiButton.Variant.LONG, x, y,
                         I18n.format("hbwhelper.quickJoinGui.dream"),
                         PromptAction.SET_DREAM_MODE));
                 return buttons;
@@ -206,9 +163,14 @@ public class GuiQuickJoinMenu extends GuiScreen {
                 I18n.format("hbwhelper.quickJoinGui.4v4v4v4"),
                 CommandAction.PLAY_4V4V4V4
         ));
-        this.buttonList.addAll(getExtraButtons(buttonX,
+        this.buttonList.add(new QuickJoinGuiButton(
+                QuickJoinGuiButton.Variant.LONG,
+                buttonX, firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
+                I18n.format("hbwhelper.quickJoinGui.capture.noParties"),
+                CommandAction.PLAY_CAPTURE
+        ));
+        this.buttonList.addAll(getDreamButtons(buttonX,
                 firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL)));
-        line++; // The extra buttons occupy 2 rows
         // The following should always be the last button
         this.buttonList.add(new QuickJoinGuiButton(
                 QuickJoinGuiButton.Variant.LONG,
@@ -279,10 +241,8 @@ public class GuiQuickJoinMenu extends GuiScreen {
         PLAY_3V3V3V3("/play bedwars_four_three"),
         PLAY_4V4V4V4("/play bedwars_four_four"),
         PLAY_CAPTURE("/play bedwars_capture"),
-        PLAY_RUSH_SOLO("/play bedwars_eight_one_rush"),
         PLAY_RUSH_DOUBLES("/play bedwars_eight_two_rush"),
         PLAY_RUSH_4V4V4V4("/play bedwars_four_four_rush"),
-        PLAY_ULTIMATE_SOLO("/play bedwars_eight_one_ultimate"),
         PLAY_ULTIMATE_DOUBLES("/play bedwars_eight_two_ultimate"),
         PLAY_ULTIMATE_4V4V4V4("/play bedwars_four_four_ultimate"),
         PLAY_CASTLE("/play bedwars_castle");
