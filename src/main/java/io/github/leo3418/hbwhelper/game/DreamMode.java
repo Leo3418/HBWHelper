@@ -46,7 +46,11 @@ public enum DreamMode {
     /**
      * Castle mode
      */
-    CASTLE(I18n.format("hbwhelper.dream.castle"));
+    CASTLE(I18n.format("hbwhelper.dream.castle")),
+    /**
+     * Lucky Blocks mode
+     */
+    LUCKY_BLOCKS(I18n.format("hbwhelper.dream.luckyBlocks"));
 
     /**
      * Cache for better performance when querying a constant of Dream mode

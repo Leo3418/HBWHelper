@@ -20,6 +20,7 @@ hbwhelper.configGui.unselected=未选择
 hbwhelper.dream.rush=疾速起床
 hbwhelper.dream.ultimate=超能力起床
 hbwhelper.dream.castle=城池攻防战
+hbwhelper.dream.luckyBlocks=幸运方块
 
 hbwhelper.hudGui.findingGenerator=正在搜索信号...
 
@@ -34,6 +35,7 @@ hbwhelper.quickJoinGui.3v3v3v3=3v3v3v3 模式
 hbwhelper.quickJoinGui.4v4v4v4=4v4v4v4 模式
 hbwhelper.quickJoinGui.capture.noParties=Capture 模式
 hbwhelper.quickJoinGui.dream=梦幻模式
+hbwhelper.quickJoinGui.luckyBlocks=幸运方块
 hbwhelper.quickJoinGui.backToGame=回到游戏
 
 key.hbwhelper.quickJoin=起床战争快速加入菜单
