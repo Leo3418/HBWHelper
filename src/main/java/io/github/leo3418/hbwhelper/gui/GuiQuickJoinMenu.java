@@ -120,6 +120,23 @@ public class GuiQuickJoinMenu extends GuiScreen {
                         I18n.format("hbwhelper.dream.castle"),
                         CommandAction.PLAY_CASTLE));
                 return buttons;
+            case LUCKY_BLOCKS:
+                buttons.add(new QuickJoinGuiButton(
+                        QuickJoinGuiButton.Variant.SHORT,
+                        x, y,
+                        // Translation key `hbwhelper.quickJoinGui.luckyBlocks`
+                        // is used instead of `hbwhelper.dream.luckyBlocks` to
+                        // avoid long text not fitting into a short button
+                        I18n.format("hbwhelper.quickJoinGui.luckyBlocks") + " " +
+                                I18n.format("hbwhelper.quickJoinGui.doubles"),
+                        CommandAction.PLAY_LUCKY_BLOCKS_DOUBLES));
+                buttons.add(new QuickJoinGuiButton(
+                        QuickJoinGuiButton.Variant.SHORT,
+                        x + SHORT_BUTTON_WIDTH + BUTTONS_INTERVAL, y,
+                        I18n.format("hbwhelper.quickJoinGui.luckyBlocks") + " " +
+                                I18n.format("hbwhelper.quickJoinGui.4v4v4v4"),
+                        CommandAction.PLAY_LUCKY_BLOCKS_4V4V4V4));
+                return buttons;
             default:
                 buttons.add(new QuickJoinGuiButton(
                         QuickJoinGuiButton.Variant.LONG, x, y,
@@ -245,7 +262,9 @@ public class GuiQuickJoinMenu extends GuiScreen {
         PLAY_RUSH_4V4V4V4("/play bedwars_four_four_rush"),
         PLAY_ULTIMATE_DOUBLES("/play bedwars_eight_two_ultimate"),
         PLAY_ULTIMATE_4V4V4V4("/play bedwars_four_four_ultimate"),
-        PLAY_CASTLE("/play bedwars_castle");
+        PLAY_CASTLE("/play bedwars_castle"),
+        PLAY_LUCKY_BLOCKS_DOUBLES("/play bedwars_eight_two_lucky"),
+        PLAY_LUCKY_BLOCKS_4V4V4V4("/play bedwars_four_four_lucky");
 
         /**
          * The command being run when this {@code CommandAction} is performed
