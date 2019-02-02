@@ -240,6 +240,7 @@ public class ConfigManager {
      * @return a {@code List} storing settings elements to be displayed on
      *         {@code ConfigGuiScreen}
      */
+    @SuppressWarnings("Duplicates")
     public List<IConfigElement> getConfigElements() {
         List<IConfigElement> configElements = new ArrayList<>();
         configElements.add(new ConfigElement(showGenerationTimes));
