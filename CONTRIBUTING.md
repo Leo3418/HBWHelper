@@ -8,7 +8,7 @@ since it contains some important information.
 - [Workspace Setup Instructions](#workspace-setup-instructions)
   - [Downloading Source Code of This Mod](#downloading-source-code-of-this-mod)
   - [Configuring Your Project](#configuring-your-project)
-- [Coding Guidelines](#coding-guidelines)
+- [Programming Guidelines](#programming-guidelines)
   - [Code Style](#code-style)
     - [Import Statements](#import-statements)
     - [Formatting](#formatting)
@@ -94,11 +94,11 @@ recommended.
 
 [Return to top](#table-of-contents)
 
-## Coding Guidelines
+## Programming Guidelines
 A free software project welcomes everyone's contribution. We understand that
-different developers have distinct coding habits, and this sometimes reflects
-in the code they write. However, please try your best to maintain a consistency
-in code style in this project.
+different developers have distinct programming habits, and this sometimes
+reflects in the code they write. However, please try your best to maintain a
+consistency in code style in this project.
 
 ### Code Style
 Our suggested style is very similar to those in
@@ -298,9 +298,9 @@ and allow us to make this mod better.
 ### Pull Request Guidelines
 - Feel free to open up a pull request in any phase in your development! You can
 send a request after you have finished all the work. However, if you have a
-mature idea but have only done a little coding, you can still send a request to
-us, sharing what you have got so far and starting discussion and collaboration
-on your idea.
+mature idea but have not written very much code for the idea yet, you can still
+send a request to us, sharing what you have got so far and starting discussion
+and collaboration on your idea.
 - Before submitting your pull request, please
 [sync your own fork](https://help.github.com/articles/syncing-a-fork/) so that
 it contains any change we made since you forked this repository. This helps
