@@ -90,10 +90,8 @@ public class ConfigManager {
      */
     void initConfig() {
         ModFile modFile = ResourcePackLoader.getResourcePackFor(MOD_ID)
-                .orElseThrow(() -> {
-                    throw new IllegalStateException(NAME +
-                            " could get the resource pack of itself");
-                })
+                .orElseThrow(() -> new IllegalStateException(NAME +
+                        " could get the resource pack of itself"))
                 .getModFile();
         Path defaultResourcePath = modFile.getLocator()
                 .findPath(modFile, "META-INF", MOD_ID + "-default.toml");
