@@ -1,0 +1,23 @@
+# Show the armor you wear and its Protection enchantment level
+showArmorInfo = true
+
+# Show status effects you get and their remaining times
+showEffectsInfo = true
+
+# Show time until the next diamond/emerald generation
+showGenerationTimes = true
+
+# Show team upgrades your team has unlocked
+showTeamUpgrades = true
+
+# Show status effects on HUD even when not in Bed Wars ("showEffectsInfo" must be "true")
+alwaysShowEffects = false
+
+# X-coordinate of the top-left corner of this mod's HUD GUI
+hudX = 2
+
+# Y-coordinate of the top-left corner of this mod's HUD GUI
+hudY = 2
+
+# The current game variant for the Bed Wars Dream mode on Hypixel
+currentDreamMode = "Unselected"

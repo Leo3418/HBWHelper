@@ -108,7 +108,7 @@ public class GameTypeDetector {
      * again.
      * <p>
      * This method should be called whenever a
-     * {@link net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent
+     * {@link net.minecraftforge.event.TickEvent.ClientTickEvent
      * ClientTickEvent} is fired.
      */
     public void detect() {

@@ -22,6 +22,7 @@ import com.google.common.collect.Maps;
 import net.minecraft.client.resources.I18n;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Enumeration of Bed Wars Dream mode games on Hypixel.
@@ -59,19 +60,12 @@ public enum DreamMode {
      */
     private static final Map<String, DreamMode> DISPLAY_NAMES_MAP;
 
-    /**
-     * Cache of the array containing display names of every constants of this
-     * enumeration, in the order their corresponding constants are declared
-     */
-    private static final String[] VALUE_NAMES;
-
     static {
         DISPLAY_NAMES_MAP = Maps.newLinkedHashMapWithExpectedSize(
                 DreamMode.values().length);
         for (DreamMode dreamMode : DreamMode.values()) {
             DISPLAY_NAMES_MAP.put(dreamMode.displayName, dreamMode);
         }
-        VALUE_NAMES = DISPLAY_NAMES_MAP.keySet().toArray(new String[0]);
     }
 
     /**
@@ -90,27 +84,23 @@ public enum DreamMode {
     }
 
     /**
-     * Returns an array containing display names of every constants of this
-     * enumeration, in the order their corresponding constants are declared.
-     *
-     * @return an array containing display names of every constants of this
-     *         enumeration, in the order their corresponding constants are
-     *         declared
-     */
-    public static String[] displayNames() {
-        return VALUE_NAMES;
-    }
-
-    /**
-     * Returns the constant of this enumeration with the specified display name,
-     * or {@code null} if there is no such constant with the specified name.
+     * Returns an {@link Optional} wrapping the constant of this enumeration
+     * with the specified display name, or an empty {@code Optional} if there is
+     * no such constant with the specified name.
+     * <p>
+     * An empty {@code Optional} will also be returned if the
+     * {@code displayName} argument is {@code null}.
      *
      * @param displayName the display name of the constant to return
-     * @return the constant of this enumeration with the specified display name,
-     *         or {@code null} if there is no such constant with the specified
-     *         name
+     * @return an {@code Optional} wrapping the constant of this enumeration
+     *         with the specified display name, or an empty {@code Optional} if
+     *         there is no such constant with the specified name or
+     *         {@code displayName == null}
      */
-    public static DreamMode valueOfDisplayName(String displayName) {
-        return DISPLAY_NAMES_MAP.get(displayName);
+    public static Optional<DreamMode> valueOfDisplayName(String displayName) {
+        if (displayName == null) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(DISPLAY_NAMES_MAP.get(displayName));
     }
 }

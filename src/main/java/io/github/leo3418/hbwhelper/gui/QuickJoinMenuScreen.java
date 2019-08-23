@@ -22,11 +22,13 @@ import io.github.leo3418.hbwhelper.ConfigManager;
 import io.github.leo3418.hbwhelper.HbwHelper;
 import io.github.leo3418.hbwhelper.KeyBindings;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +37,7 @@ import java.util.List;
  *
  * @author Leo
  */
-public class GuiQuickJoinMenu extends GuiScreen {
+public class QuickJoinMenuScreen extends Screen {
     /**
      * Height of the title of this GUI
      */
@@ -70,6 +72,13 @@ public class GuiQuickJoinMenu extends GuiScreen {
             BUTTON_HEIGHT + BUTTONS_INTERVAL;
 
     /**
+     * Constructs a new {@link QuickJoinMenuScreen} instance.
+     */
+    public QuickJoinMenuScreen() {
+        super(new TranslationTextComponent("hbwhelper.quickJoinGui.title"));
+    }
+
+    /**
      * Returns a {@link List} of buttons related to Dream mode games. These
      * buttons will either allow the user to join a Dream mode game or prompt
      * the user to select the current Dream mode on Hypixel in mod settings.
@@ -83,7 +92,7 @@ public class GuiQuickJoinMenu extends GuiScreen {
      *         edges of the buttons
      * @return the {@code List} of buttons related to Dream mode games
      */
-    private static List<QuickJoinGuiButton> getDreamButtons(int x, int y) {
+    private List<QuickJoinGuiButton> getDreamButtons(int x, int y) {
         List<QuickJoinGuiButton> buttons = new ArrayList<>(2);
         switch (ConfigManager.getInstance().currentDreamMode()) {
             case RUSH:
@@ -92,12 +101,14 @@ public class GuiQuickJoinMenu extends GuiScreen {
                         x, y,
                         I18n.format("hbwhelper.dream.rush") + " " +
                                 I18n.format("hbwhelper.quickJoinGui.doubles"),
+                        this,
                         CommandAction.PLAY_RUSH_DOUBLES));
                 buttons.add(new QuickJoinGuiButton(
                         QuickJoinGuiButton.Variant.SHORT,
                         x + SHORT_BUTTON_WIDTH + BUTTONS_INTERVAL, y,
                         I18n.format("hbwhelper.dream.rush") + " " +
                                 I18n.format("hbwhelper.quickJoinGui.4v4v4v4"),
+                        this,
                         CommandAction.PLAY_RUSH_4V4V4V4));
                 return buttons;
             case ULTIMATE:
@@ -106,18 +117,21 @@ public class GuiQuickJoinMenu extends GuiScreen {
                         x, y,
                         I18n.format("hbwhelper.dream.ultimate") + " " +
                                 I18n.format("hbwhelper.quickJoinGui.doubles"),
+                        this,
                         CommandAction.PLAY_ULTIMATE_DOUBLES));
                 buttons.add(new QuickJoinGuiButton(
                         QuickJoinGuiButton.Variant.SHORT,
                         x + SHORT_BUTTON_WIDTH + BUTTONS_INTERVAL, y,
                         I18n.format("hbwhelper.dream.ultimate") + " " +
                                 I18n.format("hbwhelper.quickJoinGui.4v4v4v4"),
+                        this,
                         CommandAction.PLAY_ULTIMATE_4V4V4V4));
                 return buttons;
             case CASTLE:
                 buttons.add(new QuickJoinGuiButton(
                         QuickJoinGuiButton.Variant.LONG, x, y,
                         I18n.format("hbwhelper.dream.castle"),
+                        this,
                         CommandAction.PLAY_CASTLE));
                 return buttons;
             case LUCKY_BLOCKS:
@@ -129,18 +143,21 @@ public class GuiQuickJoinMenu extends GuiScreen {
                         // avoid long text not fitting into a short button
                         I18n.format("hbwhelper.quickJoinGui.luckyBlocks") + " " +
                                 I18n.format("hbwhelper.quickJoinGui.doubles"),
+                        this,
                         CommandAction.PLAY_LUCKY_BLOCKS_DOUBLES));
                 buttons.add(new QuickJoinGuiButton(
                         QuickJoinGuiButton.Variant.SHORT,
                         x + SHORT_BUTTON_WIDTH + BUTTONS_INTERVAL, y,
                         I18n.format("hbwhelper.quickJoinGui.luckyBlocks") + " " +
                                 I18n.format("hbwhelper.quickJoinGui.4v4v4v4"),
+                        this,
                         CommandAction.PLAY_LUCKY_BLOCKS_4V4V4V4));
                 return buttons;
             default:
                 buttons.add(new QuickJoinGuiButton(
                         QuickJoinGuiButton.Variant.LONG, x, y,
                         I18n.format("hbwhelper.quickJoinGui.dream"),
+                        this,
                         PromptAction.SET_DREAM_MODE));
                 return buttons;
         }
@@ -150,49 +167,50 @@ public class GuiQuickJoinMenu extends GuiScreen {
      * Initializes this GUI with buttons.
      */
     @Override
-    public void initGui() {
+    protected void init() {
         int buttonX = (this.width - LONG_BUTTON_WIDTH) / 2;
         int firstButtonY = this.height / 4 + BUTTONS_INTERVAL;
         // Number of lines of buttons added so far, used for calculating height
         // of the next button
         int line = 0;
-        this.buttonList.add(new QuickJoinGuiButton(
+        addButton(new QuickJoinGuiButton(
                 QuickJoinGuiButton.Variant.LONG,
                 buttonX, firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
-                I18n.format("hbwhelper.quickJoinGui.solo"),
+                I18n.format("hbwhelper.quickJoinGui.solo"), this,
                 CommandAction.PLAY_SOLO
         ));
-        this.buttonList.add(new QuickJoinGuiButton(
+        addButton(new QuickJoinGuiButton(
                 QuickJoinGuiButton.Variant.LONG,
                 buttonX, firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
-                I18n.format("hbwhelper.quickJoinGui.doubles"),
+                I18n.format("hbwhelper.quickJoinGui.doubles"), this,
                 CommandAction.PLAY_DOUBLES
         ));
-        this.buttonList.add(new QuickJoinGuiButton(
+        addButton(new QuickJoinGuiButton(
                 QuickJoinGuiButton.Variant.LONG,
                 buttonX, firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
-                I18n.format("hbwhelper.quickJoinGui.3v3v3v3"),
+                I18n.format("hbwhelper.quickJoinGui.3v3v3v3"), this,
                 CommandAction.PLAY_3V3V3V3
         ));
-        this.buttonList.add(new QuickJoinGuiButton(
+        addButton(new QuickJoinGuiButton(
                 QuickJoinGuiButton.Variant.LONG,
                 buttonX, firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
-                I18n.format("hbwhelper.quickJoinGui.4v4v4v4"),
+                I18n.format("hbwhelper.quickJoinGui.4v4v4v4"), this,
                 CommandAction.PLAY_4V4V4V4
         ));
-        this.buttonList.add(new QuickJoinGuiButton(
+        addButton(new QuickJoinGuiButton(
                 QuickJoinGuiButton.Variant.LONG,
                 buttonX, firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
-                I18n.format("hbwhelper.quickJoinGui.capture.noParties"),
+                I18n.format("hbwhelper.quickJoinGui.capture.noParties"), this,
                 CommandAction.PLAY_CAPTURE
         ));
-        this.buttonList.addAll(getDreamButtons(buttonX,
-                firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL)));
+        getDreamButtons(buttonX,
+                firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL))
+                .forEach(this::addButton);
         // The following should always be the last button
-        this.buttonList.add(new QuickJoinGuiButton(
+        addButton(new QuickJoinGuiButton(
                 QuickJoinGuiButton.Variant.LONG,
                 buttonX, firstButtonY + (line * BUTTONS_TRANSLATION_INTERVAL),
-                I18n.format("hbwhelper.quickJoinGui.backToGame")
+                I18n.format("hbwhelper.quickJoinGui.backToGame"), this
         ));
     }
 
@@ -204,25 +222,12 @@ public class GuiQuickJoinMenu extends GuiScreen {
      * @param partialTicks number of partial ticks
      */
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        this.drawDefaultBackground();
-        this.drawCenteredString(this.fontRenderer,
+    public void render(int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground();
+        this.drawCenteredString(getMinecraft().fontRenderer,
                 I18n.format("hbwhelper.quickJoinGui.title"),
                 this.width / 2, TITLE_HEIGHT, 0xFFFFFF);
-        super.drawScreen(mouseX, mouseY, partialTicks);
-    }
-
-    /**
-     * When a button on this GUI is clicked, performs the action the button
-     * defines.
-     *
-     * @param button the button being clicked
-     */
-    @Override
-    protected void actionPerformed(GuiButton button) {
-        if (button instanceof QuickJoinGuiButton) {
-            ((QuickJoinGuiButton) button).performAction(this);
-        }
+        super.render(mouseX, mouseY, partialTicks);
     }
 
     /**
@@ -230,29 +235,29 @@ public class GuiQuickJoinMenu extends GuiScreen {
      * and closes this GUI if client presses {@code ESC} or the hot key for Bed
      * Wars quick join.
      *
-     * @param typedChar the character typed
-     * @param keyCode the code of the key pressed
+     * @param keyCode1 the key code of the first key being pressed
+     * @param keyCode2 the key code of the second key being pressed
+     * @param keyCode3 the key code of the third key being pressed
+     * @return whether the key press is handled by this GUI
      */
     @Override
-    protected void keyTyped(char typedChar, int keyCode) {
-        if (keyCode == 1 || keyCode == KeyBindings.QUICK_JOIN.getKeyCode()) {
-            close();
+    public boolean keyPressed(int keyCode1, int keyCode2, int keyCode3) {
+        int quickJoinKeyCode = KeyBindings.QUICK_JOIN.getKey().getKeyCode();
+        if (quickJoinKeyCode == keyCode1
+                || quickJoinKeyCode == keyCode2
+                || quickJoinKeyCode == keyCode3) {
+            onClose();
+            return true;
+        } else {
+            return super.keyPressed(keyCode1, keyCode2, keyCode3);
         }
     }
 
     /**
-     * Closes this GUI.
+     * Enumeration of {@link Button.IPressable} implementations that runs a
+     * Minecraft command when a {@link QuickJoinGuiButton} is pressed.
      */
-    private void close() {
-        mc.displayGuiScreen(null);
-        mc.setIngameFocus();
-    }
-
-    /**
-     * Enumeration of {@link QuickJoinGuiButton.Action} implementations that
-     * runs a Minecraft command when a {@link QuickJoinGuiButton} is pressed.
-     */
-    private enum CommandAction implements QuickJoinGuiButton.Action {
+    private enum CommandAction implements Button.IPressable {
         PLAY_SOLO("/play bedwars_eight_one"),
         PLAY_DOUBLES("/play bedwars_eight_two"),
         PLAY_3V3V3V3("/play bedwars_four_three"),
@@ -272,7 +277,7 @@ public class GuiQuickJoinMenu extends GuiScreen {
         private final String command;
 
         /**
-         * Constructs a new constant of {@link QuickJoinGuiButton.Action}
+         * Constructs a new constant of {@link Button.IPressable}
          * implementation that runs a Minecraft command.
          *
          * @param command the command to be run when this {@code CommandAction}
@@ -283,21 +288,23 @@ public class GuiQuickJoinMenu extends GuiScreen {
         }
 
         /**
-         * Runs the command defined for this {@link QuickJoinGuiButton.Action}
+         * Runs the command defined for this {@link Button.IPressable}
          * implementation.
+         *
+         * @param button the {@link Button} being pressed
          */
         @Override
-        public void perform() {
-            Minecraft.getMinecraft().player.sendChatMessage(command);
+        public void onPress(@Nonnull Button button) {
+            Minecraft.getInstance().player.sendChatMessage(command);
         }
     }
 
     /**
-     * Enumeration of {@link QuickJoinGuiButton.Action} implementations that
+     * Enumeration of {@link Button.IPressable} implementations that
      * shows a prompt in chat messages when a {@link QuickJoinGuiButton} is
      * pressed.
      */
-    private enum PromptAction implements QuickJoinGuiButton.Action {
+    private enum PromptAction implements Button.IPressable {
         /**
          * The prompt that reminds the user to select the current game variant
          * for the Bed Wars Dream mode
@@ -305,62 +312,50 @@ public class GuiQuickJoinMenu extends GuiScreen {
         SET_DREAM_MODE("hbwhelper.messages.setDreamMode");
 
         /**
-         * Prefix of prompts shown in chat messages
-         */
-        private static final String PROMPT_PREFIX = "[" + HbwHelper.NAME + "] ";
-
-        /**
-         * {@link TextComponentString} object storing prompt being shown when
+         * {@link ITextComponent} object storing prompt being shown when
          * this {@code PromptAction} is performed
          */
-        private final TextComponentString prompt;
+        private final ITextComponent prompt;
 
         /**
-         * Constructs a new constant of {@link QuickJoinGuiButton.Action}
+         * Constructs a new constant of {@link Button.IPressable}
          * implementation that shows a prompt in chat messages.
          *
          * @param translateKey the translate key of the prompt being shown when
          *         this {@code PromptAction} is performed
          */
         PromptAction(String translateKey) {
-            this.prompt = new TextComponentString(PROMPT_PREFIX +
-                    I18n.format(translateKey));
+            this.prompt =
+                    new TranslationTextComponent(translateKey, HbwHelper.NAME);
         }
 
         /**
-         * Shows the prompt defined for this {@link QuickJoinGuiButton.Action}
+         * Shows the prompt defined for this {@link Button.IPressable}
          * implementation.
+         *
+         * @param button the {@link Button} being pressed
          */
         @Override
-        public void perform() {
-            Minecraft.getMinecraft().player.sendMessage(prompt);
+        public void onPress(@Nonnull Button button) {
+            Minecraft.getInstance().player.sendMessage(prompt);
         }
     }
 
     /**
      * A button shown on this GUI screen.
-     * <p>
-     * The original {@link GuiButton} class tracks an numeric ID for a button
-     * created from the class. Client programs of the class should use the ID
-     * to differentiate which button is pressed and perform corresponding
-     * actions.
-     * <p>
-     * This class extends the {@code GuiButton} class by making the action a
-     * property of a button, so its client program can define a button's action
-     * in a more simple way.
      */
-    private static class QuickJoinGuiButton extends GuiButton {
+    private static class QuickJoinGuiButton extends Button {
         /**
-         * Cache of an {@link Action Action} object which defines no action for
-         * a button
+         * Cache of a {@link Button.IPressable} object which defines no action
+         * for a button
          */
-        private static final Action NO_ACTION = () -> {
+        private static final IPressable NO_ACTION = button -> {
         };
 
         /**
-         * The {@link Action Action} performed when this button is pressed
+         * The {@link QuickJoinMenuScreen} in which this button is
          */
-        private final Action action;
+        private final QuickJoinMenuScreen parent;
 
         /**
          * Constructs a new button for this GUI that does not perform any
@@ -370,10 +365,12 @@ public class GuiQuickJoinMenu extends GuiScreen {
          * @param x the horizontal location of this button on the GUI
          * @param y the vertical location of this button on the GUI
          * @param buttonText the text shown on this button
+         * @param parent the {@link QuickJoinMenuScreen} in which this button is
          */
         private QuickJoinGuiButton(Variant variant, int x, int y,
-                                   String buttonText) {
-            this(variant, x, y, buttonText, NO_ACTION);
+                                   String buttonText,
+                                   QuickJoinMenuScreen parent) {
+            this(variant, x, y, buttonText, parent, NO_ACTION);
         }
 
         /**
@@ -384,24 +381,26 @@ public class GuiQuickJoinMenu extends GuiScreen {
          * @param x the horizontal location of this button on the GUI
          * @param y the vertical location of this button on the GUI
          * @param buttonText the text shown on this button
-         * @param action the {@link Action Action} performed when this button is
-         *         pressed
+         * @param parent the {@link QuickJoinMenuScreen} in which this button is
+         * @param action the {@linkplain Button.IPressable action} performed
+         *         when this button is pressed
          */
         private QuickJoinGuiButton(Variant variant, int x, int y,
-                                   String buttonText, Action action) {
-            super(0, x, y, variant.width, BUTTON_HEIGHT, buttonText);
-            this.action = action;
+                                   String buttonText,
+                                   QuickJoinMenuScreen parent,
+                                   IPressable action) {
+            super(x, y, variant.width, BUTTON_HEIGHT, buttonText, action);
+            this.parent = parent;
         }
 
         /**
-         * Performs the {@link Action} defined for this button, then closes
-         * this GUI.
-         *
-         * @param gui the object for this GUI
+         * Runs any action defined for this button. This method is called when
+         * this button is clicked.
          */
-        private void performAction(GuiQuickJoinMenu gui) {
-            action.perform();
-            gui.close();
+        @Override
+        public void onPress() {
+            super.onPress();
+            parent.onClose();
         }
 
         /**
@@ -432,23 +431,6 @@ public class GuiQuickJoinMenu extends GuiScreen {
             Variant(int width) {
                 this.width = width;
             }
-        }
-
-        /**
-         * The interface for classes that define the action that will be
-         * performed when the button is pressed.
-         * <p>
-         * Any class that implements this interface should put code that
-         * performs the action into its implementation for the
-         * {@link Action#perform()} method.
-         */
-        @FunctionalInterface
-        private interface Action {
-            /**
-             * Runs the action that should be performed when the button is
-             * pressed.
-             */
-            void perform();
         }
     }
 }

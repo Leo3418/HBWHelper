@@ -18,6 +18,7 @@
 
 package io.github.leo3418.hbwhelper.gui;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.leo3418.hbwhelper.ConfigManager;
 import io.github.leo3418.hbwhelper.game.CountedTrap;
 import io.github.leo3418.hbwhelper.game.GameManager;
@@ -25,21 +26,20 @@ import io.github.leo3418.hbwhelper.util.ArmorReader;
 import io.github.leo3418.hbwhelper.util.EffectsReader;
 import io.github.leo3418.hbwhelper.util.GameDetector;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.EffectInstance;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.minecraft.init.Blocks.*;
-import static net.minecraft.init.Items.*;
+import static net.minecraft.item.Items.*;
 
 /**
  * The GUI of this mod shown in Minecraft's Head-Up Display (HUD).
@@ -51,7 +51,7 @@ import static net.minecraft.init.Items.*;
  * @see <a href="https://minecraft.gamepedia.com/Heads-up_display"
  *         target="_top">Minecraft Wiki's introduction on Minecraft's HUD</a>
  */
-public class GuiHud extends Gui {
+public class HudGui extends AbstractGui {
     /**
      * Color of text displayed on this GUI
      */
@@ -103,7 +103,7 @@ public class GuiHud extends Gui {
     /**
      * The only instance of this class
      */
-    private static final GuiHud INSTANCE = new GuiHud();
+    private static final HudGui INSTANCE = new HudGui();
 
     /**
      * The instance of Minecraft client
@@ -129,8 +129,8 @@ public class GuiHud extends Gui {
      * Implementation of Singleton design pattern, which allows only one
      * instance of this class to be created.
      */
-    private GuiHud() {
-        mc = Minecraft.getMinecraft();
+    private HudGui() {
+        mc = Minecraft.getInstance();
         gameDetector = GameDetector.getInstance();
         configManager = ConfigManager.getInstance();
         currentHeight = configManager.hudY();
@@ -141,7 +141,7 @@ public class GuiHud extends Gui {
      *
      * @return the instance of this class
      */
-    public static GuiHud getInstance() {
+    public static HudGui getInstance() {
         return INSTANCE;
     }
 
@@ -182,7 +182,7 @@ public class GuiHud extends Gui {
      * @return whether this GUI should be rendered
      */
     private boolean shouldRender() {
-        return !(mc.currentScreen instanceof GuiChat)
+        return !(mc.currentScreen instanceof ChatScreen)
                 && !mc.gameSettings.showDebugInfo;
     }
 
@@ -205,13 +205,15 @@ public class GuiHud extends Gui {
      * Renders the player's effects information on this GUI.
      * <p>
      * When a status effect's remaining time is lower than
-     * {@link GuiHud#WEAR_OUT_THRESHOLD}, the remaining time displayed on this
+     * {@link HudGui#WEAR_OUT_THRESHOLD}, the remaining time displayed on this
      * GUI starts to flash.
      */
     private void renderEffectsInfo() {
         if (configManager.showEffectsInfo()) {
-            for (PotionEffect potionEffect : EffectsReader.getEffects()) {
-                int iconIndex = EffectsReader.getIconIndex(potionEffect);
+            mc.getTextureManager()
+                    .bindTexture(AtlasTexture.LOCATION_EFFECTS_TEXTURE);
+            for (EffectInstance potionEffect : EffectsReader.getEffects()) {
+                TextureAtlasSprite icon = EffectsReader.getIcon(potionEffect);
 
                 String effectInfo = "";
                 int amplifier = EffectsReader.getDisplayedAmplifier(potionEffect);
@@ -231,7 +233,7 @@ public class GuiHud extends Gui {
                 }
                 effectInfo += displayedDuration;
 
-                drawEffectIconAndString(iconIndex, effectInfo);
+                drawEffectIconAndString(icon, effectInfo);
             }
         }
     }
@@ -328,18 +330,14 @@ public class GuiHud extends Gui {
      * After this element is rendered, sets height of the next element to be
      * directly below this element.
      *
-     * @param iconIndex the index of the status effect's icon
+     * @param icon the status effect's icon
      * @param text the text to be rendered
      */
-    private void drawEffectIconAndString(int iconIndex, String text) {
-        mc.getTextureManager().bindTexture(GuiContainer.INVENTORY_BACKGROUND);
-        // The numbers were obtained from Minecraft source code
-        int textureX = iconIndex % 8 * EFFECT_ICON_SIZE;
-        int textureY = 198 + iconIndex / 8 * EFFECT_ICON_SIZE;
+    private void drawEffectIconAndString(TextureAtlasSprite icon, String text) {
         // Removes black background of the first icon rendered
         GlStateManager.enableBlend();
-        drawTexturedModalRect(configManager.hudX(), currentHeight, textureX,
-                textureY, EFFECT_ICON_SIZE, EFFECT_ICON_SIZE);
+        blit(configManager.hudX(), currentHeight, blitOffset,
+                EFFECT_ICON_SIZE, EFFECT_ICON_SIZE, icon);
         drawString(mc.fontRenderer, " " + text,
                 EFFECT_ICON_SIZE + configManager.hudX(),
                 currentHeight + (EFFECT_ICON_SIZE - LINE_HEIGHT) / 2 + 1,
@@ -362,7 +360,7 @@ public class GuiHud extends Gui {
      */
     private void drawItemIconAndString(ItemStack itemStack, String text) {
         RenderHelper.enableGUIStandardItemLighting();
-        mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack,
+        mc.getItemRenderer().renderItemAndEffectIntoGUI(itemStack,
                 configManager.hudX() + (EFFECT_ICON_SIZE - ITEM_ICON_SIZE) / 2,
                 currentHeight);
         RenderHelper.disableStandardItemLighting();
@@ -388,7 +386,7 @@ public class GuiHud extends Gui {
                 + (EFFECT_ICON_SIZE - ITEM_ICON_SIZE) / 2;
         RenderHelper.enableGUIStandardItemLighting();
         for (ItemStack itemStack : itemStacks) {
-            mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack,
+            mc.getItemRenderer().renderItemAndEffectIntoGUI(itemStack,
                     currentWidth, currentHeight);
             currentWidth += ITEM_ICON_SIZE + 1;
         }

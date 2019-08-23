@@ -19,8 +19,9 @@
 package io.github.leo3418.hbwhelper.util;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.EffectUtils;
 
 import java.util.Collection;
 
@@ -51,8 +52,8 @@ public class EffectsReader {
      *
      * @return a {@code Collection} of all potion effects on the player
      */
-    public static Collection<PotionEffect> getEffects() {
-        return Minecraft.getMinecraft().player.getActivePotionEffects();
+    public static Collection<EffectInstance> getEffects() {
+        return Minecraft.getInstance().player.getActivePotionEffects();
     }
 
     /**
@@ -64,7 +65,7 @@ public class EffectsReader {
      * @param potionEffect the potion effect whose amplifier is queried
      * @return the displayed amplifier of a potion effect
      */
-    public static int getDisplayedAmplifier(PotionEffect potionEffect) {
+    public static int getDisplayedAmplifier(EffectInstance potionEffect) {
         // Internal amplifier is 0 for level I, 1 for level II, etc.
         int internalAmplifier = potionEffect.getAmplifier();
         return internalAmplifier + 1;
@@ -76,8 +77,8 @@ public class EffectsReader {
      * @param potionEffect the potion effect whose duration is queried
      * @return duration of the potion effect as how they are shown in the client
      */
-    public static String getDisplayedDuration(PotionEffect potionEffect) {
-        return Potion.getPotionDurationString(potionEffect, 1.0F);
+    public static String getDisplayedDuration(EffectInstance potionEffect) {
+        return EffectUtils.getPotionDurationString(potionEffect, 1.0F);
     }
 
     /**
@@ -88,7 +89,7 @@ public class EffectsReader {
      * @return duration of the potion effect in seconds, or {@code -1} if it has
      *         maximum duration
      */
-    public static int getDuration(PotionEffect potionEffect) {
+    public static int getDuration(EffectInstance potionEffect) {
         if (potionEffect.getIsPotionDurationMax()) {
             return -1;
         }
@@ -96,12 +97,13 @@ public class EffectsReader {
     }
 
     /**
-     * Returns icon index of a potion effect.
+     * Returns the icon of a potion effect.
      *
-     * @param potionEffect the potion effect whose icon index is queried
-     * @return icon index of the potion effect
+     * @param potionEffect the potion effect whose icon is queried
+     * @return the icon of the potion effect
      */
-    public static int getIconIndex(PotionEffect potionEffect) {
-        return potionEffect.getPotion().getStatusIconIndex();
+    public static TextureAtlasSprite getIcon(EffectInstance potionEffect) {
+        return Minecraft.getInstance().getPotionSpriteUploader()
+                .getSprite(potionEffect.getPotion());
     }
 }

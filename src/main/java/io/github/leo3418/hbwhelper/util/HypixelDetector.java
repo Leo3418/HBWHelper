@@ -20,9 +20,8 @@ package io.github.leo3418.hbwhelper.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.world.WorldEvent;
 
 /**
  * Detects and tracks if client is connected to Hypixel.
@@ -74,24 +73,37 @@ public class HypixelDetector {
     }
 
     /**
-     * When client connects to a server, checks and tracks if the server is
-     * Hypixel. Or, when client disconnects from a server, remembers that
-     * the player is no longer in Hypixel.
+     * When client joins a world, tests if the world is on a server; if yes,
+     * checks and records if it is Hypixel.
      * <p>
-     * This method should be called whenever a {@link FMLNetworkEvent} is fired.
+     * This method should be called whenever an {@link EntityJoinWorldEvent} is
+     * fired.
      *
-     * @param event the event fired when client joins or leaves a server
+     * @param event the event fired when client spawns
      */
-    public void update(FMLNetworkEvent event) {
-        if (event instanceof ClientConnectedToServerEvent) {
-            ServerData currentServer = Minecraft.getMinecraft()
+    public void update(EntityJoinWorldEvent event) {
+        if (event.getEntity() == Minecraft.getInstance().player) {
+            ServerData currentServer = Minecraft.getInstance()
                     .getCurrentServerData();
             if (currentServer != null) {
-                String serverAddress = currentServer.serverIP.toLowerCase();
-                inHypixel = serverAddress.contains(HYPIXEL_DOMAIN);
+                inHypixel = currentServer.serverIP.toLowerCase()
+                        .contains(HYPIXEL_DOMAIN);
+            } else {
+                // Client is playing in single player mode
+                inHypixel = false;
             }
-        } else if (event instanceof ClientDisconnectionFromServerEvent) {
-            inHypixel = false;
         }
+    }
+
+    /**
+     * When a world unloads, remembers that the player cannot be in Hypixel.
+     * <p>
+     * This method should be called whenever a {@link WorldEvent.Unload} is
+     * fired.
+     *
+     * @param event the event fired when a world unloads
+     */
+    public void update(@SuppressWarnings("unused") WorldEvent.Unload event) {
+        inHypixel = false;
     }
 }

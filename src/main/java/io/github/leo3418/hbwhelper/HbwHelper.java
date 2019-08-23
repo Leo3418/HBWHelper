@@ -18,37 +18,29 @@
 
 package io.github.leo3418.hbwhelper;
 
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 /**
  * The main class of HBW Helper mod.
  *
  * @author Leo
  */
-@Mod(
-        name = HbwHelper.NAME,
-        modid = HbwHelper.MOD_ID,
-        version = HbwHelper.VERSION,
-        acceptedMinecraftVersions = "@compatible_versions@",
-        clientSideOnly = true,
-        guiFactory = "io.github.leo3418.hbwhelper.gui.ConfigGuiFactory",
-        updateJSON = "https://leo3418.github.io/HBWHelper/promotions.json"
-)
+@Mod(HbwHelper.MOD_ID)
 public class HbwHelper {
     public static final String NAME = "HBW Helper";
     public static final String MOD_ID = "hbwhelper";
     public static final String VERSION = "@version@";
 
-    @EventHandler
-    public void onFMLPreInitialization(FMLPreInitializationEvent event) {
-        ConfigManager.getInstance().initConfig(event);
+    public HbwHelper() {
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.addListener(this::clientSetup);
     }
 
-    @EventHandler
-    public void onFMLInitialization(FMLInitializationEvent event) {
+    private void clientSetup(FMLClientSetupEvent event) {
+        ConfigManager.getInstance().initConfig();
         EventManager.getInstance().registerOnEventBus();
         KeyBindings.registerBindings();
     }

@@ -21,24 +21,25 @@ package io.github.leo3418.hbwhelper;
 import io.github.leo3418.hbwhelper.event.*;
 import io.github.leo3418.hbwhelper.game.GameManager;
 import io.github.leo3418.hbwhelper.game.GameTypeDetector;
-import io.github.leo3418.hbwhelper.gui.GuiHud;
-import io.github.leo3418.hbwhelper.gui.GuiQuickJoinMenu;
+import io.github.leo3418.hbwhelper.gui.HudGui;
+import io.github.leo3418.hbwhelper.gui.QuickJoinMenuScreen;
 import io.github.leo3418.hbwhelper.util.GameDetector;
 import io.github.leo3418.hbwhelper.util.HypixelDetector;
 import io.github.leo3418.hbwhelper.util.InProgressGameDetector;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.eventhandler.EventBus;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 /**
  * Event manager of this mod, which responds to events fired on
@@ -58,29 +59,25 @@ public class EventManager {
     /**
      * The proprietary event bus of this mod
      */
-    public static final EventBus EVENT_BUS = new EventBus();
+    public static final IEventBus EVENT_BUS =
+            FMLJavaModLoadingContext.get().getModEventBus();
 
     /**
-     * Prefix of prompt sent from this mod to the client
-     */
-    private static final String PROMPT_PREFIX = "[" + HbwHelper.NAME + "] ";
-
-    /**
-     * {@link TextComponentString} object storing prompt being shown when client
+     * {@link ITextComponent} object storing prompt being shown when client
      * rejoins a Bed Wars game it was in before after Minecraft restarts
      */
-    private static final TextComponentString CLIENT_RESTART_PROMPT =
-            new TextComponentString(PROMPT_PREFIX
-                    + I18n.format("hbwhelper.messages.clientRestart"));
+    private static final ITextComponent CLIENT_RESTART_PROMPT =
+            new TranslationTextComponent("hbwhelper.messages.clientRestart",
+                    HbwHelper.NAME);
 
     /**
-     * {@link TextComponentString} object storing prompt being shown when client
+     * {@link ITextComponent} object storing prompt being shown when client
      * rejoins a Bed Wars game it was in before, but Minecraft has not been
      * restarted
      */
-    private static final TextComponentString CLIENT_REJOIN_PROMPT =
-            new TextComponentString(PROMPT_PREFIX
-                    + I18n.format("hbwhelper.messages.clientRejoin"));
+    private static final ITextComponent CLIENT_REJOIN_PROMPT =
+            new TranslationTextComponent("hbwhelper.messages.clientRejoin",
+                    HbwHelper.NAME);
 
     /**
      * The only instance of this class
@@ -108,14 +105,9 @@ public class EventManager {
     private final GameTypeDetector gameTypeDetector;
 
     /**
-     * The {@link ConfigManager} instance
+     * The {@link HudGui} instance
      */
-    private final ConfigManager configManager;
-
-    /**
-     * The {@link GuiHud} instance
-     */
-    private final GuiHud guiHud;
+    private final HudGui hudGui;
 
     /**
      * Whether the current {@link GameManager} instance returned by
@@ -141,8 +133,7 @@ public class EventManager {
         gameDetector = GameDetector.getInstance();
         ipGameDetector = InProgressGameDetector.getInstance();
         gameTypeDetector = GameTypeDetector.getInstance();
-        configManager = ConfigManager.getInstance();
-        guiHud = GuiHud.getInstance();
+        hudGui = HudGui.getInstance();
     }
 
     /**
@@ -165,7 +156,13 @@ public class EventManager {
 
     @SubscribeEvent
     @SuppressWarnings("unused")
-    public void onFMLNetworkEvent(FMLNetworkEvent event) {
+    public void onEntityJoinWorld(EntityJoinWorldEvent event) {
+        hypixelDetector.update(event);
+    }
+
+    @SubscribeEvent
+    @SuppressWarnings("unused")
+    public void onWorldUnload(WorldEvent.Unload event) {
         hypixelDetector.update(event);
         gameDetector.update(event);
     }
@@ -174,7 +171,6 @@ public class EventManager {
     @SuppressWarnings("unused")
     public void onGuiOpen(GuiOpenEvent event) {
         gameDetector.update(event);
-        configManager.update(event);
     }
 
     @SubscribeEvent
@@ -190,7 +186,7 @@ public class EventManager {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onRenderGameOverlay(RenderGameOverlayEvent.Post event) {
-        guiHud.render(event);
+        hudGui.render(event);
     }
 
     @SubscribeEvent
@@ -225,11 +221,11 @@ public class EventManager {
         }
         if (GameManager.getInstance() == null) {
             // Client is rejoining a Bed Wars game after restart of Minecraft
-            Minecraft.getMinecraft().player.sendMessage(CLIENT_RESTART_PROMPT);
+            Minecraft.getInstance().player.sendMessage(CLIENT_RESTART_PROMPT);
             gameTypeDetector.startDetection();
         } else {
             // Client is rejoining a Bed Wars game, but Minecraft is not closed
-            Minecraft.getMinecraft().player.sendMessage(CLIENT_REJOIN_PROMPT);
+            Minecraft.getInstance().player.sendMessage(CLIENT_REJOIN_PROMPT);
         }
     }
 
@@ -253,15 +249,9 @@ public class EventManager {
 
     @SubscribeEvent
     @SuppressWarnings("unused")
-    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-        configManager.save(event);
-    }
-
-    @SubscribeEvent
-    @SuppressWarnings("unused")
     public void onKeyInput(InputEvent.KeyInputEvent event) {
         if (hypixelDetector.isIn() && KeyBindings.QUICK_JOIN.isPressed()) {
-            Minecraft.getMinecraft().displayGuiScreen(new GuiQuickJoinMenu());
+            Minecraft.getInstance().displayGuiScreen(new QuickJoinMenuScreen());
         }
     }
 }

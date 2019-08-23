@@ -1,0 +1,13 @@
+modLoader="javafml"
+loaderVersion="[28,)"
+
+[[mods]]
+modId="hbwhelper"
+version="${file.jarVersion}"
+displayName="HBW Helper"
+updateJSONURL="https://leo3418.github.io/HBWHelper/promotions.json"
+displayURL="https://github.com/Leo3418/HBWHelper"
+authors="Leo3418"
+description='''
+Hypixel Bed Wars Helper (HBW Helper) is a Minecraft Forge mod which shows you information you care about in a Hypixel Bed Wars game at a glance.
+'''

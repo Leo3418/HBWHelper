@@ -18,21 +18,18 @@
 
 package io.github.leo3418.hbwhelper;
 
+import com.electronwill.nightconfig.core.file.CommentedFileConfig;
+import com.electronwill.nightconfig.core.io.WritingMode;
 import io.github.leo3418.hbwhelper.game.DreamMode;
-import io.github.leo3418.hbwhelper.gui.ConfigGuiFactory;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.resources.I18n;
-import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.common.config.ConfigElement;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
-import net.minecraftforge.fml.client.config.IConfigElement;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import io.github.leo3418.hbwhelper.gui.HudGui;
+import net.minecraftforge.fml.loading.moddiscovery.ModFile;
+import net.minecraftforge.fml.packs.ResourcePackLoader;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import static io.github.leo3418.hbwhelper.HbwHelper.MOD_ID;
+import static io.github.leo3418.hbwhelper.HbwHelper.NAME;
 
 /**
  * Configuration manager of this mod, which reads from and writes to this mod's
@@ -42,18 +39,17 @@ import java.util.List;
  * per runtime.
  *
  * @author Leo
- * @see ConfigGuiFactory
  */
 public class ConfigManager {
     /**
      * Default width from the left edge of the Minecraft window to the left
-     * edge of {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
+     * edge of {@link HudGui HudGui}
      */
     private static final int DEFAULT_HUD_X = 2;
 
     /**
      * Default height from the top edge of the Minecraft window to the top edge
-     * of {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
+     * of {@link HudGui HudGui}
      */
     private static final int DEFAULT_HUD_Y = 2;
 
@@ -63,61 +59,15 @@ public class ConfigManager {
     private static final ConfigManager INSTANCE = new ConfigManager();
 
     /**
+     * {@link Path} to the configuration file of this mod
+     */
+    private static final Path CONFIG_PATH =
+            Paths.get("config", MOD_ID + ".toml");
+
+    /**
      * Configuration file of this mod
      */
-    private Configuration config;
-
-    /**
-     * The {@link Property} object storing whether diamond and emerald
-     * generation times should be shown on
-     * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
-     */
-    private Property showGenerationTimes;
-
-    /**
-     * The {@link Property} object storing whether team upgrades should be
-     * shown on {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
-     */
-    private Property showTeamUpgrades;
-
-    /**
-     * The {@link Property} object storing whether armor information should be
-     * shown on {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
-     */
-    private Property showArmorInfo;
-
-    /**
-     * The {@link Property} object storing whether effects information should
-     * be shown on {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
-     */
-    private Property showEffectsInfo;
-
-    /**
-     * The {@link Property} object storing whether status effects
-     * should always be shown on {@link io.github.leo3418.hbwhelper.gui.GuiHud
-     * GuiHud}
-     */
-    private Property alwaysShowEffects;
-
-    /**
-     * The {@link Property} object storing width from the left edge of the
-     * Minecraft window to the left edge of
-     * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
-     */
-    private Property hudX;
-
-    /**
-     * The {@link Property} object storing height from the top edge of the
-     * Minecraft window to the top edge of
-     * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}
-     */
-    private Property hudY;
-
-    /**
-     * The {@link Property} object storing the current game for the Dream mode
-     * on Hypixel
-     */
-    private Property currentDreamMode;
+    private CommentedFileConfig config;
 
     /**
      * Implementation of Singleton design pattern, which allows only one
@@ -136,90 +86,106 @@ public class ConfigManager {
     }
 
     /**
-     * Initializes configuration when Minecraft Forge is starting.
-     * <p>
-     * This method should be called when a {@link FMLPreInitializationEvent} is
-     * fired.
-     *
-     * @param event the event fired before Minecraft Forge's initialization
+     * Initializes configuration of this mod.
      */
-    void initConfig(FMLPreInitializationEvent event) {
-        config = new Configuration(event.getSuggestedConfigurationFile());
+    void initConfig() {
+        ModFile modFile = ResourcePackLoader.getResourcePackFor(MOD_ID)
+                .orElseThrow(() -> {
+                    throw new IllegalStateException(NAME +
+                            " could get the resource pack of itself");
+                })
+                .getModFile();
+        Path defaultResourcePath = modFile.getLocator()
+                .findPath(modFile, "META-INF", MOD_ID + "-default.toml");
+        System.out.println(defaultResourcePath);
+        config = CommentedFileConfig.builder(CONFIG_PATH)
+                .sync()
+                .defaultData(defaultResourcePath)
+                .autoreload()
+                .autosave()
+                .writingMode(WritingMode.REPLACE)
+                .build();
         config.load();
-        initConfig();
+        config.save();
     }
 
     /**
      * Returns whether diamond and emerald generation times should be shown on
-     * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}.
+     * {@link HudGui HudGui}.
      *
      * @return whether diamond and emerald generation times should be shown on
-     *         {@code GuiHud}
+     *         {@code HudGui}
      */
     public boolean showGenerationTimes() {
-        return showGenerationTimes.getBoolean();
+        return config.get("showGenerationTimes");
     }
 
     /**
      * Returns whether team upgrades should be shown on
-     * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}.
+     * {@link HudGui HudGui}.
      *
-     * @return whether team upgrades should be shown on {@code GuiHud}
+     * @return whether team upgrades should be shown on {@code HudGui}
      */
     public boolean showTeamUpgrades() {
-        return showTeamUpgrades.getBoolean();
+        return config.<Boolean>getOptional("showTeamUpgrades")
+                .orElse(Boolean.TRUE);
     }
 
     /**
      * Returns whether armor information should be shown on
-     * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}.
+     * {@link HudGui HudGui}.
      *
-     * @return whether armor information should be shown on {@code GuiHud}
+     * @return whether armor information should be shown on {@code HudGui}
      */
     public boolean showArmorInfo() {
-        return showArmorInfo.getBoolean();
+        return config.<Boolean>getOptional("showArmorInfo")
+                .orElse(Boolean.TRUE);
     }
 
     /**
      * Returns whether effects information should be shown on
-     * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}.
+     * {@link HudGui HudGui}.
      *
-     * @return whether effects information should be shown on {@code GuiHud}
+     * @return whether effects information should be shown on {@code HudGui}
      */
     public boolean showEffectsInfo() {
-        return showEffectsInfo.getBoolean();
+        return config.<Boolean>getOptional("showEffectsInfo")
+                .orElse(Boolean.TRUE);
     }
 
     /**
      * Returns whether status effects should always be shown on
-     * {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}.
+     * {@link HudGui HudGui}.
      *
-     * @return whether status effects should always be shown on {@code GuiHud}
+     * @return whether status effects should always be shown on {@code HudGui}
      */
     public boolean alwaysShowEffects() {
-        return alwaysShowEffects.getBoolean();
+        return config.<Boolean>getOptional("alwaysShowEffects")
+                .orElse(Boolean.FALSE);
     }
 
     /**
      * Returns width from the left edge of the Minecraft window to the left
-     * edge of {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}.
+     * edge of {@link HudGui HudGui}.
      *
      * @return width from the left edge of the Minecraft window to the left
-     *         edge of {@code GuiHud}.
+     *         edge of {@code HudGui}.
      */
     public int hudX() {
-        return hudX.getInt();
+        return config.<Integer>getOptional("hudX")
+                .orElse(DEFAULT_HUD_X);
     }
 
     /**
      * Returns height from the top edge of the Minecraft window to the top
-     * edge of {@link io.github.leo3418.hbwhelper.gui.GuiHud GuiHud}.
+     * edge of {@link HudGui HudGui}.
      *
      * @return height from the top edge of the Minecraft window to the top
-     *         edge of {@code GuiHud}.
+     *         edge of {@code HudGui}.
      */
     public int hudY() {
-        return hudY.getInt();
+        return config.<Integer>getOptional("hudY")
+                .orElse(DEFAULT_HUD_Y);
     }
 
     /**
@@ -228,127 +194,7 @@ public class ConfigManager {
      * @return the current game for the Dream mode on Hypixel
      */
     public DreamMode currentDreamMode() {
-        DreamMode mode = DreamMode.valueOfDisplayName(currentDreamMode.getString());
-        return mode != null ? mode : DreamMode.UNSELECTED;
-    }
-
-    /**
-     * Returns a {@link List} storing settings elements to be displayed on
-     * {@link io.github.leo3418.hbwhelper.gui.ConfigGuiFactory.ConfigGuiScreen
-     * ConfigGuiScreen}.
-     *
-     * @return a {@code List} storing settings elements to be displayed on
-     *         {@code ConfigGuiScreen}
-     */
-    @SuppressWarnings("Duplicates")
-    public List<IConfigElement> getConfigElements() {
-        List<IConfigElement> configElements = new ArrayList<>();
-        configElements.add(new ConfigElement(showGenerationTimes));
-        configElements.add(new ConfigElement(showTeamUpgrades));
-        configElements.add(new ConfigElement(showArmorInfo));
-        configElements.add(new ConfigElement(showEffectsInfo));
-        configElements.add(new ConfigElement(alwaysShowEffects));
-        configElements.add(new ConfigElement(hudX));
-        configElements.add(new ConfigElement(hudY));
-        configElements.add(new ConfigElement(currentDreamMode));
-        return configElements;
-    }
-
-    /**
-     * When configuration of this mod changes, save it to the configuration
-     * file.
-     * <p>
-     * This method should be called whenever an
-     * {@link ConfigChangedEvent.OnConfigChangedEvent OnConfigChangedEvent}
-     * is fired.
-     *
-     * @param event the event fired when configuration of any mod changes
-     */
-    void save(ConfigChangedEvent.OnConfigChangedEvent event) {
-        if (event.getModID().equals(HbwHelper.MOD_ID)) {
-            config.save();
-        }
-    }
-
-    /**
-     * When client opens up this mod's configuration, updates allowed values of
-     * HUD parameters, so they reflect the current size of the Minecraft window.
-     * <p>
-     * This method should be called whenever a {@link GuiOpenEvent} is fired.
-     *
-     * @param event the event fired when this mod's configuration screen is
-     *         opened
-     */
-    void update(GuiOpenEvent event) {
-        if (event.getGui() instanceof ConfigGuiFactory.ConfigGuiScreen) {
-            updateHudParamRanges();
-        }
-    }
-
-    /**
-     * If the configuration file on disk is absent or incomplete, creates or
-     * completes the configuration file. Then, loads the configuration file.
-     */
-    private void initConfig() {
-        showArmorInfo = config.get(Configuration.CATEGORY_CLIENT,
-                "showArmorInfo",
-                true,
-                I18n.format("hbwhelper.configGui.showArmorInfo.description"))
-                .setLanguageKey("hbwhelper.configGui.showArmorInfo.title");
-        showEffectsInfo = config.get(Configuration.CATEGORY_CLIENT,
-                "showEffectsInfo",
-                true,
-                I18n.format("hbwhelper.configGui.showEffectsInfo.description"))
-                .setLanguageKey("hbwhelper.configGui.showEffectsInfo.title");
-        showGenerationTimes = config.get(Configuration.CATEGORY_CLIENT,
-                "showGenerationTimes",
-                true,
-                I18n.format("hbwhelper.configGui.showGenerationTimes.description"))
-                .setLanguageKey("hbwhelper.configGui.showGenerationTimes.title");
-        showTeamUpgrades = config.get(Configuration.CATEGORY_CLIENT,
-                "showTeamUpgrades",
-                true,
-                I18n.format("hbwhelper.configGui.showTeamUpgrades.description"))
-                .setLanguageKey("hbwhelper.configGui.showTeamUpgrades.title");
-        alwaysShowEffects = config.get(Configuration.CATEGORY_CLIENT,
-                "alwaysShowEffects",
-                false,
-                I18n.format("hbwhelper.configGui.alwaysShowEffects.description"))
-                .setLanguageKey("hbwhelper.configGui.alwaysShowEffects.title");
-        updateHudParamRanges();
-        currentDreamMode = config.get(Configuration.CATEGORY_CLIENT,
-                "currentDreamMode",
-                I18n.format("hbwhelper.configGui.unselected"),
-                I18n.format("hbwhelper.configGui.currentDreamMode.description"),
-                DreamMode.displayNames())
-                .setLanguageKey("hbwhelper.configGui.currentDreamMode.title");
-        // If the setting for currentDreamMode is no longer valid, resets it
-        if (DreamMode.valueOfDisplayName(currentDreamMode.getString()) == null) {
-            currentDreamMode.setToDefault();
-        }
-        config.save();
-    }
-
-    /**
-     * Updates allowed values of HUD parameters to let them reflect the current
-     * size of the Minecraft window.
-     */
-    private void updateHudParamRanges() {
-        ScaledResolution scaledResolution =
-                new ScaledResolution(Minecraft.getMinecraft());
-        hudX = config.get(Configuration.CATEGORY_CLIENT,
-                "hudX",
-                DEFAULT_HUD_X,
-                I18n.format("hbwhelper.configGui.hudX.description"),
-                0,
-                scaledResolution.getScaledWidth())
-                .setLanguageKey("hbwhelper.configGui.hudX.title");
-        hudY = config.get(Configuration.CATEGORY_CLIENT,
-                "hudY",
-                DEFAULT_HUD_Y,
-                I18n.format("hbwhelper.configGui.hudY.description"),
-                0,
-                scaledResolution.getScaledHeight())
-                .setLanguageKey("hbwhelper.configGui.hudY.title");
+        return DreamMode.valueOfDisplayName(config.get("currentDreamMode"))
+                .orElse(DreamMode.UNSELECTED);
     }
 }

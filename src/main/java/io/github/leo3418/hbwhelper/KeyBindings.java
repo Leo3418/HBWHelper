@@ -18,9 +18,9 @@
 
 package io.github.leo3418.hbwhelper;
 
+import io.github.leo3418.hbwhelper.gui.QuickJoinMenuScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import org.lwjgl.input.Keyboard;
 
 /**
  * Stores all custom key bindings of this mod, and provides a method for
@@ -30,10 +30,17 @@ import org.lwjgl.input.Keyboard;
  */
 public class KeyBindings {
     /**
+     * Key code for the default key toggling the
+     * {@linkplain QuickJoinMenuScreen Bed Wars Quick Join menu}
+     */
+    private static final int DEFAULT_KEY_CODE_QUICK_JOIN = 66; // The "B" key
+
+    /**
      * Key binding for toggling Bed Wars quick join menu
      */
     public static final KeyBinding QUICK_JOIN =
-            new KeyBinding("key.hbwhelper.quickJoin", Keyboard.KEY_B,
+            new KeyBinding("key.hbwhelper.quickJoin",
+                    DEFAULT_KEY_CODE_QUICK_JOIN,
                     "key.categories.misc");
 
     /**

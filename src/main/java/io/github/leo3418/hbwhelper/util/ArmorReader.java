@@ -19,10 +19,10 @@
 package io.github.leo3418.hbwhelper.util;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -49,11 +49,6 @@ public class ArmorReader {
     private static final int BOOTS_INDEX = 0;
 
     /**
-     * Enchantment ID for Protection
-     */
-    private static final int ENCHANTMENT_ID = 0;
-
-    /**
      * Prevents instantiation of this class.
      */
     private ArmorReader() {
@@ -68,8 +63,8 @@ public class ArmorReader {
      */
     public static int getProtectionLevel() {
         if (hasArmor()) {
-            return EnchantmentHelper.getEnchantmentLevel(Enchantment
-                    .getEnchantmentByID(ENCHANTMENT_ID), getArmorStack());
+            return EnchantmentHelper.getEnchantmentLevel(
+                    Enchantments.PROTECTION, getArmorStack());
         }
         return -1;
     }
@@ -89,7 +84,7 @@ public class ArmorReader {
      * @return an {@code ItemStack} object which represents the player's armor
      */
     public static ItemStack getArmorStack() {
-        return Minecraft.getMinecraft().player.inventory
+        return Minecraft.getInstance().player.inventory
                 .armorItemInSlot(BOOTS_INDEX);
     }
 
@@ -100,10 +95,10 @@ public class ArmorReader {
      * @return the player's armor, or {@code null} if the player does not wear
      *         armor
      */
-    private static ItemArmor getArmor() {
+    private static ArmorItem getArmor() {
         Item bootsItem = getArmorStack().getItem();
-        if (bootsItem instanceof ItemArmor) {
-            return (ItemArmor) bootsItem;
+        if (bootsItem instanceof ArmorItem) {
+            return (ArmorItem) bootsItem;
         }
         return null;
     }

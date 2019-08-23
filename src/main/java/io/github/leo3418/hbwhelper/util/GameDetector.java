@@ -23,11 +23,10 @@ import io.github.leo3418.hbwhelper.event.ClientJoinInProgressGameEvent;
 import io.github.leo3418.hbwhelper.event.ClientLeaveGameEvent;
 import io.github.leo3418.hbwhelper.event.ClientRejoinGameEvent;
 import io.github.leo3418.hbwhelper.event.GameStartEvent;
-import net.minecraft.client.gui.GuiDownloadTerrain;
+import net.minecraft.client.gui.screen.DownloadTerrainScreen;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
+import net.minecraftforge.event.world.WorldEvent;
 
 /**
  * Detects and tracks if client is in a Hypixel Bed Wars game.
@@ -38,37 +37,42 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnection
  * @author Leo
  */
 public class GameDetector {
+    /*
+     * Note: Some of the prompts below in 1.14 differ from their counterpart in
+     * older Minecraft client versions.
+     */
+
     /**
      * Prompt client received in chat when a new ordinary game starts
      */
     private static final String ORDINARY_START_TEXT =
-            "\u00A7r\u00A7f\u00A7lBed Wars\u00A7r";
+            "\u00A7f\u00A7lBed Wars\u00A7r";
 
     /**
      * Prompt client received in chat when a new game in Capture Mode starts
      */
     private static final String CAPTURE_START_TEXT =
-            "\u00A7r\u00A7f\u00A7lTo win a game of Bed Wars Capture\u00A7r";
+            "\u00A7f\u00A7lTo win a game of Bed Wars Capture\u00A7r";
 
     /**
      * Prompt client received in chat when a Bed Wars game in Rush Mode starts
      */
     private static final String RUSH_START_TEXT =
-            "\u00A7r\u00A7f\u00A7lBed Wars Rush\u00A7r";
+            "\u00A7f\u00A7lBed Wars Rush\u00A7r";
 
     /**
      * Prompt client received in chat when a Bed Wars game in Ultimate Mode
      * starts
      */
     private static final String ULTIMATE_START_TEXT =
-            "\u00A7r\u00A7f\u00A7lBed Wars Ultimate\u00A7r";
+            "\u00A7f\u00A7lBed Wars Ultimate\u00A7r";
 
     /**
      * Prompt client received in chat when a Bed Wars game in Lucky Blocks Mode
      * starts
      */
     private static final String LUCKY_BLOCKS_START_TEXT =
-            "\u00A7r\u00A7f\u00A7lBed Wars Lucky Blocks\u00A7r";
+            "\u00A7f\u00A7lBed Wars Lucky Blocks\u00A7r";
 
     /**
      * Prompt client received in chat when it rejoins a game
@@ -134,34 +138,27 @@ public class GameDetector {
      *         up
      */
     public void update(GuiOpenEvent event) {
-        if (inBedWars && event.getGui() instanceof GuiDownloadTerrain) {
+        if (inBedWars && event.getGui() instanceof DownloadTerrainScreen) {
             inBedWars = false;
             EventManager.EVENT_BUS.post(new ClientLeaveGameEvent());
         }
     }
 
     /**
-     * Updates whether client is in a Bed Wars game upon connection change.
+     * Updates whether client is in a Bed Wars game when a world unloads.
      * <p>
-     * Because {@link GuiOpenEvent} will not be called when client disconnects,
-     * this method is implemented to detect
-     * {@link ClientDisconnectionFromServerEvent
-     * ClientDisconnectionFromServerEvent}, which is fired when client
-     * disconnects.
+     * Because {@code GuiOpenEvent} will not be called when
+     * client disconnects, this method is implemented to detect
+     * {@code WorldEvent.Unload}, which is fired when a world unloads, which
+     * happens when client disconnects from a server.
      * <p>
-     * If client is leaving a Bed Wars game, fires a
-     * {@link ClientLeaveGameEvent} on this mod's {@link EventManager#EVENT_BUS
-     * proprietary event bus}.
-     * This method should be called whenever a {@link FMLNetworkEvent} is fired.
+     * This method should be called whenever a {@link WorldEvent.Unload} is
+     * fired.
      *
-     * @param event the event fired when client joins or leaves a server
+     * @param event the event fired when a world unloads
      */
-    public void update(FMLNetworkEvent event) {
-        if (inBedWars && event instanceof ClientDisconnectionFromServerEvent) {
-            /*
-            GuiOpenEvent will not be called when client disconnects, so we need
-            to detect ClientDisconnectionFromServerEvent
-             */
+    public void update(@SuppressWarnings("unused") WorldEvent.Unload event) {
+        if (inBedWars) {
             inBedWars = false;
             EventManager.EVENT_BUS.post(new ClientLeaveGameEvent());
         }

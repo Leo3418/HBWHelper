@@ -18,7 +18,7 @@
 
 package io.github.leo3418.hbwhelper.event;
 
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 /**
  * The event fired when client is being teleported to an in-progress Bed Wars

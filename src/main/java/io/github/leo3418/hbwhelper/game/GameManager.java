@@ -20,7 +20,7 @@ package io.github.leo3418.hbwhelper.game;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityArmorStand;
+import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -55,10 +55,15 @@ public class GameManager {
      */
     public static final int MAX_TRAPS = 3;
 
+    /*
+     * Note: Some of the prompts below in 1.14 differ from their counterpart in
+     * older Minecraft client versions.
+     */
+
     /**
      * Text that only appears in the line showing spawn time above a generator
      */
-    private static final String GENERATOR_TEXT = "\u00A7eSpawns in \u00A7c";
+    private static final String GENERATOR_TEXT = "\u00A7eSpawns in \u00A7r\u00A7c";
 
     /**
      * Text that only appears in a diamond generator's display name
@@ -348,10 +353,10 @@ public class GameManager {
      *         cannot be found
      */
     private BlockPos findGenerator(String generatorText) {
-        List<Entity> entities = Minecraft.getMinecraft().world
-                .getLoadedEntityList();
+        Iterable<Entity> entities = Minecraft.getInstance().world
+                .getAllEntities();
         for (Entity entity : entities) {
-            if (entity instanceof EntityArmorStand) {
+            if (entity instanceof ArmorStandEntity) {
                 String name = entity.getDisplayName().getFormattedText();
                 if (name.contains(generatorText)) {
                     return entity.getPosition();
@@ -370,13 +375,13 @@ public class GameManager {
      *         a generator cannot be found or read at that position
      */
     private int getSpawnTime(BlockPos generatorPos) {
-        List<EntityArmorStand> genEntities = Minecraft.getMinecraft().world
-                .getEntitiesWithinAABB(EntityArmorStand.class,
+        List<ArmorStandEntity> genEntities = Minecraft.getInstance().world
+                .getEntitiesWithinAABB(ArmorStandEntity.class,
                         new AxisAlignedBB(generatorPos));
-        for (EntityArmorStand genEntity : genEntities) {
+        for (ArmorStandEntity genEntity : genEntities) {
             ITextComponent floatTextComponent = genEntity.getDisplayName();
             if (floatTextComponent.getFormattedText().contains(GENERATOR_TEXT)) {
-                return Integer.parseInt(floatTextComponent.getUnformattedText()
+                return Integer.parseInt(floatTextComponent.getString()
                         .replaceAll("[^0-9]", ""));
             }
         }
