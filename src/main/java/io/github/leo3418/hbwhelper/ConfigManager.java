@@ -95,7 +95,6 @@ public class ConfigManager {
                 .getModFile();
         Path defaultResourcePath = modFile.getLocator()
                 .findPath(modFile, "META-INF", MOD_ID + "-default.toml");
-        System.out.println(defaultResourcePath);
         config = CommentedFileConfig.builder(CONFIG_PATH)
                 .sync()
                 .defaultData(defaultResourcePath)
