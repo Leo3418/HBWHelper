@@ -18,6 +18,10 @@
 
 package io.github.leo3418.hbwhelper;
 
+import com.mojang.brigadier.CommandDispatcher;
+import io.github.leo3418.hbwhelper.command.CommandManager;
+import io.github.leo3418.hbwhelper.command.ConfigCommand;
+import net.minecraft.command.CommandSource;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -43,5 +47,8 @@ public class HbwHelper {
         ConfigManager.getInstance().initConfig();
         EventManager.getInstance().registerOnEventBus();
         KeyBindings.registerBindings();
+        CommandDispatcher<CommandSource> commandDispatcher =
+                CommandManager.getInstance().getDispatcher();
+        ConfigCommand.register(commandDispatcher);
     }
 }

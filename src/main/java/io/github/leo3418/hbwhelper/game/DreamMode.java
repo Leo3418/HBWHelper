@@ -21,6 +21,7 @@ package io.github.leo3418.hbwhelper.game;
 import com.google.common.collect.Maps;
 import net.minecraft.client.resources.I18n;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
@@ -84,6 +85,19 @@ public enum DreamMode {
     }
 
     /**
+     * Returns a {@link Collection} containing display names of every constants
+     * of this enumeration whose iteration order is the same as the order their
+     * corresponding constants are declared.
+     *
+     * @return a {@code Collection} containing display names of every constants
+     *         of this enumeration whose iteration order is the same as the
+     *         order their corresponding constants are declared
+     */
+    public static Collection<String> displayNames() {
+        return DISPLAY_NAMES_MAP.keySet();
+    }
+
+    /**
      * Returns an {@link Optional} wrapping the constant of this enumeration
      * with the specified display name, or an empty {@code Optional} if there is
      * no such constant with the specified name.
@@ -102,5 +116,14 @@ public enum DreamMode {
             return Optional.empty();
         }
         return Optional.ofNullable(DISPLAY_NAMES_MAP.get(displayName));
+    }
+
+    /**
+     * Returns the name of this Dream mode game displayed in the client.
+     *
+     * @return the name of this Dream mode game displayed in the client
+     */
+    public String toDisplayName() {
+        return displayName;
     }
 }

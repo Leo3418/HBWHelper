@@ -21,6 +21,7 @@ package io.github.leo3418.hbwhelper.gui;
 import io.github.leo3418.hbwhelper.ConfigManager;
 import io.github.leo3418.hbwhelper.HbwHelper;
 import io.github.leo3418.hbwhelper.KeyBindings;
+import io.github.leo3418.hbwhelper.command.ConfigCommand;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
@@ -309,7 +310,9 @@ public class QuickJoinMenuScreen extends Screen {
          * The prompt that reminds the user to select the current game variant
          * for the Bed Wars Dream mode
          */
-        SET_DREAM_MODE("hbwhelper.messages.setDreamMode");
+        SET_DREAM_MODE("hbwhelper.messages.setDreamMode",
+                HbwHelper.NAME, ConfigCommand.LITERAL,
+                ConfigCommand.LITERAL_DESC, ConfigCommand.LITERAL_SET);
 
         /**
          * {@link ITextComponent} object storing prompt being shown when
@@ -323,10 +326,12 @@ public class QuickJoinMenuScreen extends Screen {
          *
          * @param translateKey the translate key of the prompt being shown when
          *         this {@code PromptAction} is performed
+         * @param translateArgs the translate arguments of the prompt being
+         *         shown when this {@code PromptAction} is performed
          */
-        PromptAction(String translateKey) {
+        PromptAction(String translateKey, Object... translateArgs) {
             this.prompt =
-                    new TranslationTextComponent(translateKey, HbwHelper.NAME);
+                    new TranslationTextComponent(translateKey, translateArgs);
         }
 
         /**

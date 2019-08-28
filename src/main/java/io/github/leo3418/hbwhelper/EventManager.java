@@ -18,6 +18,7 @@
 
 package io.github.leo3418.hbwhelper;
 
+import io.github.leo3418.hbwhelper.command.CommandManager;
 import io.github.leo3418.hbwhelper.event.*;
 import io.github.leo3418.hbwhelper.game.GameManager;
 import io.github.leo3418.hbwhelper.game.GameTypeDetector;
@@ -29,10 +30,7 @@ import io.github.leo3418.hbwhelper.util.InProgressGameDetector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.client.event.ClientChatReceivedEvent;
-import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -110,6 +108,11 @@ public class EventManager {
     private final HudGui hudGui;
 
     /**
+     * The {@link CommandManager} instance
+     */
+    private final CommandManager commandManager;
+
+    /**
      * Whether the current {@link GameManager} instance returned by
      * {@link GameManager#getInstance()} should be cleared when client switches
      * to the next Bed Wars game
@@ -134,6 +137,7 @@ public class EventManager {
         ipGameDetector = InProgressGameDetector.getInstance();
         gameTypeDetector = GameTypeDetector.getInstance();
         hudGui = HudGui.getInstance();
+        commandManager = CommandManager.getInstance();
     }
 
     /**
@@ -245,6 +249,12 @@ public class EventManager {
     @SuppressWarnings("unused")
     public void onTeleportCancelled(TeleportCancelledEvent event) {
         shouldClearGMInstance = false;
+    }
+
+    @SubscribeEvent
+    @SuppressWarnings("unused")
+    public void onClientChat(ClientChatEvent event) {
+        commandManager.process(event);
     }
 
     @SubscribeEvent
