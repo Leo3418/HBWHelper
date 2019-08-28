@@ -30,7 +30,8 @@ The following instructions assume you have correctly configured the following
 components on your computer:
 - [Java SE Development Kit 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 (a.k.a. JDK 8)  
-Please do now use JDK 9 since it is not supported by Minecraft Forge.
+Please do now use JDK 9 or newer releases since it is not supported by Minecraft
+Forge.
 - An Integrated Development Environment (a.k.a. IDE) for Java SE  
 We recommend [JetBrains IntelliJ IDEA](https://www.jetbrains.com/idea/) and
 [Eclipse](https://eclipse.org) because they are officially supported by
@@ -48,6 +49,40 @@ this repository.
 **your own fork** to a folder on your computer where you want to store your code.
 
 ### Configuring Your Project
+
+#### Configuring on the `dev` or `latest` Branch
+1. Open up a terminal (on GNU/Linux or macOS), a Windows PowerShell console
+(on Windows), or a Command Prompt window (on Windows). Navigate to the folder
+where you have cloned this repository.
+2. Perform this step only if you are using **Eclipse** for development:  
+  In terminal or Windows PowerShell, execute:
+  ```
+  ./gradlew genEclipseRuns
+  ```
+  Or, in Command Prompt, execute:
+  ```
+  gradlew genEclipseRuns
+  ```
+3. Import the folder storing your fork in your IDE.  
+On IntelliJ IDEA, make sure you either select `build.gradle` in the folder or
+choose `Gradle` as the project model if you select the folder itself.
+4. Generate run configurations. Although this step is not required, it is
+   recommended.  
+     - If you are using **IntelliJ IDEA** for development:  
+       - Close this project in IntelliJ IDEA if it is opened.
+       - In terminal or Windows PowerShell, execute:
+         ```
+         ./gradlew genIntelliJRuns
+         ```
+         Or, in Command Prompt, execute:
+         ```
+         gradlew genIntelliJRuns
+         ```
+       - Then, reopen the project, and you can see run configurations.  
+<!-- I cannot add detailed instructions for Eclipse yet until I find a machine
+with a full Eclipse installation -->
+
+#### Configuring on Other Branches for Older Minecraft Client Versions
 1. Open up a terminal (on GNU/Linux or macOS), a Windows PowerShell console
 (on Windows), or a Command Prompt window (on Windows). Navigate to the folder
 where you have cloned the repository.

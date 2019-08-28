@@ -1,6 +1,8 @@
 {
   "homepage": "https://github.com/Leo3418/HBWHelper/releases",
   "promos": {
+    "1.14.4-latest": "<dev-ver>",
+    "1.14.4-recommended": "<rel-ver>",
     "1.12.2-latest": "<dev-ver>",
     "1.12.2-recommended": "<rel-ver>",
     "1.12.1-latest": "<dev-ver>",
