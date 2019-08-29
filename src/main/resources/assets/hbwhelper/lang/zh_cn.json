@@ -33,6 +33,7 @@
   "hbwhelper.dream.ultimate": "超能力起床",
   "hbwhelper.dream.castle": "城池攻防战",
   "hbwhelper.dream.luckyBlocks": "幸运方块",
+  "hbwhelper.dream.voidless": "无虚空模式",
   "hbwhelper.hudGui.findingGenerator": "正在搜索信号...",
   "hbwhelper.messages.clientRejoin": "[%1$s] 检测到您重新加入了一局起床战争，或者加入了一场正在进行中的起床战争城池攻防战。您的队友在您不在游戏期间购买的队伍升级无法显示。",
   "hbwhelper.messages.clientRestart": "[%1$s] 检测到您已重启 Minecraft 客户端，或者加入了一场正在进行中的起床战争城池攻防战。很抱歉，您的队伍之前获得的队伍升级无法重新读取。",
@@ -42,9 +43,10 @@
   "hbwhelper.quickJoinGui.doubles": "双人模式",
   "hbwhelper.quickJoinGui.3v3v3v3": "3v3v3v3 模式",
   "hbwhelper.quickJoinGui.4v4v4v4": "4v4v4v4 模式",
-  "hbwhelper.quickJoinGui.capture.noParties": "Capture 模式",
+  "hbwhelper.quickJoinGui.4v4": "4v4 模式",
   "hbwhelper.quickJoinGui.dream": "梦幻模式",
   "hbwhelper.quickJoinGui.luckyBlocks": "幸运方块",
+  "hbwhelper.quickJoinGui.voidless": "无虚空模式",
   "hbwhelper.quickJoinGui.backToGame": "回到游戏",
   "key.hbwhelper.quickJoin": "起床战争快速加入菜单"
 }

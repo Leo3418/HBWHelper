@@ -33,15 +33,8 @@ import io.github.leo3418.hbwhelper.util.ScoreboardReader;
 public class GameTypeDetector {
     /**
      * Text that appears on scoreboard only when client is in a Bed Wars game
-     * (except in Capture)
      */
     private static final String GAME_SCOREBOARD_TEXT = "R Red:";
-
-    /**
-     * Text that appears on scoreboard only when client is in a Bed Wars Capture
-     * game
-     */
-    private static final String CAPTURE_SCOREBOARD_TEXT = "Draw in";
 
     /**
      * Text that appears on scoreboard only when client is in Bed Wars Rush
@@ -115,8 +108,7 @@ public class GameTypeDetector {
         if (shouldDetect) {
             // An extra check runs here to ensure that the scoreboard is fully
             // loaded with the information needed to determine the game type
-            if (ScoreboardReader.contains(GAME_SCOREBOARD_TEXT) ||
-                    ScoreboardReader.contains(CAPTURE_SCOREBOARD_TEXT)) {
+            if (ScoreboardReader.contains(GAME_SCOREBOARD_TEXT)) {
                 EventManager.EVENT_BUS.post(
                         new GameTypeDetectedEvent(getGameType()));
                 stopDetection();

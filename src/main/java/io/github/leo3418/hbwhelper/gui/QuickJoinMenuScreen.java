@@ -154,6 +154,22 @@ public class QuickJoinMenuScreen extends Screen {
                         this,
                         CommandAction.PLAY_LUCKY_BLOCKS_4V4V4V4));
                 return buttons;
+            case VOIDLESS:
+                buttons.add(new QuickJoinGuiButton(
+                        QuickJoinGuiButton.Variant.SHORT,
+                        x, y,
+                        I18n.format("hbwhelper.dream.voidless") + " " +
+                                I18n.format("hbwhelper.quickJoinGui.doubles"),
+                        this,
+                        CommandAction.PLAY_VOIDLESS_DOUBLES));
+                buttons.add(new QuickJoinGuiButton(
+                        QuickJoinGuiButton.Variant.SHORT,
+                        x + SHORT_BUTTON_WIDTH + BUTTONS_INTERVAL, y,
+                        I18n.format("hbwhelper.dream.voidless") + " " +
+                                I18n.format("hbwhelper.quickJoinGui.4v4v4v4"),
+                        this,
+                        CommandAction.PLAY_VOIDLESS_4V4V4V4));
+                return buttons;
             default:
                 buttons.add(new QuickJoinGuiButton(
                         QuickJoinGuiButton.Variant.LONG, x, y,
@@ -201,8 +217,8 @@ public class QuickJoinMenuScreen extends Screen {
         addButton(new QuickJoinGuiButton(
                 QuickJoinGuiButton.Variant.LONG,
                 buttonX, firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
-                I18n.format("hbwhelper.quickJoinGui.capture.noParties"), this,
-                CommandAction.PLAY_CAPTURE
+                I18n.format("hbwhelper.quickJoinGui.4v4"), this,
+                CommandAction.PLAY_4V4
         ));
         getDreamButtons(buttonX,
                 firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL))
@@ -263,14 +279,16 @@ public class QuickJoinMenuScreen extends Screen {
         PLAY_DOUBLES("/play bedwars_eight_two"),
         PLAY_3V3V3V3("/play bedwars_four_three"),
         PLAY_4V4V4V4("/play bedwars_four_four"),
-        PLAY_CAPTURE("/play bedwars_capture"),
+        PLAY_4V4("/play bedwars_two_four"),
         PLAY_RUSH_DOUBLES("/play bedwars_eight_two_rush"),
         PLAY_RUSH_4V4V4V4("/play bedwars_four_four_rush"),
         PLAY_ULTIMATE_DOUBLES("/play bedwars_eight_two_ultimate"),
         PLAY_ULTIMATE_4V4V4V4("/play bedwars_four_four_ultimate"),
         PLAY_CASTLE("/play bedwars_castle"),
         PLAY_LUCKY_BLOCKS_DOUBLES("/play bedwars_eight_two_lucky"),
-        PLAY_LUCKY_BLOCKS_4V4V4V4("/play bedwars_four_four_lucky");
+        PLAY_LUCKY_BLOCKS_4V4V4V4("/play bedwars_four_four_lucky"),
+        PLAY_VOIDLESS_DOUBLES("/play bedwars_eight_two_voidless"),
+        PLAY_VOIDLESS_4V4V4V4("/play bedwars_four_four_voidless");
 
         /**
          * The command being run when this {@code CommandAction} is performed
