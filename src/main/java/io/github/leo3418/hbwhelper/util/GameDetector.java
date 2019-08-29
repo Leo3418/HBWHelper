@@ -45,12 +45,6 @@ public class GameDetector {
             "\u00A7r\u00A7f\u00A7lBed Wars\u00A7r";
 
     /**
-     * Prompt client received in chat when a new game in Capture Mode starts
-     */
-    private static final String CAPTURE_START_TEXT =
-            "\u00A7r\u00A7f\u00A7lTo win a game of Bed Wars Capture\u00A7r";
-
-    /**
      * Prompt client received in chat when a Bed Wars game in Rush Mode starts
      */
     private static final String RUSH_START_TEXT =
@@ -191,8 +185,7 @@ public class GameDetector {
     public void update(ClientChatReceivedEvent event) {
         if (hypixelDetector.isIn() && !inBedWars) {
             String message = event.message.getFormattedText();
-            if ((message.contains(ORDINARY_START_TEXT)
-                    || message.contains(CAPTURE_START_TEXT))
+            if (message.contains(ORDINARY_START_TEXT)
                     || message.contains(RUSH_START_TEXT)
                     || message.contains(ULTIMATE_START_TEXT)
                     || message.contains(LUCKY_BLOCKS_START_TEXT)) {
