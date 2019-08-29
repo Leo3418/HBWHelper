@@ -210,8 +210,6 @@ public class HudGui extends AbstractGui {
      */
     private void renderEffectsInfo() {
         if (configManager.showEffectsInfo()) {
-            mc.getTextureManager()
-                    .bindTexture(AtlasTexture.LOCATION_EFFECTS_TEXTURE);
             for (EffectInstance potionEffect : EffectsReader.getEffects()) {
                 TextureAtlasSprite icon = EffectsReader.getIcon(potionEffect);
 
@@ -334,6 +332,8 @@ public class HudGui extends AbstractGui {
      * @param text the text to be rendered
      */
     private void drawEffectIconAndString(TextureAtlasSprite icon, String text) {
+        mc.getTextureManager()
+                .bindTexture(AtlasTexture.LOCATION_EFFECTS_TEXTURE);
         // Removes black background of the first icon rendered
         GlStateManager.enableBlend();
         blit(configManager.hudX(), currentHeight, blitOffset,
