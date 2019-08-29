@@ -35,8 +35,10 @@ public enum GameType {
      * game starts, including:
      * <ul>
      * <li>Solo, Doubles, 3v3v3v3, 4v4v4v4</li>
-     * <li>Capture</li>
+     * <li>4v4</li>
      * <li>Ultimate</li>
+     * <li>Lucky Blocks</li>
+     * <li>Voidless</li>
      * </ul>
      */
     NORMAL(ForgeLevel.ORDINARY_FORGE, 1, Constants.EMPTY_INITIAL_TRAP_QUEUE),
