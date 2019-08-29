@@ -50,7 +50,11 @@ public enum DreamMode {
     /**
      * Lucky Blocks mode
      */
-    LUCKY_BLOCKS(I18n.format("hbwhelper.dream.luckyBlocks"));
+    LUCKY_BLOCKS(I18n.format("hbwhelper.dream.luckyBlocks")),
+    /**
+     * Voidless mode
+     */
+    VOIDLESS(I18n.format("hbwhelper.dream.voidless"));
 
     /**
      * Cache for better performance when querying a constant of Dream mode
