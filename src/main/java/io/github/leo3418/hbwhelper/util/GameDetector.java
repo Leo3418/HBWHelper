@@ -25,8 +25,8 @@ import io.github.leo3418.hbwhelper.event.ClientRejoinGameEvent;
 import io.github.leo3418.hbwhelper.event.GameStartEvent;
 import net.minecraft.client.gui.screen.DownloadTerrainScreen;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.event.world.WorldEvent;
 
 /**
  * Detects and tracks if client is in a Hypixel Bed Wars game.
@@ -139,20 +139,29 @@ public class GameDetector {
     }
 
     /**
-     * Updates whether client is in a Bed Wars game when a world unloads.
+     * Updates whether client is in a Bed Wars game upon connection change.
      * <p>
-     * Because {@code GuiOpenEvent} will not be called when
-     * client disconnects, this method is implemented to detect
-     * {@code WorldEvent.Unload}, which is fired when a world unloads, which
-     * happens when client disconnects from a server.
+     * Because {@link GuiOpenEvent} will not be called when client disconnects,
+     * this method is implemented to detect
+     * {@link ClientPlayerNetworkEvent.LoggedOutEvent}, which is fired when
+     * client disconnects.
      * <p>
-     * This method should be called whenever a {@link WorldEvent.Unload} is
-     * fired.
+     * If client is leaving a Bed Wars game, fires a
+     * {@link ClientLeaveGameEvent} on this mod's {@link EventManager#EVENT_BUS
+     * proprietary event bus}.
+     * <p>
+     * This method should be called whenever a {@link ClientPlayerNetworkEvent}
+     * is fired.
      *
-     * @param event the event fired when a world unloads
+     * @param event the event fired when client joins or leaves a server
      */
-    public void update(@SuppressWarnings("unused") WorldEvent.Unload event) {
-        if (inBedWars) {
+    public void update(ClientPlayerNetworkEvent event) {
+        if (inBedWars
+                && event instanceof ClientPlayerNetworkEvent.LoggedOutEvent) {
+            /*
+            GuiOpenEvent will not be called when client disconnects, so we need
+            to detect ClientPlayerNetworkEvent.LoggedOutEvent
+             */
             inBedWars = false;
             EventManager.EVENT_BUS.post(new ClientLeaveGameEvent());
         }

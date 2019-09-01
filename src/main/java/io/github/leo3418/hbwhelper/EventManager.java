@@ -33,8 +33,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -160,13 +158,7 @@ public class EventManager {
 
     @SubscribeEvent
     @SuppressWarnings("unused")
-    public void onEntityJoinWorld(EntityJoinWorldEvent event) {
-        hypixelDetector.update(event);
-    }
-
-    @SubscribeEvent
-    @SuppressWarnings("unused")
-    public void onWorldUnload(WorldEvent.Unload event) {
+    public void onClientPlayerNetworkEvent(ClientPlayerNetworkEvent event) {
         hypixelDetector.update(event);
         gameDetector.update(event);
     }
