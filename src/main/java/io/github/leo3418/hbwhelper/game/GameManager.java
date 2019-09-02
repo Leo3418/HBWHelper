@@ -348,7 +348,7 @@ public class GameManager {
      *         cannot be found
      */
     private BlockPos findGenerator(String generatorText) {
-        List<Entity> entities = Minecraft.getMinecraft().theWorld
+        Iterable<Entity> entities = Minecraft.getMinecraft().theWorld
                 .getLoadedEntityList();
         for (Entity entity : entities) {
             if (entity instanceof EntityArmorStand) {

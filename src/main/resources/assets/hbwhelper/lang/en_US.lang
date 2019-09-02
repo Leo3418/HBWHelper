@@ -25,9 +25,9 @@ hbwhelper.dream.voidless=Voidless
 
 hbwhelper.hudGui.findingGenerator=Searching signal...
 
-hbwhelper.messages.clientRejoin=We have detected that you either rejoined a Bed Wars game or joined an in-progress Bed Wars Castle game. Any team upgrade your teammate has got when you were not in the game cannot be displayed.
-hbwhelper.messages.clientRestart=We have detected that you either restarted your Minecraft client or joined an in-progress Bed Wars Castle game. Unfortunately, we cannot retrieve what team upgrade your team has got before.
-hbwhelper.messages.setDreamMode=You need to set the current Dream mode in HBW Helper settings. To set it, open the game menu, select "Mod Options", choose "HBW Helper", then click on "Config".
+hbwhelper.messages.clientRejoin=[%1$s] We have detected that you either rejoined a Bed Wars game or joined an in-progress Bed Wars Castle game. Any team upgrade your teammate has got when you were not in the game cannot be displayed.
+hbwhelper.messages.clientRestart=[%1$s] We have detected that you either restarted your Minecraft client or joined an in-progress Bed Wars Castle game. Unfortunately, we cannot retrieve what team upgrade your team has got before.
+hbwhelper.messages.setDreamMode=[%1$s] You need to set the current Dream mode in %1$s settings. To set it, open the game menu, select "Mod Options", choose "%1$s", then click on "Config".
 
 hbwhelper.quickJoinGui.title=Bed Wars Quick Join
 hbwhelper.quickJoinGui.solo=Solo

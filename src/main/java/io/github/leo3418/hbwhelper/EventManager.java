@@ -27,8 +27,8 @@ import io.github.leo3418.hbwhelper.util.GameDetector;
 import io.github.leo3418.hbwhelper.util.HypixelDetector;
 import io.github.leo3418.hbwhelper.util.InProgressGameDetector;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -61,26 +61,21 @@ public class EventManager {
     public static final EventBus EVENT_BUS = new EventBus();
 
     /**
-     * Prefix of prompt sent from this mod to the client
-     */
-    private static final String PROMPT_PREFIX = "[" + HbwHelper.NAME + "] ";
-
-    /**
-     * {@link ChatComponentText} object storing prompt being shown when client
+     * {@link IChatComponent} object storing prompt being shown when client
      * rejoins a Bed Wars game it was in before after Minecraft restarts
      */
-    private static final ChatComponentText CLIENT_RESTART_PROMPT =
-            new ChatComponentText(PROMPT_PREFIX
-                    + I18n.format("hbwhelper.messages.clientRestart"));
+    private static final IChatComponent CLIENT_RESTART_PROMPT =
+            new ChatComponentTranslation("hbwhelper.messages.clientRestart",
+                    HbwHelper.NAME);
 
     /**
-     * {@link ChatComponentText} object storing prompt being shown when client
+     * {@link IChatComponent} object storing prompt being shown when client
      * rejoins a Bed Wars game it was in before, but Minecraft has not been
      * restarted
      */
-    private static final ChatComponentText CLIENT_REJOIN_PROMPT =
-            new ChatComponentText(PROMPT_PREFIX
-                    + I18n.format("hbwhelper.messages.clientRejoin"));
+    private static final IChatComponent CLIENT_REJOIN_PROMPT =
+            new ChatComponentTranslation("hbwhelper.messages.clientRejoin",
+                    HbwHelper.NAME);
 
     /**
      * The only instance of this class
