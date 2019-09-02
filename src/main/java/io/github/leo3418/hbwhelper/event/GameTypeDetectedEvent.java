@@ -27,7 +27,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  *
  * @author Leo
  */
-public class GameTypeDetectedEvent extends Event {
+public final class GameTypeDetectedEvent extends Event {
     /**
      * The {@link GameType} of the current Bed Wars game
      */

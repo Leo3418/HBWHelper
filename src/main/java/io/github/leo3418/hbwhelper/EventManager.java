@@ -27,8 +27,8 @@ import io.github.leo3418.hbwhelper.util.GameDetector;
 import io.github.leo3418.hbwhelper.util.HypixelDetector;
 import io.github.leo3418.hbwhelper.util.InProgressGameDetector;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -61,26 +61,21 @@ public class EventManager {
     public static final EventBus EVENT_BUS = new EventBus();
 
     /**
-     * Prefix of prompt sent from this mod to the client
-     */
-    private static final String PROMPT_PREFIX = "[" + HbwHelper.NAME + "] ";
-
-    /**
-     * {@link TextComponentString} object storing prompt being shown when client
+     * {@link ITextComponent} object storing prompt being shown when client
      * rejoins a Bed Wars game it was in before after Minecraft restarts
      */
-    private static final TextComponentString CLIENT_RESTART_PROMPT =
-            new TextComponentString(PROMPT_PREFIX
-                    + I18n.format("hbwhelper.messages.clientRestart"));
+    private static final ITextComponent CLIENT_RESTART_PROMPT =
+            new TextComponentTranslation("hbwhelper.messages.clientRestart",
+                    HbwHelper.NAME);
 
     /**
-     * {@link TextComponentString} object storing prompt being shown when client
+     * {@link ITextComponent} object storing prompt being shown when client
      * rejoins a Bed Wars game it was in before, but Minecraft has not been
      * restarted
      */
-    private static final TextComponentString CLIENT_REJOIN_PROMPT =
-            new TextComponentString(PROMPT_PREFIX
-                    + I18n.format("hbwhelper.messages.clientRejoin"));
+    private static final ITextComponent CLIENT_REJOIN_PROMPT =
+            new TextComponentTranslation("hbwhelper.messages.clientRejoin",
+                    HbwHelper.NAME);
 
     /**
      * The only instance of this class

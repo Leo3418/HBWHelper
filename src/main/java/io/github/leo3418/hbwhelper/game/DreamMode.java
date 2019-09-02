@@ -21,6 +21,8 @@ package io.github.leo3418.hbwhelper.game;
 import com.google.common.collect.Maps;
 import net.minecraft.client.resources.I18n;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -64,10 +66,11 @@ public enum DreamMode {
     private static final Map<String, DreamMode> DISPLAY_NAMES_MAP;
 
     /**
-     * Cache of the array containing display names of every constants of this
-     * enumeration, in the order their corresponding constants are declared
+     * Unmodifiable {@link Collection} containing display names of every
+     * constants of this enumeration, in the order their corresponding constants
+     * are declared
      */
-    private static final String[] VALUE_NAMES;
+    private static final Collection<String> VALUE_NAMES;
 
     static {
         DISPLAY_NAMES_MAP = Maps.newLinkedHashMapWithExpectedSize(
@@ -75,7 +78,8 @@ public enum DreamMode {
         for (DreamMode dreamMode : DreamMode.values()) {
             DISPLAY_NAMES_MAP.put(dreamMode.displayName, dreamMode);
         }
-        VALUE_NAMES = DISPLAY_NAMES_MAP.keySet().toArray(new String[0]);
+        VALUE_NAMES = Collections.unmodifiableCollection(
+                DISPLAY_NAMES_MAP.keySet());
     }
 
     /**
@@ -94,14 +98,15 @@ public enum DreamMode {
     }
 
     /**
-     * Returns an array containing display names of every constants of this
-     * enumeration, in the order their corresponding constants are declared.
+     * Returns an unmodifiable {@link Collection} containing display names of
+     * every constants of this enumeration whose iteration order is the same as
+     * the order their corresponding constants are declared.
      *
-     * @return an array containing display names of every constants of this
-     *         enumeration, in the order their corresponding constants are
-     *         declared
+     * @return an unmodifiable {@code Collection} containing display names of
+     *         every constants of this enumeration whose iteration order is the
+     *         same as the order their corresponding constants are declared
      */
-    public static String[] displayNames() {
+    public static Collection<String> displayNames() {
         return VALUE_NAMES;
     }
 

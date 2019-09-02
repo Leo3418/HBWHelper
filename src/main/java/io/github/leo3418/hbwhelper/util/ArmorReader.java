@@ -19,8 +19,8 @@
 package io.github.leo3418.hbwhelper.util;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -49,11 +49,6 @@ public class ArmorReader {
     private static final int BOOTS_INDEX = 0;
 
     /**
-     * Enchantment ID for Protection
-     */
-    private static final int ENCHANTMENT_ID = 0;
-
-    /**
      * Prevents instantiation of this class.
      */
     private ArmorReader() {
@@ -68,8 +63,8 @@ public class ArmorReader {
      */
     public static int getProtectionLevel() {
         if (hasArmor()) {
-            return EnchantmentHelper.getEnchantmentLevel(Enchantment
-                    .getEnchantmentByID(ENCHANTMENT_ID), getArmorStack());
+            return EnchantmentHelper.getEnchantmentLevel(
+                    Enchantments.PROTECTION, getArmorStack());
         }
         return -1;
     }

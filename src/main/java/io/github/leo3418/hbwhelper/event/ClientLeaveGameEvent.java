@@ -25,5 +25,10 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  *
  * @author Leo
  */
-public class ClientLeaveGameEvent extends Event {
+public final class ClientLeaveGameEvent extends Event {
+    /**
+     * Constructs a new {@code ClientLeaveGameEvent}.
+     */
+    public ClientLeaveGameEvent() {
+    }
 }

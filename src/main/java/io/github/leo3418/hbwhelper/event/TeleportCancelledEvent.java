@@ -27,5 +27,10 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  *
  * @author Leo
  */
-public class TeleportCancelledEvent extends Event {
+public final class TeleportCancelledEvent extends Event {
+    /**
+     * Constructs a new {@code TeleportCancelledEvent}.
+     */
+    public TeleportCancelledEvent() {
+    }
 }
