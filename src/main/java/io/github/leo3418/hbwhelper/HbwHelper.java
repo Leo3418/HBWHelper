@@ -33,10 +33,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
  * @author Leo
  */
 @Mod(HbwHelper.MOD_ID)
-public class HbwHelper {
+public final class HbwHelper {
     public static final String NAME = "HBW Helper";
     public static final String MOD_ID = "hbwhelper";
-    public static final String VERSION = "@version@";
 
     public HbwHelper() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

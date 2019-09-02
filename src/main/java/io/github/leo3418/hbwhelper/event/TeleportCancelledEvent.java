@@ -27,5 +27,10 @@ import net.minecraftforge.eventbus.api.Event;
  *
  * @author Leo
  */
-public class TeleportCancelledEvent extends Event {
+public final class TeleportCancelledEvent extends Event {
+    /**
+     * Constructs a new {@code TeleportCancelledEvent}.
+     */
+    public TeleportCancelledEvent() {
+    }
 }

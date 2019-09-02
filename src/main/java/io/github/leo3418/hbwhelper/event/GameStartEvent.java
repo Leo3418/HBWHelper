@@ -28,5 +28,10 @@ import net.minecraftforge.eventbus.api.Event;
  * @see ClientJoinInProgressGameEvent
  * @see ClientRejoinGameEvent
  */
-public class GameStartEvent extends Event {
+public final class GameStartEvent extends Event {
+    /**
+     * Constructs a new {@code GameStartEvent}.
+     */
+    public GameStartEvent() {
+    }
 }

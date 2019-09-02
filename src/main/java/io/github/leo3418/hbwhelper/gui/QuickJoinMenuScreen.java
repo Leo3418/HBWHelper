@@ -38,7 +38,7 @@ import java.util.List;
  *
  * @author Leo
  */
-public class QuickJoinMenuScreen extends Screen {
+public final class QuickJoinMenuScreen extends Screen {
     /**
      * Height of the title of this GUI
      */
@@ -93,19 +93,19 @@ public class QuickJoinMenuScreen extends Screen {
      *         edges of the buttons
      * @return the {@code List} of buttons related to Dream mode games
      */
-    private List<QuickJoinGuiButton> getDreamButtons(int x, int y) {
-        List<QuickJoinGuiButton> buttons = new ArrayList<>(2);
+    private List<QuickJoinMenuButton> getDreamButtons(int x, int y) {
+        List<QuickJoinMenuButton> buttons = new ArrayList<>(2);
         switch (ConfigManager.getInstance().currentDreamMode()) {
             case RUSH:
-                buttons.add(new QuickJoinGuiButton(
-                        QuickJoinGuiButton.Variant.SHORT,
+                buttons.add(new QuickJoinMenuButton(
+                        QuickJoinMenuButton.Variant.SHORT,
                         x, y,
                         I18n.format("hbwhelper.dream.rush") + " " +
                                 I18n.format("hbwhelper.quickJoinGui.doubles"),
                         this,
                         CommandAction.PLAY_RUSH_DOUBLES));
-                buttons.add(new QuickJoinGuiButton(
-                        QuickJoinGuiButton.Variant.SHORT,
+                buttons.add(new QuickJoinMenuButton(
+                        QuickJoinMenuButton.Variant.SHORT,
                         x + SHORT_BUTTON_WIDTH + BUTTONS_INTERVAL, y,
                         I18n.format("hbwhelper.dream.rush") + " " +
                                 I18n.format("hbwhelper.quickJoinGui.4v4v4v4"),
@@ -113,15 +113,15 @@ public class QuickJoinMenuScreen extends Screen {
                         CommandAction.PLAY_RUSH_4V4V4V4));
                 return buttons;
             case ULTIMATE:
-                buttons.add(new QuickJoinGuiButton(
-                        QuickJoinGuiButton.Variant.SHORT,
+                buttons.add(new QuickJoinMenuButton(
+                        QuickJoinMenuButton.Variant.SHORT,
                         x, y,
                         I18n.format("hbwhelper.dream.ultimate") + " " +
                                 I18n.format("hbwhelper.quickJoinGui.doubles"),
                         this,
                         CommandAction.PLAY_ULTIMATE_DOUBLES));
-                buttons.add(new QuickJoinGuiButton(
-                        QuickJoinGuiButton.Variant.SHORT,
+                buttons.add(new QuickJoinMenuButton(
+                        QuickJoinMenuButton.Variant.SHORT,
                         x + SHORT_BUTTON_WIDTH + BUTTONS_INTERVAL, y,
                         I18n.format("hbwhelper.dream.ultimate") + " " +
                                 I18n.format("hbwhelper.quickJoinGui.4v4v4v4"),
@@ -129,15 +129,15 @@ public class QuickJoinMenuScreen extends Screen {
                         CommandAction.PLAY_ULTIMATE_4V4V4V4));
                 return buttons;
             case CASTLE:
-                buttons.add(new QuickJoinGuiButton(
-                        QuickJoinGuiButton.Variant.LONG, x, y,
+                buttons.add(new QuickJoinMenuButton(
+                        QuickJoinMenuButton.Variant.LONG, x, y,
                         I18n.format("hbwhelper.dream.castle"),
                         this,
                         CommandAction.PLAY_CASTLE));
                 return buttons;
             case LUCKY_BLOCKS:
-                buttons.add(new QuickJoinGuiButton(
-                        QuickJoinGuiButton.Variant.SHORT,
+                buttons.add(new QuickJoinMenuButton(
+                        QuickJoinMenuButton.Variant.SHORT,
                         x, y,
                         // Translation key `hbwhelper.quickJoinGui.luckyBlocks`
                         // is used instead of `hbwhelper.dream.luckyBlocks` to
@@ -146,8 +146,8 @@ public class QuickJoinMenuScreen extends Screen {
                                 I18n.format("hbwhelper.quickJoinGui.doubles"),
                         this,
                         CommandAction.PLAY_LUCKY_BLOCKS_DOUBLES));
-                buttons.add(new QuickJoinGuiButton(
-                        QuickJoinGuiButton.Variant.SHORT,
+                buttons.add(new QuickJoinMenuButton(
+                        QuickJoinMenuButton.Variant.SHORT,
                         x + SHORT_BUTTON_WIDTH + BUTTONS_INTERVAL, y,
                         I18n.format("hbwhelper.quickJoinGui.luckyBlocks") + " " +
                                 I18n.format("hbwhelper.quickJoinGui.4v4v4v4"),
@@ -155,15 +155,15 @@ public class QuickJoinMenuScreen extends Screen {
                         CommandAction.PLAY_LUCKY_BLOCKS_4V4V4V4));
                 return buttons;
             case VOIDLESS:
-                buttons.add(new QuickJoinGuiButton(
-                        QuickJoinGuiButton.Variant.SHORT,
+                buttons.add(new QuickJoinMenuButton(
+                        QuickJoinMenuButton.Variant.SHORT,
                         x, y,
                         I18n.format("hbwhelper.dream.voidless") + " " +
                                 I18n.format("hbwhelper.quickJoinGui.doubles"),
                         this,
                         CommandAction.PLAY_VOIDLESS_DOUBLES));
-                buttons.add(new QuickJoinGuiButton(
-                        QuickJoinGuiButton.Variant.SHORT,
+                buttons.add(new QuickJoinMenuButton(
+                        QuickJoinMenuButton.Variant.SHORT,
                         x + SHORT_BUTTON_WIDTH + BUTTONS_INTERVAL, y,
                         I18n.format("hbwhelper.dream.voidless") + " " +
                                 I18n.format("hbwhelper.quickJoinGui.4v4v4v4"),
@@ -171,8 +171,8 @@ public class QuickJoinMenuScreen extends Screen {
                         CommandAction.PLAY_VOIDLESS_4V4V4V4));
                 return buttons;
             default:
-                buttons.add(new QuickJoinGuiButton(
-                        QuickJoinGuiButton.Variant.LONG, x, y,
+                buttons.add(new QuickJoinMenuButton(
+                        QuickJoinMenuButton.Variant.LONG, x, y,
                         I18n.format("hbwhelper.quickJoinGui.dream"),
                         this,
                         PromptAction.SET_DREAM_MODE));
@@ -190,32 +190,32 @@ public class QuickJoinMenuScreen extends Screen {
         // Number of lines of buttons added so far, used for calculating height
         // of the next button
         int line = 0;
-        addButton(new QuickJoinGuiButton(
-                QuickJoinGuiButton.Variant.LONG,
+        addButton(new QuickJoinMenuButton(
+                QuickJoinMenuButton.Variant.LONG,
                 buttonX, firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
                 I18n.format("hbwhelper.quickJoinGui.solo"), this,
                 CommandAction.PLAY_SOLO
         ));
-        addButton(new QuickJoinGuiButton(
-                QuickJoinGuiButton.Variant.LONG,
+        addButton(new QuickJoinMenuButton(
+                QuickJoinMenuButton.Variant.LONG,
                 buttonX, firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
                 I18n.format("hbwhelper.quickJoinGui.doubles"), this,
                 CommandAction.PLAY_DOUBLES
         ));
-        addButton(new QuickJoinGuiButton(
-                QuickJoinGuiButton.Variant.LONG,
+        addButton(new QuickJoinMenuButton(
+                QuickJoinMenuButton.Variant.LONG,
                 buttonX, firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
                 I18n.format("hbwhelper.quickJoinGui.3v3v3v3"), this,
                 CommandAction.PLAY_3V3V3V3
         ));
-        addButton(new QuickJoinGuiButton(
-                QuickJoinGuiButton.Variant.LONG,
+        addButton(new QuickJoinMenuButton(
+                QuickJoinMenuButton.Variant.LONG,
                 buttonX, firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
                 I18n.format("hbwhelper.quickJoinGui.4v4v4v4"), this,
                 CommandAction.PLAY_4V4V4V4
         ));
-        addButton(new QuickJoinGuiButton(
-                QuickJoinGuiButton.Variant.LONG,
+        addButton(new QuickJoinMenuButton(
+                QuickJoinMenuButton.Variant.LONG,
                 buttonX, firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL),
                 I18n.format("hbwhelper.quickJoinGui.4v4"), this,
                 CommandAction.PLAY_4V4
@@ -224,8 +224,8 @@ public class QuickJoinMenuScreen extends Screen {
                 firstButtonY + (line++ * BUTTONS_TRANSLATION_INTERVAL))
                 .forEach(this::addButton);
         // The following should always be the last button
-        addButton(new QuickJoinGuiButton(
-                QuickJoinGuiButton.Variant.LONG,
+        addButton(new QuickJoinMenuButton(
+                QuickJoinMenuButton.Variant.LONG,
                 buttonX, firstButtonY + (line * BUTTONS_TRANSLATION_INTERVAL),
                 I18n.format("hbwhelper.quickJoinGui.backToGame"), this
         ));
@@ -272,7 +272,7 @@ public class QuickJoinMenuScreen extends Screen {
 
     /**
      * Enumeration of {@link Button.IPressable} implementations that runs a
-     * Minecraft command when a {@link QuickJoinGuiButton} is pressed.
+     * Minecraft command when a {@link QuickJoinMenuButton} is pressed.
      */
     private enum CommandAction implements Button.IPressable {
         PLAY_SOLO("/play bedwars_eight_one"),
@@ -320,7 +320,7 @@ public class QuickJoinMenuScreen extends Screen {
 
     /**
      * Enumeration of {@link Button.IPressable} implementations that
-     * shows a prompt in chat messages when a {@link QuickJoinGuiButton} is
+     * shows a prompt in chat messages when a {@link QuickJoinMenuButton} is
      * pressed.
      */
     private enum PromptAction implements Button.IPressable {
@@ -328,13 +328,13 @@ public class QuickJoinMenuScreen extends Screen {
          * The prompt that reminds the user to select the current game variant
          * for the Bed Wars Dream mode
          */
-        SET_DREAM_MODE("hbwhelper.messages.setDreamMode",
-                HbwHelper.NAME, ConfigCommand.LITERAL,
-                ConfigCommand.LITERAL_DESC, ConfigCommand.LITERAL_SET);
+        SET_DREAM_MODE(new TranslationTextComponent(
+                "hbwhelper.messages.setDreamMode", HbwHelper.NAME,
+                ConfigCommand.LITERAL, ConfigCommand.LITERAL_DESC,
+                ConfigCommand.LITERAL_SET));
 
         /**
-         * {@link ITextComponent} object storing prompt being shown when
-         * this {@code PromptAction} is performed
+         * The prompt being shown when this {@code PromptAction} is performed
          */
         private final ITextComponent prompt;
 
@@ -342,14 +342,11 @@ public class QuickJoinMenuScreen extends Screen {
          * Constructs a new constant of {@link Button.IPressable}
          * implementation that shows a prompt in chat messages.
          *
-         * @param translateKey the translate key of the prompt being shown when
-         *         this {@code PromptAction} is performed
-         * @param translateArgs the translate arguments of the prompt being
-         *         shown when this {@code PromptAction} is performed
+         * @param prompt the prompt being shown when this {@code PromptAction}
+         *         is performed
          */
-        PromptAction(String translateKey, Object... translateArgs) {
-            this.prompt =
-                    new TranslationTextComponent(translateKey, translateArgs);
+        PromptAction(ITextComponent prompt) {
+            this.prompt = prompt;
         }
 
         /**
@@ -367,7 +364,7 @@ public class QuickJoinMenuScreen extends Screen {
     /**
      * A button shown on this GUI screen.
      */
-    private static class QuickJoinGuiButton extends Button {
+    private static class QuickJoinMenuButton extends Button {
         /**
          * Cache of a {@link Button.IPressable} object which defines no action
          * for a button
@@ -390,9 +387,9 @@ public class QuickJoinMenuScreen extends Screen {
          * @param buttonText the text shown on this button
          * @param parent the {@link QuickJoinMenuScreen} in which this button is
          */
-        private QuickJoinGuiButton(Variant variant, int x, int y,
-                                   String buttonText,
-                                   QuickJoinMenuScreen parent) {
+        private QuickJoinMenuButton(Variant variant, int x, int y,
+                                    String buttonText,
+                                    QuickJoinMenuScreen parent) {
             this(variant, x, y, buttonText, parent, NO_ACTION);
         }
 
@@ -408,10 +405,10 @@ public class QuickJoinMenuScreen extends Screen {
          * @param action the {@linkplain Button.IPressable action} performed
          *         when this button is pressed
          */
-        private QuickJoinGuiButton(Variant variant, int x, int y,
-                                   String buttonText,
-                                   QuickJoinMenuScreen parent,
-                                   IPressable action) {
+        private QuickJoinMenuButton(Variant variant, int x, int y,
+                                    String buttonText,
+                                    QuickJoinMenuScreen parent,
+                                    IPressable action) {
             super(x, y, variant.width, BUTTON_HEIGHT, buttonText, action);
             this.parent = parent;
         }

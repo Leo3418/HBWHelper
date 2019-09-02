@@ -22,6 +22,7 @@ import com.google.common.collect.Maps;
 import net.minecraft.client.resources.I18n;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
@@ -65,12 +66,21 @@ public enum DreamMode {
      */
     private static final Map<String, DreamMode> DISPLAY_NAMES_MAP;
 
+    /**
+     * Unmodifiable {@link Collection} containing display names of every
+     * constants of this enumeration, in the order their corresponding constants
+     * are declared
+     */
+    private static final Collection<String> VALUE_NAMES;
+
     static {
         DISPLAY_NAMES_MAP = Maps.newLinkedHashMapWithExpectedSize(
                 DreamMode.values().length);
         for (DreamMode dreamMode : DreamMode.values()) {
             DISPLAY_NAMES_MAP.put(dreamMode.displayName, dreamMode);
         }
+        VALUE_NAMES = Collections.unmodifiableCollection(
+                DISPLAY_NAMES_MAP.keySet());
     }
 
     /**
@@ -89,16 +99,16 @@ public enum DreamMode {
     }
 
     /**
-     * Returns a {@link Collection} containing display names of every constants
-     * of this enumeration whose iteration order is the same as the order their
-     * corresponding constants are declared.
+     * Returns an unmodifiable {@link Collection} containing display names of
+     * every constants of this enumeration whose iteration order is the same as
+     * the order their corresponding constants are declared.
      *
-     * @return a {@code Collection} containing display names of every constants
-     *         of this enumeration whose iteration order is the same as the
-     *         order their corresponding constants are declared
+     * @return an unmodifiable {@code Collection} containing display names of
+     *         every constants of this enumeration whose iteration order is the
+     *         same as the order their corresponding constants are declared
      */
     public static Collection<String> displayNames() {
-        return DISPLAY_NAMES_MAP.keySet();
+        return VALUE_NAMES;
     }
 
     /**
