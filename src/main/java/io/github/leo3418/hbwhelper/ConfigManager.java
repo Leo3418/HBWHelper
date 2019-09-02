@@ -320,7 +320,7 @@ public class ConfigManager {
                 "currentDreamMode",
                 I18n.format("hbwhelper.configGui.unselected"),
                 I18n.format("hbwhelper.configGui.currentDreamMode.description"),
-                DreamMode.displayNames())
+                DreamMode.displayNames().toArray(new String[0]))
                 .setLanguageKey("hbwhelper.configGui.currentDreamMode.title");
         // If the setting for currentDreamMode is no longer valid, resets it
         if (DreamMode.valueOfDisplayName(currentDreamMode.getString()) == null) {

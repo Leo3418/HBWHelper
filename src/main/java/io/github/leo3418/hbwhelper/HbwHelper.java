@@ -31,16 +31,18 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 @Mod(
         name = HbwHelper.NAME,
         modid = HbwHelper.MOD_ID,
-        version = HbwHelper.VERSION,
+        version = "@version@",
         acceptedMinecraftVersions = "@compatible_versions@",
         clientSideOnly = true,
         guiFactory = "io.github.leo3418.hbwhelper.gui.ConfigGuiFactory",
         updateJSON = "https://leo3418.github.io/HBWHelper/promotions.json"
 )
-public class HbwHelper {
+public final class HbwHelper {
     public static final String NAME = "HBW Helper";
     public static final String MOD_ID = "hbwhelper";
-    public static final String VERSION = "@version@";
+
+    public HbwHelper() {
+    }
 
     @EventHandler
     public void onFMLPreInitialization(FMLPreInitializationEvent event) {

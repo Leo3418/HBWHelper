@@ -27,5 +27,10 @@ import net.minecraftforge.fml.common.eventhandler.Event;
  * @see ClientJoinInProgressGameEvent
  * @see GameStartEvent
  */
-public class ClientRejoinGameEvent extends Event {
+public final class ClientRejoinGameEvent extends Event {
+    /**
+     * Constructs a new {@code ClientRejoinGameEvent}.
+     */
+    public ClientRejoinGameEvent() {
+    }
 }

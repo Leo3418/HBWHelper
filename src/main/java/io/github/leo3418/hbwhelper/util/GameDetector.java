@@ -146,6 +146,7 @@ public class GameDetector {
      * If client is leaving a Bed Wars game, fires a
      * {@link ClientLeaveGameEvent} on this mod's {@link EventManager#EVENT_BUS
      * proprietary event bus}.
+     * <p>
      * This method should be called whenever a {@link FMLNetworkEvent} is fired.
      *
      * @param event the event fired when client joins or leaves a server

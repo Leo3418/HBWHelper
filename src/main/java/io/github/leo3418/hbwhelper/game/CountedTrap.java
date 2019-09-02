@@ -30,7 +30,7 @@ package io.github.leo3418.hbwhelper.game;
  *
  * @author Leo
  */
-public class CountedTrap {
+public final class CountedTrap {
     /**
      * Type of this trap
      */
