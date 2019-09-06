@@ -25,6 +25,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import io.github.leo3418.hbwhelper.ConfigManager;
+import io.github.leo3418.hbwhelper.HbwHelper;
 import io.github.leo3418.hbwhelper.game.DreamMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -107,7 +108,7 @@ public class ConfigCommand {
      */
     private static void printConfig() {
         printString();
-        printTranslation("hbwhelper.configGui.title");
+        printTranslation("hbwhelper.configGui.title", HbwHelper.NAME);
         printString();
         printTranslation("commands.hbwhelper.keyValueList");
         printString("showGenerationTimes - " + CMI.showGenerationTimes());
@@ -208,7 +209,7 @@ public class ConfigCommand {
          */
         private static void printAllDesc() {
             printString();
-            printTranslation("hbwhelper.configGui.title");
+            printTranslation("hbwhelper.configGui.title", HbwHelper.NAME);
             printString();
             printTranslation("commands.hbwhelper.keyDescList");
             printString("showGenerationTimes - " + I18n.format("hbwhelper.configGui.showGenerationTimes.title"));
