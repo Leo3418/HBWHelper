@@ -1,4 +1,4 @@
-hbwhelper.configGui.title=HBW Helper Settings
+hbwhelper.configGui.title=%1$s Settings
 hbwhelper.configGui.alwaysShowEffects.title=Always show status effects
 hbwhelper.configGui.alwaysShowEffects.description=Show status effects on HUD even when not in Bed Wars ("Show status effects on HUD" must be "true")
 hbwhelper.configGui.currentDreamMode.title=Current Dream mode
