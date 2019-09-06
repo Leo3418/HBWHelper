@@ -1,4 +1,4 @@
-hbwhelper.configGui.title=HBW Helper 设置
+hbwhelper.configGui.title=%1$s 设置
 hbwhelper.configGui.alwaysShowEffects.title=始终显示状态效果
 hbwhelper.configGui.alwaysShowEffects.description=当不在起床战争时，依然显示状态效果 （“在平视显示器上显示状态效果”须被设为“true”）
 hbwhelper.configGui.currentDreamMode.title=当前的梦幻模式

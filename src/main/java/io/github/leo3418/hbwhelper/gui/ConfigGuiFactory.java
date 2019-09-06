@@ -81,7 +81,7 @@ public class ConfigGuiFactory implements IModGuiFactory {
         private ConfigGuiScreen(GuiScreen parent) {
             super(parent, ConfigManager.getInstance().getConfigElements(),
                     HbwHelper.MOD_ID, false, false,
-                    I18n.format("hbwhelper.configGui.title"));
+                    I18n.format("hbwhelper.configGui.title", HbwHelper.NAME));
         }
     }
 }
