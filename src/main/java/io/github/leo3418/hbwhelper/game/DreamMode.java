@@ -18,11 +18,11 @@
 
 package io.github.leo3418.hbwhelper.game;
 
-import com.google.common.collect.Maps;
 import net.minecraft.client.resources.I18n;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -73,8 +73,7 @@ public enum DreamMode {
     private static final Collection<String> VALUE_NAMES;
 
     static {
-        DISPLAY_NAMES_MAP = Maps.newLinkedHashMapWithExpectedSize(
-                DreamMode.values().length);
+        DISPLAY_NAMES_MAP = new LinkedHashMap<>();
         for (DreamMode dreamMode : DreamMode.values()) {
             DISPLAY_NAMES_MAP.put(dreamMode.displayName, dreamMode);
         }
