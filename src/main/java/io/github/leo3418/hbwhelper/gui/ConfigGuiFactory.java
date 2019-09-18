@@ -35,7 +35,14 @@ import java.util.Set;
  * @author Leo
  * @see ConfigManager
  */
-public class ConfigGuiFactory implements IModGuiFactory {
+public final class ConfigGuiFactory implements IModGuiFactory {
+    /**
+     * Constructs a new {@link ConfigGuiFactory} instance. This constructor is
+     * intended to be called only by Minecraft Forge.
+     */
+    public ConfigGuiFactory() {
+    }
+
     /**
      * {@inheritDoc}
      */
