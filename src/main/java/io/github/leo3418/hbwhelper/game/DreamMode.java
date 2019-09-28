@@ -56,7 +56,11 @@ public enum DreamMode {
     /**
      * Voidless mode
      */
-    VOIDLESS(I18n.format("hbwhelper.dream.voidless"));
+    VOIDLESS(I18n.format("hbwhelper.dream.voidless")),
+    /**
+     * Armed mode
+     */
+    ARMED(I18n.format("hbwhelper.dream.armed"));
 
     /**
      * Cache for better performance when querying a constant of Dream mode

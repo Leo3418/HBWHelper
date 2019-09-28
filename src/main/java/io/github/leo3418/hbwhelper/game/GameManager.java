@@ -85,6 +85,13 @@ public class GameManager {
             "\u00A7r\u00A76Dragon Buff\u00A7r";
 
     /**
+     * Part of the prompt shown when the player's team unlocks "DeadShot"
+     * upgrade
+     */
+    private static final String DEADSHOT_PROMPT =
+            "\u00A7r\u00A76DeadShot ";
+
+    /**
      * Reference to the last created instance of this class
      */
     private static GameManager instance;
@@ -128,6 +135,11 @@ public class GameManager {
      * Whether the player's team has unlocked "Dragon Buff" upgrade
      */
     private boolean dragonBuff;
+
+    /**
+     * Level of the "DeadShot" upgrade unlocked by the player's team
+     */
+    private int deadShotLevel;
 
     /**
      * Constructs a new {@code GameManager} instance.
@@ -264,6 +276,17 @@ public class GameManager {
     }
 
     /**
+     * Returns level of the "DeadShot" upgrade unlocked by the player's team.
+     * If the upgrade has not been unlocked at any level yet, then {@code 0} is
+     * returned.
+     *
+     * @return level of the "DeadShot" upgrade unlocked by the player's team
+     */
+    public int getDeadShotLevel() {
+        return deadShotLevel;
+    }
+
+    /**
      * Returns an <b>unmodifiable</b> {@link Collection} storing the trap queue.
      *
      * @return an <b>unmodifiable</b> {@code Collection} storing the trap queue
@@ -287,6 +310,26 @@ public class GameManager {
             healPool = true;
         } else if (message.contains(DRAGON_BUFF_PROMPT)) {
             dragonBuff = true;
+        } else if (message.contains(DEADSHOT_PROMPT)) {
+            // Parses the message to get the upgrade's level
+            int levelStart = message.indexOf(DEADSHOT_PROMPT) +
+                    DEADSHOT_PROMPT.length();
+            int levelEnd = message.indexOf("\u00A7r", levelStart);
+            String level = message.substring(levelStart, levelEnd);
+            switch (level) {
+                case "I":
+                    deadShotLevel = 1;
+                    break;
+                case "II":
+                    deadShotLevel = 2;
+                    break;
+                case "III":
+                    deadShotLevel = 3;
+                    break;
+                case "IV":
+                    deadShotLevel = 4;
+                    break;
+            }
         } else {
             for (ForgeLevel level : ForgeLevel.values()) {
                 if (message.contains(level.prompt)) {
