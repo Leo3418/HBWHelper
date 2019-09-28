@@ -293,6 +293,15 @@ public class GuiHud extends Gui {
                 }
                 drawItemIcons(itemsForUpgrades);
 
+                // "DeadShot"
+                int deadShotLevelInt = game.getDeadShotLevel();
+                String deadShotLevelString;
+                if (deadShotLevelInt > 0) {
+                    deadShotLevelString = Integer.toString(deadShotLevelInt);
+                    drawItemIconAndString(new ItemStack(DIAMOND_HOE),
+                            deadShotLevelString);
+                }
+
                 // Trap queue
                 List<ItemStack> itemsForTraps =
                         new ArrayList<>(GameManager.MAX_TRAPS + 1);
@@ -314,15 +323,6 @@ public class GuiHud extends Gui {
                     }
                 }
                 drawItemIcons(itemsForTraps);
-
-                // "DeadShot"
-                int deadShotLevelInt = game.getDeadShotLevel();
-                String deadShotLevelString;
-                if (deadShotLevelInt > 0) {
-                    deadShotLevelString = Integer.toString(deadShotLevelInt);
-                    drawItemIconAndString(new ItemStack(DIAMOND_HOE),
-                            deadShotLevelString);
-                }
             }
         }
     }
