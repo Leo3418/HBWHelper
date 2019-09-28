@@ -168,6 +168,22 @@ public final class GuiQuickJoinMenu extends GuiScreen {
                         this,
                         CommandAction.PLAY_VOIDLESS_4V4V4V4));
                 return buttons;
+            case ARMED:
+                buttons.add(new QuickJoinMenuButton(
+                        QuickJoinMenuButton.Variant.SHORT,
+                        x, y,
+                        I18n.format("hbwhelper.dream.armed") + " " +
+                                I18n.format("hbwhelper.quickJoinGui.doubles"),
+                        this,
+                        CommandAction.PLAY_ARMED_DOUBLES));
+                buttons.add(new QuickJoinMenuButton(
+                        QuickJoinMenuButton.Variant.SHORT,
+                        x + SHORT_BUTTON_WIDTH + BUTTONS_INTERVAL, y,
+                        I18n.format("hbwhelper.dream.armed") + " " +
+                                I18n.format("hbwhelper.quickJoinGui.4v4v4v4"),
+                        this,
+                        CommandAction.PLAY_ARMED_4V4V4V4));
+                return buttons;
             default:
                 buttons.add(new QuickJoinMenuButton(
                         QuickJoinMenuButton.Variant.LONG, x, y,
@@ -299,7 +315,9 @@ public final class GuiQuickJoinMenu extends GuiScreen {
         PLAY_LUCKY_BLOCKS_DOUBLES("/play bedwars_eight_two_lucky"),
         PLAY_LUCKY_BLOCKS_4V4V4V4("/play bedwars_four_four_lucky"),
         PLAY_VOIDLESS_DOUBLES("/play bedwars_eight_two_voidless"),
-        PLAY_VOIDLESS_4V4V4V4("/play bedwars_four_four_voidless");
+        PLAY_VOIDLESS_4V4V4V4("/play bedwars_four_four_voidless"),
+        PLAY_ARMED_DOUBLES("/play bedwars_eight_two_armed"),
+        PLAY_ARMED_4V4V4V4("/play bedwars_four_four_armed");
 
         /**
          * The command being run when this {@code CommandAction} is performed

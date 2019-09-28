@@ -22,6 +22,7 @@ hbwhelper.dream.ultimate=超能力起床
 hbwhelper.dream.castle=城池攻防战
 hbwhelper.dream.luckyBlocks=幸运方块
 hbwhelper.dream.voidless=无虚空模式
+hbwhelper.dream.armed=枪战模式
 
 hbwhelper.hudGui.findingGenerator=正在搜索信号...
 
@@ -38,6 +39,7 @@ hbwhelper.quickJoinGui.4v4=4v4
 hbwhelper.quickJoinGui.dream=梦幻模式
 hbwhelper.quickJoinGui.luckyBlocks=幸运方块
 hbwhelper.quickJoinGui.voidless=无虚空模式
+hbwhelper.quickJoinGui.armed=枪战模式
 hbwhelper.quickJoinGui.backToGame=回到游戏
 
 key.hbwhelper.quickJoin=起床战争快速加入菜单

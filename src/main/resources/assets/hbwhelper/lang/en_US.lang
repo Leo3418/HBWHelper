@@ -22,6 +22,7 @@ hbwhelper.dream.ultimate=Ultimate
 hbwhelper.dream.castle=Castle
 hbwhelper.dream.luckyBlocks=Lucky Blocks
 hbwhelper.dream.voidless=Voidless
+hbwhelper.dream.armed=Armed
 
 hbwhelper.hudGui.findingGenerator=Searching signal...
 
@@ -38,6 +39,7 @@ hbwhelper.quickJoinGui.4v4=4v4
 hbwhelper.quickJoinGui.dream=Dreams
 hbwhelper.quickJoinGui.luckyBlocks=Lucky
 hbwhelper.quickJoinGui.voidless=Voidless
+hbwhelper.quickJoinGui.armed=Armed
 hbwhelper.quickJoinGui.backToGame=Back to Game
 
 key.hbwhelper.quickJoin=Bed Wars Quick Join Menu
