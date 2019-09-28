@@ -283,7 +283,7 @@ public class GuiHud extends Gui {
                 }
                 drawItemIcons(itemsForForgeLevels);
 
-                // Other team upgrades
+                // "Heal Pool" and "Dragon Buff"
                 List<ItemStack> itemsForUpgrades = new ArrayList<ItemStack>();
                 if (game.hasHealPool()) {
                     itemsForUpgrades.add(new ItemStack(beacon));
@@ -314,6 +314,15 @@ public class GuiHud extends Gui {
                     }
                 }
                 drawItemIcons(itemsForTraps);
+
+                // "DeadShot"
+                int deadShotLevelInt = game.getDeadShotLevel();
+                String deadShotLevelString;
+                if (deadShotLevelInt > 0) {
+                    deadShotLevelString = Integer.toString(deadShotLevelInt);
+                    drawItemIconAndString(new ItemStack(diamond_hoe),
+                            deadShotLevelString);
+                }
             }
         }
     }
