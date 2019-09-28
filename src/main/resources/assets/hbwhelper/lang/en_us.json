@@ -34,6 +34,7 @@
   "hbwhelper.dream.castle": "Castle",
   "hbwhelper.dream.luckyBlocks": "Lucky Blocks",
   "hbwhelper.dream.voidless": "Voidless",
+  "hbwhelper.dream.armed": "Armed",
   "hbwhelper.hudGui.findingGenerator": "Searching signal...",
   "hbwhelper.messages.clientRejoin": "[%1$s] We have detected that you either rejoined a Bed Wars game or joined an in-progress Bed Wars Castle game. Any team upgrade your teammate has got when you were not in the game cannot be displayed.",
   "hbwhelper.messages.clientRestart": "[%1$s] We have detected that you either restarted your Minecraft client or joined an in-progress Bed Wars Castle game. Unfortunately, we cannot retrieve what team upgrade your team has got before.",
@@ -47,6 +48,7 @@
   "hbwhelper.quickJoinGui.dream": "Dreams",
   "hbwhelper.quickJoinGui.luckyBlocks": "Lucky",
   "hbwhelper.quickJoinGui.voidless": "Voidless",
+  "hbwhelper.quickJoinGui.armed": "Armed",
   "hbwhelper.quickJoinGui.backToGame": "Back to Game",
   "key.hbwhelper.quickJoin": "Bed Wars Quick Join Menu"
 }
