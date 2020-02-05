@@ -18,7 +18,7 @@
 
 package io.github.leo3418.hbwhelper.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.leo3418.hbwhelper.ConfigManager;
 import io.github.leo3418.hbwhelper.game.CountedTrap;
 import io.github.leo3418.hbwhelper.game.GameManager;
@@ -29,7 +29,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -342,10 +341,10 @@ public class HudGui extends AbstractGui {
      */
     private void drawEffectIconAndString(TextureAtlasSprite icon, String text) {
         mc.getTextureManager()
-                .bindTexture(AtlasTexture.LOCATION_EFFECTS_TEXTURE);
+                .bindTexture(icon.func_229241_m_().func_229223_g_());
         // Removes black background of the first icon rendered
-        GlStateManager.enableBlend();
-        blit(configManager.hudX(), currentHeight, blitOffset,
+        RenderSystem.enableBlend();
+        blit(configManager.hudX(), currentHeight, this.getBlitOffset(),
                 EFFECT_ICON_SIZE, EFFECT_ICON_SIZE, icon);
         drawString(mc.fontRenderer, " " + text,
                 EFFECT_ICON_SIZE + configManager.hudX(),
@@ -368,7 +367,7 @@ public class HudGui extends AbstractGui {
      * @param text the text to be rendered
      */
     private void drawItemIconAndString(ItemStack itemStack, String text) {
-        RenderHelper.enableGUIStandardItemLighting();
+        RenderHelper.func_227780_a_();
         mc.getItemRenderer().renderItemAndEffectIntoGUI(itemStack,
                 configManager.hudX() + (EFFECT_ICON_SIZE - ITEM_ICON_SIZE) / 2,
                 currentHeight);
@@ -393,7 +392,7 @@ public class HudGui extends AbstractGui {
     private void drawItemIcons(List<ItemStack> itemStacks) {
         int currentWidth = configManager.hudX()
                 + (EFFECT_ICON_SIZE - ITEM_ICON_SIZE) / 2;
-        RenderHelper.enableGUIStandardItemLighting();
+        RenderHelper.func_227780_a_();
         for (ItemStack itemStack : itemStacks) {
             mc.getItemRenderer().renderItemAndEffectIntoGUI(itemStack,
                     currentWidth, currentHeight);
