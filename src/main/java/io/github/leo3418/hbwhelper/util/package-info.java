@@ -1,13 +1,14 @@
 /*
- * HBW Helper: Hypixel Bed Wars Helper Minecraft Forge Mod
- * Copyright (C) 2019 Leo3418
+ * Copyright (C) 2018-2020 Leo3418 <https://github.com/Leo3418>
  *
- * This program is free software: you can redistribute it and/or modify
+ * This file is part of Hypixel Bed Wars Helper (HBW Helper).
+ *
+ * HBW Helper is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
+ * HBW Helper is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
