@@ -17,26 +17,50 @@
 # - Global variable `$TRAVIS_BRANCH` which stores the mod version of the
 #   current build with "v" prefix must be defined in the environment.
 
-# Release branches for older clients
-OLD_CLIENT_BRANCHES="1.11-1.12.2 1.9-1.10.2 1.8.9"
+# Release branches for older clients that use ForgeGradle 3.x.
+# When building from these branches, the `build` task can be run directly
+# without setting up a workspace.
+OLD_FG3_BRANCHES="1.14.4"
+
+# Release branches for older clients that use ForgeGradle 2.x.
+# Building from these branches requires setting up a workspace.
+OLD_FG2_BRANCHES="1.11-1.12.2 1.9-1.10.2 1.8.9"
+
+# Builds JAR artifact and source archive for an old client branch.
+#
+# Parameters:
+# 1. The name of the branch
+# 2. Whether the branch requires ForgeGradle 2.x to build
+build_jar() {
+  local branch=$1
+  local fg2=$2
+
+  git checkout "$branch"
+  if [ "$fg2" = true ]; then
+    ./gradlew setupDecompWorkspace
+  fi
+  ./gradlew build
+
+  zip_name="build/libs/src-$branch-$TRAVIS_BRANCH.zip"
+  zip -r -q "$zip_name" .
+  zip -d -q "$zip_name" ".git/*"
+  zip -d -q "$zip_name" ".gradle/*"
+  zip -d -q "$zip_name" "build/*"
+}
 
 # Performs pre-deployment tasks.
 pre_deploy() {
   # Builds JAR artifacts and source archives for old client versions
-  for branch in ${OLD_CLIENT_BRANCHES}; do
-    git checkout ${branch}
-    ./gradlew setupCiWorkspace
-    ./gradlew build
-    zip_name="build/libs/src-$branch-$TRAVIS_BRANCH.zip"
-    zip -r -q ${zip_name} .
-    zip -d -q ${zip_name} ".git/*"
-    zip -d -q ${zip_name} ".gradle/*"
-    zip -d -q ${zip_name} "build/*"
+  for branch in ${OLD_FG3_BRANCHES}; do
+    build_jar "$branch" false
+  done
+  for branch in ${OLD_FG2_BRANCHES}; do
+    build_jar "$branch" true
   done
 
   # Deletes source JARs
   (
-    cd build/libs
+    cd build/libs || exit
     find . -type f -iregex ".*-sources\.jar" -delete
   )
 
