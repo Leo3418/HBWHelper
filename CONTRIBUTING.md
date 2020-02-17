@@ -50,7 +50,7 @@ this repository.
 
 ### Configuring Your Project
 
-#### Configuring on the `dev` or `latest` Branch
+#### Configuring on `dev`, `latest`, or `1.14.4` Branch
 1. Open up a terminal (on GNU/Linux or macOS), a Windows PowerShell console
 (on Windows), or a Command Prompt window (on Windows). Navigate to the folder
 where you have cloned this repository.
