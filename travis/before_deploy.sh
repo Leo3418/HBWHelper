@@ -37,7 +37,7 @@ build_jar() {
 
   git checkout "$branch"
   if [ "$fg2" = true ]; then
-    ./gradlew setupDecompWorkspace
+    ./gradlew setupCIWorkspace
   fi
   ./gradlew build
 
