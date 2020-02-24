@@ -3,6 +3,10 @@
   "promos": {
     "1.15.2-latest": "<dev-ver>",
     "1.15.2-recommended": "<rel-ver>",
+    "1.15.1-latest": "<dev-ver>",
+    "1.15.1-recommended": "<rel-ver>",
+    "1.15-latest": "<dev-ver>",
+    "1.15-recommended": "<rel-ver>",
     "1.14.4-latest": "<dev-ver>",
     "1.14.4-recommended": "<rel-ver>",
     "1.12.2-latest": "<dev-ver>",
