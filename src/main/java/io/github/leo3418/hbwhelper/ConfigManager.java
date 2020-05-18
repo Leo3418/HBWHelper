@@ -159,7 +159,7 @@ public class ConfigManager {
      *         the Minecraft window to the left edge of {@code HudGui}
      */
     public int maxHudX() {
-        return Minecraft.getInstance().func_228018_at_().getScaledWidth();
+        return Minecraft.getInstance().getMainWindow().getScaledWidth();
     }
 
     /**
@@ -170,7 +170,7 @@ public class ConfigManager {
      *         the Minecraft window to the left edge of {@code HudGui}
      */
     public int maxHudY() {
-        return Minecraft.getInstance().func_228018_at_().getScaledHeight();
+        return Minecraft.getInstance().getMainWindow().getScaledHeight();
     }
 
     // Initialization

@@ -342,7 +342,7 @@ public class HudGui extends AbstractGui {
      */
     private void drawEffectIconAndString(TextureAtlasSprite icon, String text) {
         mc.getTextureManager()
-                .bindTexture(icon.func_229241_m_().func_229223_g_());
+                .bindTexture(icon.getAtlasTexture().getTextureLocation());
         // Removes black background of the first icon rendered
         RenderSystem.enableBlend();
         blit(configManager.hudX(), currentHeight, this.getBlitOffset(),
@@ -368,7 +368,7 @@ public class HudGui extends AbstractGui {
      * @param text the text to be rendered
      */
     private void drawItemIconAndString(ItemStack itemStack, String text) {
-        RenderHelper.func_227780_a_();
+        RenderHelper.enableStandardItemLighting();
         mc.getItemRenderer().renderItemAndEffectIntoGUI(itemStack,
                 configManager.hudX() + (EFFECT_ICON_SIZE - ITEM_ICON_SIZE) / 2,
                 currentHeight);
@@ -393,7 +393,7 @@ public class HudGui extends AbstractGui {
     private void drawItemIcons(List<ItemStack> itemStacks) {
         int currentWidth = configManager.hudX()
                 + (EFFECT_ICON_SIZE - ITEM_ICON_SIZE) / 2;
-        RenderHelper.func_227780_a_();
+        RenderHelper.enableStandardItemLighting();
         for (ItemStack itemStack : itemStacks) {
             mc.getItemRenderer().renderItemAndEffectIntoGUI(itemStack,
                     currentWidth, currentHeight);
