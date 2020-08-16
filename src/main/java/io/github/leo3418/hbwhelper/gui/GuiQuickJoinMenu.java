@@ -402,10 +402,7 @@ public final class GuiQuickJoinMenu extends GuiScreen {
          * Cache of an {@link Action Action} object which defines no action for
          * a button
          */
-        private static final Action NO_ACTION = new Action() {
-            @Override
-            public void perform() {
-            }
+        private static final Action NO_ACTION = () -> {
         };
 
         /**
@@ -502,6 +499,7 @@ public final class GuiQuickJoinMenu extends GuiScreen {
          * performs the action into its implementation for the
          * {@link Action#perform()} method.
          */
+        @FunctionalInterface
         private interface Action {
             /**
              * Runs the action that should be performed when the button is
