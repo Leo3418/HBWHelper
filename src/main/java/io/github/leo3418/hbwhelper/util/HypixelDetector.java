@@ -83,7 +83,7 @@ public class HypixelDetector {
      *
      * @param event the event fired when client joins or leaves a server
      */
-    public void update(FMLNetworkEvent event) {
+    public void update(FMLNetworkEvent<?> event) {
         if (event instanceof ClientConnectedToServerEvent) {
             ServerData currentServer = Minecraft.getMinecraft()
                     .getCurrentServerData();
