@@ -21,10 +21,7 @@ package io.github.leo3418.hbwhelper.game;
 
 import net.minecraft.client.resources.I18n;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Enumeration of Bed Wars Dream mode games on Hypixel.
@@ -115,15 +112,23 @@ public enum DreamMode {
     }
 
     /**
-     * Returns the constant of this enumeration with the specified display name,
-     * or {@code null} if there is no such constant with the specified name.
+     * Returns an {@link Optional} wrapping the constant of this enumeration
+     * with the specified display name, or an empty {@code Optional} if there is
+     * no such constant with the specified name.
+     * <p>
+     * An empty {@code Optional} will also be returned if the
+     * {@code displayName} argument is {@code null}.
      *
      * @param displayName the display name of the constant to return
-     * @return the constant of this enumeration with the specified display name,
-     *         or {@code null} if there is no such constant with the specified
-     *         name
+     * @return an {@code Optional} wrapping the constant of this enumeration
+     *         with the specified display name, or an empty {@code Optional} if
+     *         there is no such constant with the specified name or
+     *         {@code displayName == null}
      */
-    public static DreamMode valueOfDisplayName(String displayName) {
-        return DISPLAY_NAMES_MAP.get(displayName);
+    public static Optional<DreamMode> valueOfDisplayName(String displayName) {
+        if (displayName == null) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(DISPLAY_NAMES_MAP.get(displayName));
     }
 }
