@@ -152,7 +152,7 @@ public class GameDetector {
      *
      * @param event the event fired when client joins or leaves a server
      */
-    public void update(FMLNetworkEvent event) {
+    public void update(FMLNetworkEvent<?> event) {
         if (inBedWars && event instanceof ClientDisconnectionFromServerEvent) {
             /*
             GuiOpenEvent will not be called when client disconnects, so we need
