@@ -78,7 +78,7 @@ public enum DreamMode {
     private static final Collection<String> VALUE_NAMES;
 
     static {
-        DISPLAY_NAMES_MAP = new LinkedHashMap<String, DreamMode>();
+        DISPLAY_NAMES_MAP = new LinkedHashMap<>();
         for (DreamMode dreamMode : DreamMode.values()) {
             DISPLAY_NAMES_MAP.put(dreamMode.displayName, dreamMode);
         }

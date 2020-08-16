@@ -116,7 +116,7 @@ public enum GameType {
 
         static {
             List<CountedTrap> castleInitialTrapQueue =
-                    new ArrayList<CountedTrap>(GameManager.MAX_TRAPS);
+                    new ArrayList<>(GameManager.MAX_TRAPS);
             for (int i = 0; i < GameManager.MAX_TRAPS; i++) {
                 castleInitialTrapQueue.add(
                         new CountedTrap(TrapType.ALARM, CASTLE_TRAP_USES));

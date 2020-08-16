@@ -264,7 +264,7 @@ public class GuiHud extends Gui {
 
             if (configManager.showTeamUpgrades()) {
                 // Level of resource generation speed
-                List<ItemStack> itemsForForgeLevels = new ArrayList<ItemStack>(2);
+                List<ItemStack> itemsForForgeLevels = new ArrayList<>(2);
                 itemsForForgeLevels.add(new ItemStack(FURNACE));
                 switch (game.getForgeLevel()) {
                     case ORDINARY_FORGE:
@@ -285,7 +285,7 @@ public class GuiHud extends Gui {
                 drawItemIcons(itemsForForgeLevels);
 
                 // "Heal Pool" and "Dragon Buff"
-                List<ItemStack> itemsForUpgrades = new ArrayList<ItemStack>();
+                List<ItemStack> itemsForUpgrades = new ArrayList<>();
                 if (game.hasHealPool()) {
                     itemsForUpgrades.add(new ItemStack(BEACON));
                 }
@@ -305,7 +305,7 @@ public class GuiHud extends Gui {
 
                 // Trap queue
                 List<ItemStack> itemsForTraps =
-                        new ArrayList<ItemStack>(GameManager.MAX_TRAPS + 1);
+                        new ArrayList<>(GameManager.MAX_TRAPS + 1);
                 itemsForTraps.add(new ItemStack(LEATHER));
                 for (CountedTrap countedTrap : game.getTraps()) {
                     switch (countedTrap.getTrapType()) {

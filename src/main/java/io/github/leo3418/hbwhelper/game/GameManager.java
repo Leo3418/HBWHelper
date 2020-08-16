@@ -150,7 +150,7 @@ public class GameManager {
     private GameManager(GameType gameType) {
         this.gameType = gameType;
         this.forgeLevel = gameType.initialForge;
-        this.trapQueue = new ArrayDeque<CountedTrap>(MAX_TRAPS);
+        this.trapQueue = new ArrayDeque<>(MAX_TRAPS);
         for (CountedTrap countedTrap : gameType.initialTrapQueue) {
             this.trapQueue.add(countedTrap.getCopy());
         }
