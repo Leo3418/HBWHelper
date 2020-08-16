@@ -23,6 +23,11 @@ version = mod_version
 group = "io.github.leo3418.hbwhelper"
 archivesBaseName = "hbwhelper"
 
+sourceCompatibility = targetCompatibility = '1.8'
+compileJava {
+    sourceCompatibility = targetCompatibility = '1.8'
+}
+
 minecraft {
     version = target_minecraft_version + "-" + forge_version
     runDir = "run"
