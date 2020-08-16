@@ -93,7 +93,7 @@ public final class GuiQuickJoinMenu extends GuiScreen {
      * @return the {@code List} of buttons related to Dream mode games
      */
     private List<QuickJoinMenuButton> getDreamButtons(int x, int y) {
-        List<QuickJoinMenuButton> buttons = new ArrayList<QuickJoinMenuButton>(2);
+        List<QuickJoinMenuButton> buttons = new ArrayList<>(2);
         switch (ConfigManager.getInstance().currentDreamMode()) {
             case RUSH:
                 buttons.add(new QuickJoinMenuButton(

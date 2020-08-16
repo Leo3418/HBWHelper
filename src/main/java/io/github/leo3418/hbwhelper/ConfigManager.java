@@ -243,7 +243,7 @@ public class ConfigManager {
      */
     @SuppressWarnings("Duplicates")
     public List<IConfigElement> getConfigElements() {
-        List<IConfigElement> configElements = new ArrayList<IConfigElement>();
+        List<IConfigElement> configElements = new ArrayList<>();
         configElements.add(new ConfigElement(showGenerationTimes));
         configElements.add(new ConfigElement(showTeamUpgrades));
         configElements.add(new ConfigElement(showArmorInfo));

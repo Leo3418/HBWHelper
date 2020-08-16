@@ -102,7 +102,7 @@ public class ScoreboardReader {
     private static Collection<String> getLines() {
         Scoreboard scoreboard = Minecraft.getMinecraft().theWorld.getScoreboard();
         Collection<Score> scores = scoreboard.getScores();
-        Collection<String> lines = new ArrayList<String>(getSize());
+        Collection<String> lines = new ArrayList<>(getSize());
         for (Score score : scores) {
             ScorePlayerTeam line = scoreboard
                     .getPlayersTeam(score.getPlayerName());
