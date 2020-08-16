@@ -317,14 +317,19 @@ public class GameManager {
                     DEADSHOT_PROMPT.length();
             int levelEnd = message.indexOf("\u00A7r", levelStart);
             String level = message.substring(levelStart, levelEnd);
-            if ("I".equals(level)) {
-                deadShotLevel = 1;
-            } else if ("II".equals(level)) {
-                deadShotLevel = 2;
-            } else if ("III".equals(level)) {
-                deadShotLevel = 3;
-            } else if ("IV".equals(level)) {
-                deadShotLevel = 4;
+            switch (level) {
+                case "I":
+                    deadShotLevel = 1;
+                    break;
+                case "II":
+                    deadShotLevel = 2;
+                    break;
+                case "III":
+                    deadShotLevel = 3;
+                    break;
+                case "IV":
+                    deadShotLevel = 4;
+                    break;
             }
         } else {
             for (ForgeLevel level : ForgeLevel.values()) {
