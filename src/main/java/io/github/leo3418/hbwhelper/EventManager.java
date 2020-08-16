@@ -161,7 +161,7 @@ public class EventManager {
 
     @SubscribeEvent
     @SuppressWarnings("unused")
-    public void onFMLNetworkEvent(FMLNetworkEvent event) {
+    public void onFMLNetworkEvent(FMLNetworkEvent<?> event) {
         hypixelDetector.update(event);
         gameDetector.update(event);
     }
