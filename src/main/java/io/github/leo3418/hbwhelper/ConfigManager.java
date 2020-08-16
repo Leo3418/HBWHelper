@@ -229,8 +229,8 @@ public class ConfigManager {
      * @return the current game for the Dream mode on Hypixel
      */
     public DreamMode currentDreamMode() {
-        DreamMode mode = DreamMode.valueOfDisplayName(currentDreamMode.getString());
-        return mode != null ? mode : DreamMode.UNSELECTED;
+        return DreamMode.valueOfDisplayName(currentDreamMode.getString())
+                .orElse(DreamMode.UNSELECTED);
     }
 
     /**
@@ -324,7 +324,8 @@ public class ConfigManager {
                 DreamMode.displayNames().toArray(new String[0]))
                 .setLanguageKey("hbwhelper.configGui.currentDreamMode.title");
         // If the setting for currentDreamMode is no longer valid, resets it
-        if (DreamMode.valueOfDisplayName(currentDreamMode.getString()) == null) {
+        if (!DreamMode.valueOfDisplayName(currentDreamMode.getString())
+                .isPresent()) {
             currentDreamMode.setToDefault();
         }
         config.save();
