@@ -24,6 +24,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * Provides methods for getting the player's status effects.
@@ -53,7 +54,8 @@ public class EffectsReader {
      * @return a {@code Collection} of all potion effects on the player
      */
     public static Collection<PotionEffect> getEffects() {
-        return Minecraft.getMinecraft().player.getActivePotionEffects();
+        return Objects.requireNonNull(Minecraft.getMinecraft().player)
+                .getActivePotionEffects();
     }
 
     /**

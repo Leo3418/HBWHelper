@@ -33,6 +33,7 @@ import org.lwjgl.input.Keyboard;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The GUI of this mod for the Bed Wars quick join feature.
@@ -343,7 +344,8 @@ public final class GuiQuickJoinMenu extends GuiScreen {
          */
         @Override
         public void perform() {
-            Minecraft.getMinecraft().player.sendChatMessage(command);
+            Objects.requireNonNull(Minecraft.getMinecraft().player)
+                    .sendChatMessage(command);
         }
     }
 
@@ -382,7 +384,8 @@ public final class GuiQuickJoinMenu extends GuiScreen {
          */
         @Override
         public void perform() {
-            Minecraft.getMinecraft().player.sendMessage(prompt);
+            Objects.requireNonNull(Minecraft.getMinecraft().player)
+                    .sendMessage(prompt);
         }
     }
 

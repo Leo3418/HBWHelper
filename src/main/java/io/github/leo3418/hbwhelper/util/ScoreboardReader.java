@@ -26,6 +26,7 @@ import net.minecraft.scoreboard.Scoreboard;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -98,7 +99,9 @@ public class ScoreboardReader {
      *         codes in Minecraft
      */
     private static Collection<String> getLines() {
-        Scoreboard scoreboard = Minecraft.getMinecraft().world.getScoreboard();
+        Scoreboard scoreboard =
+                Objects.requireNonNull(Minecraft.getMinecraft().world)
+                        .getScoreboard();
         Collection<Score> scores = scoreboard.getScores();
         Collection<String> lines = new ArrayList<>(getSize());
         for (Score score : scores) {
