@@ -30,6 +30,7 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 import org.lwjgl.input.Keyboard;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -268,7 +269,7 @@ public final class GuiQuickJoinMenu extends GuiScreen {
      * @param button the button being clicked
      */
     @Override
-    protected void actionPerformed(GuiButton button) {
+    protected void actionPerformed(@Nonnull GuiButton button) {
         if (button instanceof QuickJoinMenuButton) {
             ((QuickJoinMenuButton) button).performAction();
         }
