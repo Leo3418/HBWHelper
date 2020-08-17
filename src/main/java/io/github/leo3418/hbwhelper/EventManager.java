@@ -41,6 +41,8 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
+import java.util.Objects;
+
 /**
  * Event manager of this mod, which responds to events fired on
  * Minecraft Forge's event bus and this mod's {@link EventManager#EVENT_BUS
@@ -221,12 +223,12 @@ public class EventManager {
         }
         if (GameManager.getInstance() == null) {
             // Client is rejoining a Bed Wars game after restart of Minecraft
-            Minecraft.getMinecraft().thePlayer
+            Objects.requireNonNull(Minecraft.getMinecraft().thePlayer)
                     .addChatMessage(CLIENT_RESTART_PROMPT);
             gameTypeDetector.startDetection();
         } else {
             // Client is rejoining a Bed Wars game, but Minecraft is not closed
-            Minecraft.getMinecraft().thePlayer
+            Objects.requireNonNull(Minecraft.getMinecraft().thePlayer)
                     .addChatMessage(CLIENT_REJOIN_PROMPT);
         }
     }
