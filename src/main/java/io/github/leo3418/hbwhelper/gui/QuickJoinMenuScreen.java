@@ -202,6 +202,7 @@ public final class QuickJoinMenuScreen extends Screen {
      * Initializes this GUI with buttons.
      */
     @Override
+    @SuppressWarnings("ConstantConditions")
     protected void init() {
         int buttonX = (this.width - LONG_BUTTON_WIDTH) / 2;
         int firstButtonY = this.height / 4 + BUTTONS_INTERVAL;
