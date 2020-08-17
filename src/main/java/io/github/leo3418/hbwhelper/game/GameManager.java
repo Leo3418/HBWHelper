@@ -27,10 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
-import java.util.ArrayDeque;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * Stores information and progress of a Bed Wars game session, and allows other
@@ -395,8 +392,9 @@ public class GameManager {
      *         cannot be found
      */
     private BlockPos findGenerator(String generatorText) {
-        Iterable<Entity> entities = Minecraft.getMinecraft().theWorld
-                .getLoadedEntityList();
+        Iterable<Entity> entities =
+                Objects.requireNonNull(Minecraft.getMinecraft().theWorld)
+                        .getLoadedEntityList();
         for (Entity entity : entities) {
             if (entity instanceof EntityArmorStand) {
                 String name = entity.getDisplayName().getFormattedText();
@@ -417,9 +415,10 @@ public class GameManager {
      *         a generator cannot be found or read at that position
      */
     private int getSpawnTime(BlockPos generatorPos) {
-        Iterable<EntityArmorStand> genEntities = Minecraft.getMinecraft().theWorld
-                .getEntitiesWithinAABB(EntityArmorStand.class,
-                        new AxisAlignedBB(generatorPos));
+        Iterable<EntityArmorStand> genEntities =
+                Objects.requireNonNull(Minecraft.getMinecraft().theWorld)
+                        .getEntitiesWithinAABB(EntityArmorStand.class,
+                                new AxisAlignedBB(generatorPos));
         for (EntityArmorStand genEntity : genEntities) {
             ITextComponent floatTextComponent = genEntity.getDisplayName();
             if (floatTextComponent.getFormattedText().contains(GENERATOR_TEXT)) {
