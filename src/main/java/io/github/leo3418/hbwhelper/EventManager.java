@@ -158,20 +158,20 @@ public class EventManager {
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void onClientPlayerNetworkEvent(ClientPlayerNetworkEvent event) {
         hypixelDetector.update(event);
         gameDetector.update(event);
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void onGuiOpen(GuiOpenEvent event) {
         gameDetector.update(event);
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void onClientChatReceived(ClientChatReceivedEvent event) {
         gameDetector.update(event);
         ipGameDetector.detect(event);
@@ -181,26 +181,26 @@ public class EventManager {
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void onRenderGameOverlay(RenderGameOverlayEvent.Post event) {
         hudGui.render(event);
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void onClientTick(TickEvent.ClientTickEvent event) {
         gameTypeDetector.detect();
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void onGameStart(GameStartEvent event) {
         GameManager.clearInstance();
         gameTypeDetector.startDetection();
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void onClientJoinIPGame(ClientJoinInProgressGameEvent event) {
         if (gameDetector.isIn()) {
             shouldClearGMInstance = true;
@@ -210,7 +210,7 @@ public class EventManager {
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void onClientRejoinGame(ClientRejoinGameEvent event) {
         if (shouldClearGMInstance) {
             GameManager.clearInstance();
@@ -227,31 +227,31 @@ public class EventManager {
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void onClientLeaveGame(ClientLeaveGameEvent event) {
         gameTypeDetector.stopDetection();
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void onGameTypeDetected(GameTypeDetectedEvent event) {
         GameManager.createInstance(event.getGameType());
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void onTeleportCancelled(TeleportCancelledEvent event) {
         shouldClearGMInstance = false;
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void onClientChat(ClientChatEvent event) {
         commandManager.process(event);
     }
 
     @SubscribeEvent
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void onKeyInput(InputEvent.KeyInputEvent event) {
         if (hypixelDetector.isIn() && KeyBindings.QUICK_JOIN.isPressed()) {
             Minecraft.getInstance().displayGuiScreen(new QuickJoinMenuScreen());
