@@ -22,6 +22,7 @@ package io.github.leo3418.hbwhelper.util;
 import net.minecraft.client.Minecraft;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -68,7 +69,8 @@ public class ScoreboardReader {
      *         formatting codes
      */
     private static Collection<String> getLines() {
-        return Minecraft.getInstance().world.getScoreboard().getTeams().stream()
+        return Objects.requireNonNull(Minecraft.getInstance().world)
+                .getScoreboard().getTeams().stream()
                 .map(team -> team.getPrefix().getString()
                         + team.getSuffix().getString())
                 .collect(Collectors.toList());

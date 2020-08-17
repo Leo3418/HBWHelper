@@ -116,8 +116,8 @@ public class CommandManager {
         if (!registered(command)) {
             return;
         }
-        CommandSource source =
-                Minecraft.getInstance().player.getCommandSource();
+        CommandSource source = Objects.requireNonNull(
+                Minecraft.getInstance().player).getCommandSource();
         ParseResults<CommandSource> parseResults =
                 dispatcher.parse(command, source);
         try {

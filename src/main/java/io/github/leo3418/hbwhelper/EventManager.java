@@ -38,6 +38,8 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import java.util.Objects;
+
 /**
  * Event manager of this mod, which responds to events fired on
  * Minecraft Forge's event bus and this mod's {@link EventManager#EVENT_BUS
@@ -218,11 +220,13 @@ public class EventManager {
         }
         if (GameManager.getInstance() == null) {
             // Client is rejoining a Bed Wars game after restart of Minecraft
-            Minecraft.getInstance().player.sendMessage(CLIENT_RESTART_PROMPT);
+            Objects.requireNonNull(Minecraft.getInstance().player)
+                    .sendMessage(CLIENT_RESTART_PROMPT);
             gameTypeDetector.startDetection();
         } else {
             // Client is rejoining a Bed Wars game, but Minecraft is not closed
-            Minecraft.getInstance().player.sendMessage(CLIENT_REJOIN_PROMPT);
+            Objects.requireNonNull(Minecraft.getInstance().player)
+                    .sendMessage(CLIENT_REJOIN_PROMPT);
         }
     }
 

@@ -26,6 +26,8 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import java.util.Objects;
+
 /**
  * Provides methods for getting information about the player's armor.
  * <p>
@@ -85,7 +87,7 @@ public class ArmorReader {
      * @return an {@code ItemStack} object which represents the player's armor
      */
     public static ItemStack getArmorStack() {
-        return Minecraft.getInstance().player.inventory
+        return Objects.requireNonNull(Minecraft.getInstance().player).inventory
                 .armorItemInSlot(BOOTS_INDEX);
     }
 

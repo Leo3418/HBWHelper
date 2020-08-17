@@ -141,7 +141,7 @@ public class ConfigCommand {
      */
     private static void printString(String string) {
         Objects.requireNonNull(string, "string");
-        Minecraft.getInstance().player.sendMessage(
+        Objects.requireNonNull(Minecraft.getInstance().player).sendMessage(
                 new StringTextComponent(string));
     }
 
@@ -156,7 +156,7 @@ public class ConfigCommand {
                                          Object... translationArgs) {
         Objects.requireNonNull(translationKey, "translationKey");
         Objects.requireNonNull(translationArgs, "translationArgs");
-        Minecraft.getInstance().player.sendMessage(
+        Objects.requireNonNull(Minecraft.getInstance().player).sendMessage(
                 new TranslationTextComponent(translationKey, translationArgs));
     }
 
