@@ -47,10 +47,8 @@ public class ScoreboardReader {
      * this sign in game to produce formatted text, even if the player is
      * merely using it in a mod's code.
      *
-     * @see <a href="https://minecraft.gamepedia.com/Formatting_codes"
-     *         target="_top">Formatting codes in Minecraft</a>
-     * @see <a href="https://en.wikipedia.org/wiki/Section_sign">
-     *         The section sign's information on Wikipedia</a>
+     * @see <a href="https://minecraft.gamepedia.com/Formatting_codes#Use_in_server.properties_and_pack.mcmeta"
+     *         target="_top">Relevant information on Minecraft Wiki</a>
      */
     private static final Pattern FORMATTING_PATTERN =
             Pattern.compile("\u00A7[0-9a-fk-or]");
