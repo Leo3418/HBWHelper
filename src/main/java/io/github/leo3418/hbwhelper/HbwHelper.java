@@ -46,11 +46,13 @@ public final class HbwHelper {
     }
 
     @EventHandler
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void onFMLPreInitialization(FMLPreInitializationEvent event) {
         ConfigManager.getInstance().initConfig(event);
     }
 
     @EventHandler
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public void onFMLInitialization(FMLInitializationEvent event) {
         EventManager.getInstance().registerOnEventBus();
         KeyBindings.registerBindings();
