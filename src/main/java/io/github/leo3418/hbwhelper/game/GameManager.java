@@ -27,7 +27,10 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Queue;
 
 /**
  * Stores information and progress of a Bed Wars game session, and allows other
@@ -414,7 +417,7 @@ public class GameManager {
      *         a generator cannot be found or read at that position
      */
     private int getSpawnTime(BlockPos generatorPos) {
-        List<EntityArmorStand> genEntities = Minecraft.getMinecraft().theWorld
+        Iterable<EntityArmorStand> genEntities = Minecraft.getMinecraft().theWorld
                 .getEntitiesWithinAABB(EntityArmorStand.class,
                         new AxisAlignedBB(generatorPos, generatorPos.add(1, 1, 1)));
         for (EntityArmorStand genEntity : genEntities) {
