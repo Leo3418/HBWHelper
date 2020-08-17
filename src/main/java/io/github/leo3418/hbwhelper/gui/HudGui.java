@@ -94,10 +94,8 @@ public class HudGui extends AbstractGui {
      * place of the section sign because Minecraft does not permit directly
      * using the section sign in most places in-game.
      *
-     * @see <a href="https://minecraft.gamepedia.com/Formatting_codes"
-     *         target="_top">Color codes in Minecraft</a>
-     * @see <a href="https://en.wikipedia.org/wiki/Section_sign">
-     *         The section sign's information on Wikipedia</a>
+     * @see <a href="https://minecraft.gamepedia.com/Formatting_codes#Use_in_server.properties_and_pack.mcmeta"
+     *         target="_top">Relevant information on Minecraft Wiki</a>
      */
     private static final String FLASH_COLOR_PREFIX = "\u00A7c";
 
