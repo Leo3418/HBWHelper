@@ -18,7 +18,7 @@ script:
   - ./gradlew build
 
 before_deploy:
-  - travis/before_deploy.sh
+  - .travis/before_deploy.sh
 
 deploy:
   - provider: pages
@@ -26,7 +26,7 @@ deploy:
       secure: IdZOq6IougW6sPCIAcYuquqRGhqN3NHXBDa+j/gyp13HEXRJfJVrFI3IUDfEvY63827DUQ4jf3K6UMAzq3w1ZpPe531rFWuBZ8df26bBEmAQ5F0tdG+NY+TaV9w+re8SiAE24HJt/1phxo2RKhMQW8lotjzhD0scyRx3kObYOue9NAJMABJvwoe9up//R+cIyPc2E7PeiKisOjoY6zlIChXDc8VZqKfLXGUKEIevuxDQ6OYWsxIgB1zZfY3youNuoFEJ23bNS8/zCPJFIALXu8oYI2U7KhCXhOGWuA9ji65biwEfx4SPYdF1IqxYsdF5ala8NmiFTwDDFqKeEZsvWQMk4DubFqw7s8rHs7HcW7cfkjPkqhMpRqa94rUAGfxR+GiVnc+I7V2utn+8JnpiD4qeGqGB/6EbOl+4L6FqTt/kazx94JtHwzyweusYP+x0RYQILGkQjIr0sPraGiASoilc3MXE3k6RZp4CzKlfyJz29REwqxw6YEKa6XrxSFV0dpMnOTFTklYecOyyccddsOyxquaeoeIHjpqGF0mgD3ADBZoxKR629Ky0nk0sEWi0VdjOU7CeW3UI7/WI+er3fMfIQ/4w8C9oZq3nf9BBvYCtUoYArozMQnINyDks3uOCIGrftI4P7mETNLRgrGh26LIuXEIenDcnijdv7ukyatM=
     email: Leo3418@users.noreply.github.com
     name: Leo
-    local-dir: travis/pages
+    local-dir: .travis/pages
     skip_cleanup: true
     on:
       tags: true
