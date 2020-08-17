@@ -77,8 +77,8 @@ pre_deploy() {
   local latest_rel_tag=${latest_rel_tag:1:${#latest_rel_tag}}
 
   # Replaces placeholders in update JSON file with release information
-  sed -i -e "s/<dev-ver>/$latest_dev_tag/g" travis/pages/promotions.json
-  sed -i -e "s/<rel-ver>/$latest_rel_tag/g" travis/pages/promotions.json
+  sed -i -e "s/<dev-ver>/$latest_dev_tag/g" .travis/pages/promotions.json
+  sed -i -e "s/<rel-ver>/$latest_rel_tag/g" .travis/pages/promotions.json
 
   # Marks completion of pre-deployment tasks
   touch before_deploy_complete
