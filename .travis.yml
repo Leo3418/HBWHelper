@@ -11,8 +11,7 @@ addons:
 git:
   depth: false # Allows Git operations
 
-install:
-  - ./gradlew setupCiWorkspace
+install: skip
 
 script:
   - ./gradlew build
