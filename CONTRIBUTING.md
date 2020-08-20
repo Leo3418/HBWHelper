@@ -50,39 +50,7 @@ this repository.
 
 ### Configuring Your Project
 
-#### Configuring on `dev`, `latest`, or `1.14.4` Branch
-1. Open up a terminal (on GNU/Linux or macOS), a Windows PowerShell console
-(on Windows), or a Command Prompt window (on Windows). Navigate to the folder
-where you have cloned this repository.
-2. Perform this step only if you are using **Eclipse** for development:  
-  In terminal or Windows PowerShell, execute:
-  ```
-  ./gradlew genEclipseRuns
-  ```
-  Or, in Command Prompt, execute:
-  ```
-  gradlew genEclipseRuns
-  ```
-3. Import the folder storing your fork in your IDE.  
-On IntelliJ IDEA, make sure you either select `build.gradle` in the folder or
-choose `Gradle` as the project model if you select the folder itself.
-4. Generate run configurations. Although this step is not required, it is
-   recommended.  
-     - If you are using **IntelliJ IDEA** for development:  
-       - Close this project in IntelliJ IDEA if it is opened.
-       - In terminal or Windows PowerShell, execute:
-         ```
-         ./gradlew genIntelliJRuns
-         ```
-         Or, in Command Prompt, execute:
-         ```
-         gradlew genIntelliJRuns
-         ```
-       - Then, reopen the project, and you can see run configurations.  
-<!-- I cannot add detailed instructions for Eclipse yet until I find a machine
-with a full Eclipse installation -->
-
-#### Configuring on Other Branches for Older Minecraft Client Versions
+#### Configuring on `1.8.9` or `1.9-1.10.2` Branch
 1. Open up a terminal (on GNU/Linux or macOS), a Windows PowerShell console
 (on Windows), or a Command Prompt window (on Windows). Navigate to the folder
 where you have cloned the repository.
@@ -126,6 +94,38 @@ recommended.
     - Select `Java Application` on the left panel, and select `HBWHelper_Client`.
     - Click on `Run`. In the future, you can directly start this configuration
     from menu.
+
+#### Configuring on All Other Branches, Including `dev`
+1. Open up a terminal (on GNU/Linux or macOS), a Windows PowerShell console
+(on Windows), or a Command Prompt window (on Windows). Navigate to the folder
+where you have cloned this repository.
+2. Perform this step only if you are using **Eclipse** for development:  
+  In terminal or Windows PowerShell, execute:
+  ```
+  ./gradlew genEclipseRuns
+  ```
+  Or, in Command Prompt, execute:
+  ```
+  gradlew genEclipseRuns
+  ```
+3. Import the folder storing your fork in your IDE.  
+On IntelliJ IDEA, make sure you either select `build.gradle` in the folder or
+choose `Gradle` as the project model if you select the folder itself.
+4. Generate run configurations. Although this step is not required, it is
+   recommended.  
+     - If you are using **IntelliJ IDEA** for development:  
+       - Close this project in IntelliJ IDEA if it is opened.
+       - In terminal or Windows PowerShell, execute:
+         ```
+         ./gradlew genIntelliJRuns
+         ```
+         Or, in Command Prompt, execute:
+         ```
+         gradlew genIntelliJRuns
+         ```
+       - Then, reopen the project, and you can see run configurations.  
+<!-- I cannot add detailed instructions for Eclipse yet until I find a machine
+with a full Eclipse installation -->
 
 [Return to top](#table-of-contents)
 
