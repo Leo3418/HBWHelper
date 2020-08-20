@@ -94,3 +94,22 @@ jar {
 
     version compatible_minecraft_versions + "-" + mod_version
 }
+
+task modifyVersionStringsInSrc(type: Copy) {
+    from 'src/main/java'
+    into "$buildDir/modifiedSrc"
+    filter { line -> line.replaceAll('@version@', "${version}")}
+    filter { line -> line.replaceAll('@compatible_versions@',
+            "${compatible_minecraft_versions}")}
+}
+
+compileJava {
+    source = "$buildDir/modifiedSrc"
+    dependsOn modifyVersionStringsInSrc
+}
+
+processResources {
+    filter { line -> line.replaceAll('\\$\\{version\\}', "${version}")}
+    filter { line -> line.replaceAll('\\$\\{mcversion\\}',
+            "${compatible_minecraft_versions}")}
+}
