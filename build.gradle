@@ -94,3 +94,8 @@ jar {
 
     version compatible_minecraft_versions + "-" + mod_version
 }
+
+processResources {
+    filter { line -> line.replaceAll('\\$\\{loaderVersion\\}',
+            "${compatible_loader_versions}")}
+}
