@@ -22,7 +22,6 @@ package io.github.leo3418.hbwhelper.gui;
 import io.github.leo3418.hbwhelper.ConfigManager;
 import io.github.leo3418.hbwhelper.HbwHelper;
 import io.github.leo3418.hbwhelper.KeyBindings;
-import io.github.leo3418.hbwhelper.command.ConfigCommand;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
@@ -47,6 +46,17 @@ public final class QuickJoinMenuScreen extends Screen {
      * Height of the title of this GUI
      */
     private static final int TITLE_HEIGHT = 40;
+
+    /**
+     * Width of long buttons on this GUI
+     */
+    private static final int LONG_BUTTON_WIDTH = 200;
+
+    /**
+     * Width of short buttons on this GUI
+     */
+    private static final int SHORT_BUTTON_WIDTH =
+            (LONG_BUTTON_WIDTH - BUTTONS_INTERVAL) / 2;
 
     /**
      * Constructs a new {@link QuickJoinMenuScreen} instance.
@@ -324,9 +334,7 @@ public final class QuickJoinMenuScreen extends Screen {
          * for the Bed Wars Dream mode
          */
         SET_DREAM_MODE(new TranslationTextComponent(
-                "hbwhelper.messages.setDreamMode", HbwHelper.NAME,
-                ConfigCommand.LITERAL, ConfigCommand.LITERAL_DESC,
-                ConfigCommand.LITERAL_SET));
+                "hbwhelper.messages.setDreamMode", HbwHelper.NAME));
 
         /**
          * The prompt being shown when this {@code PromptAction} is performed
