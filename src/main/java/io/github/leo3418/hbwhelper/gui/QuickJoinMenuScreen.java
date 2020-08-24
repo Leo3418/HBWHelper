@@ -260,8 +260,7 @@ public final class QuickJoinMenuScreen extends Screen {
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         this.renderBackground();
-        this.drawCenteredString(getMinecraft().fontRenderer,
-                I18n.format("hbwhelper.quickJoinGui.title"),
+        this.drawCenteredString(this.font, this.title.getFormattedText(),
                 this.width / 2, TITLE_HEIGHT, 0xFFFFFF);
         super.render(mouseX, mouseY, partialTicks);
     }
