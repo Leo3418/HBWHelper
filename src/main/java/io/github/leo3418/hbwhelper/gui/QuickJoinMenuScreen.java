@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static io.github.leo3418.hbwhelper.gui.ButtonParameters.*;
+
 /**
  * The GUI of this mod for the Bed Wars quick join feature.
  *
@@ -45,34 +47,6 @@ public final class QuickJoinMenuScreen extends Screen {
      * Height of the title of this GUI
      */
     private static final int TITLE_HEIGHT = 40;
-
-    /**
-     * Vertical distance between borders of two adjacent buttons
-     */
-    private static final int BUTTONS_INTERVAL = 4;
-
-    /**
-     * Width of long buttons on this GUI
-     */
-    private static final int LONG_BUTTON_WIDTH = 200;
-
-    /**
-     * Width of short buttons on this GUI
-     */
-    private static final int SHORT_BUTTON_WIDTH =
-            (LONG_BUTTON_WIDTH - BUTTONS_INTERVAL) / 2;
-
-    /**
-     * Height of buttons on this GUI
-     */
-    private static final int BUTTON_HEIGHT = 20;
-
-    /**
-     * Vertical distance between the top of a button and the top of the button
-     * right below it
-     */
-    private static final int BUTTONS_TRANSLATION_INTERVAL =
-            BUTTON_HEIGHT + BUTTONS_INTERVAL;
 
     /**
      * Constructs a new {@link QuickJoinMenuScreen} instance.
