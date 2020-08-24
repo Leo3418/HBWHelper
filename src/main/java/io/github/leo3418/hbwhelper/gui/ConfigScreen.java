@@ -209,6 +209,7 @@ public class ConfigScreen extends Screen {
      */
     @Override
     public void onClose() {
+        CMI.save();
         Objects.requireNonNull(this.minecraft).displayGuiScreen(parentScreen);
     }
 }
