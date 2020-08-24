@@ -22,8 +22,11 @@ package io.github.leo3418.hbwhelper;
 import com.mojang.brigadier.CommandDispatcher;
 import io.github.leo3418.hbwhelper.command.CommandManager;
 import io.github.leo3418.hbwhelper.command.ConfigCommand;
+import io.github.leo3418.hbwhelper.gui.ConfigScreen;
 import net.minecraft.command.CommandSource;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -41,6 +44,11 @@ public final class HbwHelper {
     public HbwHelper() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::clientSetup);
+        ModList.get().getModContainerById(MOD_ID)
+                .orElseThrow(() -> new IllegalStateException(NAME +
+                        " could not find the mod container of itself"))
+                .registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY,
+                        () -> (mc, screen) -> new ConfigScreen(screen));
     }
 
     private void clientSetup(FMLClientSetupEvent event) {

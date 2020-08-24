@@ -32,18 +32,7 @@ class ButtonParameters {
     static final int BUTTONS_INTERVAL = 4;
 
     /**
-     * Width of long buttons on this GUI
-     */
-    static final int LONG_BUTTON_WIDTH = 200;
-
-    /**
-     * Width of short buttons on this GUI
-     */
-    static final int SHORT_BUTTON_WIDTH =
-            (LONG_BUTTON_WIDTH - BUTTONS_INTERVAL) / 2;
-
-    /**
-     * Height of buttons on this GUI
+     * Height of buttons on this mod's GUI
      */
     static final int BUTTON_HEIGHT = 20;
 
