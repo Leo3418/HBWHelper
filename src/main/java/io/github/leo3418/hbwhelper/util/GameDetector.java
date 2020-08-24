@@ -39,8 +39,8 @@ import net.minecraftforge.client.event.GuiOpenEvent;
  */
 public class GameDetector {
     /*
-     * Note: Some of the prompts below in 1.14 differ from their counterpart in
-     * older Minecraft client versions.
+     * Note: Some of the prompts below in 1.14 and above differ from their
+     * counterpart in older Minecraft client versions.
      */
 
     /**
