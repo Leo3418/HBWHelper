@@ -41,6 +41,11 @@ import static io.github.leo3418.hbwhelper.HbwHelper.NAME;
  * <p>
  * This is a Singleton class. Only one instance of this class may be created
  * per runtime.
+ * <p>
+ * The methods that change this mod's configuration do not automatically write
+ * those changes to the configuration file on disk. Instead, they only update
+ * the configuration in memory. To write any changes, use the {@link #save()}
+ * method.
  *
  * @author Leo
  */
@@ -189,7 +194,6 @@ public class ConfigManager {
                 .sync()
                 .defaultData(defaultResourcePath)
                 .autoreload()
-                .autosave()
                 .writingMode(WritingMode.REPLACE)
                 .build();
         config.load();
@@ -350,5 +354,12 @@ public class ConfigManager {
     public void changeCurrentDreamMode(DreamMode newValue) {
         Objects.requireNonNull(newValue, "newValue");
         config.set("currentDreamMode", newValue.toDisplayName());
+    }
+
+    /**
+     * Saves changes to this mod's configuration.
+     */
+    public void save() {
+        config.save();
     }
 }
