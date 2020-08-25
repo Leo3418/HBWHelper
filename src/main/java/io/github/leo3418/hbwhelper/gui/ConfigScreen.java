@@ -120,32 +120,27 @@ public class ConfigScreen extends Screen {
         this.optionsRowList.addOption(new BooleanOption(
                 "hbwhelper.configGui.showGenerationTimes.title",
                 unused -> CMI.showGenerationTimes(),
-                (unused, newValue) ->
-                        CMI.changeBoolean("showGenerationTimes", newValue)
+                (unused, newValue) -> CMI.changeShowGenerationTimes(newValue)
         ));
         this.optionsRowList.addOption(new BooleanOption(
                 "hbwhelper.configGui.showTeamUpgrades.title",
                 unused -> CMI.showTeamUpgrades(),
-                (unused, newValue) ->
-                        CMI.changeBoolean("showTeamUpgrades", newValue)
+                (unused, newValue) -> CMI.changeShowTeamUpgrades(newValue)
         ));
         this.optionsRowList.addOption(new BooleanOption(
                 "hbwhelper.configGui.showArmorInfo.title",
                 unused -> CMI.showArmorInfo(),
-                (unused, newValue) ->
-                        CMI.changeBoolean("showArmorInfo", newValue)
+                (unused, newValue) -> CMI.changeShowArmorInfo(newValue)
         ));
         this.optionsRowList.addOption(new BooleanOption(
                 "hbwhelper.configGui.showEffectsInfo.title",
                 unused -> CMI.showEffectsInfo(),
-                (unused, newValue) ->
-                        CMI.changeBoolean("showEffectsInfo", newValue)
+                (unused, newValue) -> CMI.changeShowEffectsInfo(newValue)
         ));
         this.optionsRowList.addOption(new BooleanOption(
                 "hbwhelper.configGui.alwaysShowEffects.title",
                 unused -> CMI.alwaysShowEffects(),
-                (unused, newValue) ->
-                        CMI.changeBoolean("alwaysShowEffects", newValue)
+                (unused, newValue) -> CMI.changeAlwaysShowEffects(newValue)
         ));
         this.optionsRowList.addOption(new SliderPercentageOption(
                 "hbwhelper.configGui.hudX.title",
