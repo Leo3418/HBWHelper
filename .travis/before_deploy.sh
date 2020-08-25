@@ -20,11 +20,11 @@
 # Release branches for older clients that use ForgeGradle 3.x.
 # When building from these branches, the `build` task can be run directly
 # without setting up a workspace.
-OLD_FG3_BRANCHES="1.14.4 1.11-1.12.2"
+OLD_FG3_BRANCHES="1.14.4"
 
 # Release branches for older clients that use ForgeGradle 2.x.
 # Building from these branches requires setting up a workspace.
-OLD_FG2_BRANCHES="1.9-1.10.2 1.8.9"
+OLD_FG2_BRANCHES="1.11-1.12.2 1.9-1.10.2 1.8.9"
 
 # Builds JAR artifact and source archive for an old client branch.
 #
