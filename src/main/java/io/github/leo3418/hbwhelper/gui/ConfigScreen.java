@@ -172,15 +172,15 @@ public class ConfigScreen extends Screen {
         ));
         this.children.add(this.optionsRowList);
 
-        this.addButton(new Button(this.width / 2 - BOTTOM_BUTTON_WIDTH,
+        this.addButton(new Button(
+                (this.width - BUTTONS_INTERVAL) / 2 - BOTTOM_BUTTON_WIDTH,
                 this.height - BOTTOM_BUTTON_HEIGHT_OFFSET,
                 BOTTOM_BUTTON_WIDTH, BUTTON_HEIGHT,
                 I18n.format("hbwhelper.configGui.moreInfo"),
                 button -> Util.getOSType().openURI(MORE_INFO_URL))
         );
         this.addButton(new Button(
-                this.width / 2 - BOTTOM_BUTTON_WIDTH +
-                        BOTTOM_BUTTON_WIDTH + BUTTONS_INTERVAL,
+                (this.width + BUTTONS_INTERVAL) / 2,
                 this.height - BOTTOM_BUTTON_HEIGHT_OFFSET,
                 BOTTOM_BUTTON_WIDTH, BUTTON_HEIGHT,
                 I18n.format("gui.done"),
