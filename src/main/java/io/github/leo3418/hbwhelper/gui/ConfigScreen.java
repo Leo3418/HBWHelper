@@ -163,7 +163,7 @@ public class ConfigScreen extends Screen {
                                 (CMI.currentDreamMode().ordinal() + newValue)
                                         % DreamMode.values().length]),
                 (unused, option) -> option.getDisplayString() +
-                        CMI.currentDreamMode().toDisplayName()
+                        I18n.format(CMI.currentDreamMode().getTranslateKey())
         ));
         this.children.add(this.optionsRowList);
 
