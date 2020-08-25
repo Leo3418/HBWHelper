@@ -48,7 +48,6 @@ public final class HbwHelper {
     }
 
     private void clientSetup(FMLClientSetupEvent event) {
-        ConfigManager.getInstance().initConfig();
         EventManager.getInstance().registerOnEventBus();
         KeyBindings.registerBindings();
     }
