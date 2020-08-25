@@ -96,10 +96,8 @@ jar {
 }
 
 processResources {
-    // Resource files might be the same for multiple client version branches,
-    // but the version strings must be replaced differently for different
-    // branches, so this task should be forced to be re-executed every time.
-    outputs.upToDateWhen { false }
+    // Redo this task when the compatible loader versions change
+    inputs.property "loaderVersions", compatible_loader_versions
 
     filter { line -> line.replaceAll('\\$\\{loaderVersion\\}',
             "${compatible_loader_versions}")}
