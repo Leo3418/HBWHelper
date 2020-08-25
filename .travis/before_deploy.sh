@@ -58,12 +58,6 @@ pre_deploy() {
     build_jar "$branch" true
   done
 
-  # Deletes source JARs
-  (
-    cd build/libs || exit
-    find . -type f -iregex ".*-sources\.jar" -delete
-  )
-
   # Gets version tags of the latest development build and the latest release
   # build
 
