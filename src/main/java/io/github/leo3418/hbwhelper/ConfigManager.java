@@ -229,7 +229,7 @@ public class ConfigManager {
      * @return the current game for the Dream mode on Hypixel
      */
     public DreamMode currentDreamMode() {
-        return DreamMode.valueOfDisplayName(currentDreamMode.getString())
+        return DreamMode.valueOfTranslateKey(currentDreamMode.getString())
                 .orElse(DreamMode.UNSELECTED);
     }
 
@@ -318,12 +318,12 @@ public class ConfigManager {
         updateHudParamRanges();
         currentDreamMode = config.get(Configuration.CATEGORY_CLIENT,
                 "currentDreamMode",
-                I18n.format("hbwhelper.configGui.unselected"),
+                "hbwhelper.configGui.unselected",
                 I18n.format("hbwhelper.configGui.currentDreamMode.description"),
-                DreamMode.displayNames().toArray(new String[0]))
+                DreamMode.translateKeys().toArray(new String[0]))
                 .setLanguageKey("hbwhelper.configGui.currentDreamMode.title");
         // If the setting for currentDreamMode is no longer valid, resets it
-        if (!DreamMode.valueOfDisplayName(currentDreamMode.getString())
+        if (!DreamMode.valueOfTranslateKey(currentDreamMode.getString())
                 .isPresent()) {
             currentDreamMode.setToDefault();
         }
