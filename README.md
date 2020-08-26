@@ -68,7 +68,7 @@ HBW Helper is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 PARTICULAR PURPOSE. See [`LICENSE.txt`](LICENSE.txt) for more details.
 
-Under Section 7 of GPL version 3, you are granted additional permissions
+Under section 7 of GPL version 3, you are granted additional permissions
 described in the HBW Helper MC Exception. See
 [`LICENSE-MCE.txt`](LICENSE-MCE.txt) for more details.
 
@@ -85,7 +85,7 @@ automatically add source code archive of one branch to a release, we provide
 Zip archives of source code of other branches with every release.
 
 On the [Releases](https://github.com/Leo3418/HBWHelper/releases) page, you will
-find two asset entries named `Source code (zip)` and `Source code (tar.gz)` for
+find two asset entries named "Source code (zip)" and "Source code (tar.gz)" for
 every release. Those allow you to download source code of this mod for the
 **latest** Minecraft client version(s). There will also be other Zip files
 whose name begins with `src`: these store source code of this mod for **older**
