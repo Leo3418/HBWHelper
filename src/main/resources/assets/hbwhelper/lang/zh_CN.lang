@@ -28,7 +28,7 @@ hbwhelper.hudGui.findingGenerator=正在搜索信号...
 
 hbwhelper.messages.clientRejoin=[%1$s] 检测到您重新加入了一局起床战争，或者加入了一场正在进行中的起床战争城池攻防战。您的队友在您不在游戏期间购买的队伍升级无法显示。
 hbwhelper.messages.clientRestart=[%1$s] 检测到您已重启 Minecraft 客户端，或者加入了一场正在进行中的起床战争城池攻防战。很抱歉，您的队伍之前获得的队伍升级无法重新读取。
-hbwhelper.messages.setDreamMode=[%1$s] 您需要在 %1$s 设置中选择当前的梦幻模式。在游戏菜单中点击“Mod Options”，选择“%1$s”，然后点击“Config”。
+hbwhelper.messages.setDreamMode=[%1$s] 您需要在 %1$s 设置中选择当前的梦幻模式。在游戏菜单中点击“Mod设定”，选择“%1$s”，然后点击“Config”。
 
 hbwhelper.quickJoinGui.title=起床战争快速加入
 hbwhelper.quickJoinGui.solo=单挑模式
