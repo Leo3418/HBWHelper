@@ -1,0 +1,25 @@
+HBW HELPER MC EXCEPTION
+
+This HBW Helper MC Exception ("Exception") is an additional permission under
+section 7 of GNU General Public License version 3 ("GPLv3").  It applies to
+this entire Program.
+
+As a Minecraft mod, some parts of HBW Helper have to be linked with Minecraft
+itself directly, rather than Minecraft Forge.  Minecraft is a
+GPLv3-incompatible proprietary program.  Linking this mod with it will produce
+a covered work with non-free components from Minecraft, and conveying the
+resulting work may cause legal issues surrounding GPLv3.  The purpose of this
+Exception is to allow conveying of such resulting work.
+
+When you convey a copy of a covered work, GPLv3 grants you the right to remove
+this Exception.  To promote subsequent contributions and enhancements to the
+covered work, you are encouraged to preserve this Exception in the conveying so
+others can keep improving the work and distributing any work based on it,
+though you are not obligated to do so.
+
+1. Grant of Additional Permission.
+
+If you modify this Program, or any covered work, by linking or combining it
+with Minecraft (or a modified version of that library), containing parts
+covered by the terms of Minecraft End User License Agreement, the licensors of
+this Program grant you additional permission to convey the resulting work.
