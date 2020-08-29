@@ -53,7 +53,7 @@ public class ConfigScreen extends Screen {
      * URL to the help page with more information about this mod's settings
      */
     private static final String MORE_INFO_URL =
-            "https://github.com/Leo3418/HBWHelper/wiki/Mod-Configuration";
+            "https://github.com/Leo3418/HBWHelper/wiki/Mod-Configuration#options";
 
     /**
      * Height of the title of this GUI
