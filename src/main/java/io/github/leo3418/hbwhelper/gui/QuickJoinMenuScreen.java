@@ -49,7 +49,7 @@ import static io.github.leo3418.hbwhelper.gui.ButtonParameters.*;
  */
 public final class QuickJoinMenuScreen extends Screen {
     /**
-     * Height of the title of this GUI
+     * Distance between this GUI's title and the top of the screen
      */
     private static final int TITLE_HEIGHT = 40;
 
