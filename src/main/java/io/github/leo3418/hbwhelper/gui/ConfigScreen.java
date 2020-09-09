@@ -48,7 +48,7 @@ import static io.github.leo3418.hbwhelper.gui.ButtonParameters.BUTTON_HEIGHT;
  *
  * @author Leo
  */
-public class ConfigScreen extends Screen {
+public final class ConfigScreen extends Screen {
     /**
      * URL to the help page with more information about this mod's settings
      */
