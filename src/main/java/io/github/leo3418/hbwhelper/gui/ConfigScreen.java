@@ -153,14 +153,14 @@ public final class ConfigScreen extends Screen {
                 0.0, this.width, 1.0F,
                 unused -> (double) CMI.hudX(),
                 (unused, newValue) -> CMI.changeHudX(newValue.intValue()),
-                (unused, option) -> option.getDisplayString() + CMI.hudX()
+                (gs, option) -> option.getDisplayString() + (int) option.get(gs)
         ));
         this.optionsRowList.func_214333_a(new SliderPercentageOption(
                 "hbwhelper.configGui.hudY.title",
                 0.0, this.height, 1.0F,
                 unused -> (double) CMI.hudY(),
                 (unused, newValue) -> CMI.changeHudY(newValue.intValue()),
-                (unused, option) -> option.getDisplayString() + CMI.hudY()
+                (gs, option) -> option.getDisplayString() + (int) option.get(gs)
         ));
         this.optionsRowList.func_214333_a(new IteratableOption(
                 "hbwhelper.configGui.currentDreamMode.title",
