@@ -56,12 +56,12 @@ public final class ConfigScreen extends Screen {
             "https://github.com/Leo3418/HBWHelper/wiki/Mod-Configuration#options";
 
     /**
-     * Height of the title of this GUI
+     * Distance between this GUI's title and the top of the screen
      */
     private static final int TITLE_HEIGHT = 8;
 
     /**
-     * Height of the options list's top
+     * Distance between the options list's top and the top of the screen
      */
     private static final int OPTIONS_LIST_TOP_HEIGHT = 24;
 
