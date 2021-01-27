@@ -25,14 +25,6 @@
     "1.11.2-recommended": "<rel-ver>",
     "1.11-latest": "<dev-ver>",
     "1.11-recommended": "<rel-ver>",
-    "1.10.2-latest": "<dev-ver>",
-    "1.10.2-recommended": "<rel-ver>",
-    "1.10-latest": "<dev-ver>",
-    "1.10-recommended": "<rel-ver>",
-    "1.9.4-latest": "<dev-ver>",
-    "1.9.4-recommended": "<rel-ver>",
-    "1.9-latest": "<dev-ver>",
-    "1.9-recommended": "<rel-ver>",
     "1.8.9-latest": "<dev-ver>",
     "1.8.9-recommended": "<rel-ver>"
   }

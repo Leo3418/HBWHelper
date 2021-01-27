@@ -24,7 +24,7 @@ OLD_FG3_BRANCHES="1.15-1.15.2 1.14.4"
 
 # Release branches for older clients that use ForgeGradle 2.x.
 # Building from these branches requires setting up a workspace.
-OLD_FG2_BRANCHES="1.11-1.12.2 1.9-1.10.2 1.8.9"
+OLD_FG2_BRANCHES="1.11-1.12.2 1.8.9"
 
 # Builds JAR artifact and source archive for an old client branch.
 #
