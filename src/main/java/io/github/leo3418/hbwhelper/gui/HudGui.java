@@ -25,6 +25,7 @@
 
 package io.github.leo3418.hbwhelper.gui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.leo3418.hbwhelper.ConfigManager;
 import io.github.leo3418.hbwhelper.game.CountedTrap;
@@ -125,6 +126,11 @@ public class HudGui extends AbstractGui {
     private final ConfigManager configManager;
 
     /**
+     * The matrix stack used in GUI rendering
+     */
+    private final MatrixStack matrixStack;
+
+    /**
      * Height of the next line of text that would be rendered
      */
     private int currentHeight;
@@ -138,6 +144,7 @@ public class HudGui extends AbstractGui {
         gameDetector = GameDetector.getInstance();
         configManager = ConfigManager.getInstance();
         currentHeight = configManager.hudY();
+        matrixStack = new MatrixStack();
     }
 
     /**
@@ -349,9 +356,10 @@ public class HudGui extends AbstractGui {
                 .bindTexture(icon.getAtlasTexture().getTextureLocation());
         // Removes black background of the first icon rendered
         RenderSystem.enableBlend();
-        blit(configManager.hudX(), currentHeight, this.getBlitOffset(),
+        blit(matrixStack, configManager.hudX(), currentHeight,
+                this.getBlitOffset(),
                 EFFECT_ICON_SIZE, EFFECT_ICON_SIZE, icon);
-        drawString(mc.fontRenderer, " " + text,
+        drawString(matrixStack, mc.fontRenderer, " " + text,
                 EFFECT_ICON_SIZE + configManager.hudX(),
                 currentHeight + (EFFECT_ICON_SIZE - LINE_HEIGHT) / 2 + 1,
                 TEXT_COLOR);
@@ -377,7 +385,8 @@ public class HudGui extends AbstractGui {
                 configManager.hudX() + (EFFECT_ICON_SIZE - ITEM_ICON_SIZE) / 2,
                 currentHeight);
         RenderHelper.disableStandardItemLighting();
-        drawString(mc.fontRenderer, " " + text, ITEM_ICON_SIZE + configManager.hudX(),
+        drawString(matrixStack, mc.fontRenderer, " " + text,
+                ITEM_ICON_SIZE + configManager.hudX(),
                 currentHeight + (ITEM_ICON_SIZE - LINE_HEIGHT) / 2 + 1,
                 TEXT_COLOR);
         currentHeight += ITEM_ICON_SIZE + 1;

@@ -25,14 +25,18 @@
 
 package io.github.leo3418.hbwhelper.gui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.leo3418.hbwhelper.ConfigManager;
 import io.github.leo3418.hbwhelper.HbwHelper;
 import io.github.leo3418.hbwhelper.KeyBindings;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import javax.annotation.Nonnull;
@@ -243,16 +247,19 @@ public final class QuickJoinMenuScreen extends Screen {
     /**
      * Draws this GUI on the screen.
      *
+     * @param matrixStack the matrix stack
      * @param mouseX horizontal location of the mouse
      * @param mouseY vertical location of the mouse
      * @param partialTicks number of partial ticks
      */
+    @SuppressWarnings("SuspiciousNameCombination")
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground();
-        this.drawCenteredString(this.font, this.title.getFormattedText(),
+    public void render(@Nonnull MatrixStack matrixStack,
+                       int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(matrixStack);
+        drawCenteredString(matrixStack, this.font, this.title.getString(),
                 this.width / 2, TITLE_HEIGHT, 0xFFFFFF);
-        super.render(mouseX, mouseY, partialTicks);
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
     /**
@@ -271,7 +278,7 @@ public final class QuickJoinMenuScreen extends Screen {
         if (quickJoinKeyCode == keyCode1
                 || quickJoinKeyCode == keyCode2
                 || quickJoinKeyCode == keyCode3) {
-            onClose();
+            Objects.requireNonNull(minecraft).displayGuiScreen(null);
             return true;
         } else {
             return super.keyPressed(keyCode1, keyCode2, keyCode3);
@@ -366,8 +373,10 @@ public final class QuickJoinMenuScreen extends Screen {
          */
         @Override
         public void onPress(@Nonnull Button button) {
-            Objects.requireNonNull(Minecraft.getInstance().player)
-                    .sendMessage(prompt);
+            ClientPlayerEntity player =
+                    Objects.requireNonNull(Minecraft.getInstance().player);
+            player.sendMessage(prompt,
+                    PlayerEntity.getUUID(player.getGameProfile()));
         }
     }
 
@@ -419,7 +428,8 @@ public final class QuickJoinMenuScreen extends Screen {
                                     String buttonText,
                                     QuickJoinMenuScreen parent,
                                     IPressable action) {
-            super(x, y, variant.width, BUTTON_HEIGHT, buttonText, action);
+            super(x, y, variant.width, BUTTON_HEIGHT,
+                    new StringTextComponent(buttonText), action);
             this.parent = parent;
         }
 
@@ -430,7 +440,7 @@ public final class QuickJoinMenuScreen extends Screen {
         @Override
         public void onPress() {
             super.onPress();
-            parent.onClose();
+            Objects.requireNonNull(parent.minecraft).displayGuiScreen(null);
         }
 
         /**

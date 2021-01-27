@@ -197,7 +197,8 @@ public class GameDetector {
      */
     public void update(ClientChatReceivedEvent event) {
         if (hypixelDetector.isIn() && !inBedWars) {
-            String message = event.getMessage().getFormattedText();
+            String message = TextComponents.toFormattedText(
+                    event.getMessage());
             if (message.contains(ORDINARY_START_TEXT)
                     || message.contains(RUSH_START_TEXT)
                     || message.contains(ULTIMATE_START_TEXT)

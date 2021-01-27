@@ -25,6 +25,7 @@
 
 package io.github.leo3418.hbwhelper.gui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.leo3418.hbwhelper.ConfigManager;
 import io.github.leo3418.hbwhelper.HbwHelper;
 import io.github.leo3418.hbwhelper.game.DreamMode;
@@ -36,8 +37,10 @@ import net.minecraft.client.settings.BooleanOption;
 import net.minecraft.client.settings.IteratableOption;
 import net.minecraft.client.settings.SliderPercentageOption;
 import net.minecraft.util.Util;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
+import javax.annotation.Nonnull;
 import java.util.Objects;
 
 import static io.github.leo3418.hbwhelper.gui.ButtonParameters.BUTTONS_INTERVAL;
@@ -153,23 +156,28 @@ public final class ConfigScreen extends Screen {
                 0.0, this.width, 1.0F,
                 unused -> (double) CMI.hudX(),
                 (unused, newValue) -> CMI.changeHudX(newValue.intValue()),
-                (gs, option) -> option.getDisplayString() + (int) option.get(gs)
-        ));
+                (gs, option) -> new StringTextComponent(I18n.format(
+                        "hbwhelper.configGui.hudX.title"
+                ) + ": " + (int) option.get(gs))));
         this.optionsRowList.addOption(new SliderPercentageOption(
                 "hbwhelper.configGui.hudY.title",
                 0.0, this.height, 1.0F,
                 unused -> (double) CMI.hudY(),
                 (unused, newValue) -> CMI.changeHudY(newValue.intValue()),
-                (gs, option) -> option.getDisplayString() + (int) option.get(gs)
-        ));
+                (gs, option) -> new StringTextComponent(I18n.format(
+                        "hbwhelper.configGui.hudY.title"
+                ) + ": " + (int) option.get(gs))));
         this.optionsRowList.addOption(new IteratableOption(
                 "hbwhelper.configGui.currentDreamMode.title",
                 (unused, newValue) ->
                         CMI.changeCurrentDreamMode(DreamMode.values()[
                                 (CMI.currentDreamMode().ordinal() + newValue)
                                         % DreamMode.values().length]),
-                (unused, option) -> option.getDisplayString() +
-                        I18n.format(CMI.currentDreamMode().getTranslateKey())
+                (unused, option) -> new StringTextComponent(I18n.format(
+                        "hbwhelper.configGui.currentDreamMode.title"
+                ) + ": " + I18n.format(
+                        CMI.currentDreamMode().getTranslateKey()
+                ))
         ));
         this.children.add(this.optionsRowList);
 
@@ -177,40 +185,48 @@ public final class ConfigScreen extends Screen {
                 (this.width - BUTTONS_INTERVAL) / 2 - BOTTOM_BUTTON_WIDTH,
                 this.height - BOTTOM_BUTTON_HEIGHT_OFFSET,
                 BOTTOM_BUTTON_WIDTH, BUTTON_HEIGHT,
-                I18n.format("hbwhelper.configGui.moreInfo"),
+                new TranslationTextComponent("hbwhelper.configGui.moreInfo"),
                 button -> Util.getOSType().openURI(MORE_INFO_URL))
         );
         this.addButton(new Button(
                 (this.width + BUTTONS_INTERVAL) / 2,
                 this.height - BOTTOM_BUTTON_HEIGHT_OFFSET,
                 BOTTOM_BUTTON_WIDTH, BUTTON_HEIGHT,
-                I18n.format("gui.done"),
-                button -> this.onClose())
+                new TranslationTextComponent("gui.done"),
+                button -> Objects.requireNonNull(this.minecraft)
+                        .displayGuiScreen(parentScreen))
         );
     }
 
     /**
      * Draws this GUI on the screen.
      *
+     * @param matrixStack the matrix stack
      * @param mouseX horizontal location of the mouse
      * @param mouseY vertical location of the mouse
      * @param partialTicks number of partial ticks
      */
+    @SuppressWarnings("SuspiciousNameCombination")
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground();
-        this.optionsRowList.render(mouseX, mouseY, partialTicks);
-        this.drawCenteredString(this.font, this.title.getFormattedText(),
+    public void render(@Nonnull MatrixStack matrixStack,
+                       int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(matrixStack);
+        this.optionsRowList.render(matrixStack, mouseX, mouseY, partialTicks);
+        drawCenteredString(matrixStack, this.font, this.title.getString(),
                 this.width / 2, TITLE_HEIGHT, 0xFFFFFF);
-        super.render(mouseX, mouseY, partialTicks);
+        super.render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
     /**
-     * Closes this screen.
+     * Executes tasks before this screen is closed.
+     *
+     * @apiNote Since Minecraft 1.16, the {@link Screen#onClose()} method no
+     *         longer closes the current screen. Instead, the way to close the
+     *         current screen becomes
+     *         {@code minecraft.displayGuiScreen(parentScreen)}.
      */
     @Override
     public void onClose() {
         CMI.save();
-        Objects.requireNonNull(this.minecraft).displayGuiScreen(parentScreen);
     }
 }

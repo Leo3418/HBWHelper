@@ -25,6 +25,7 @@
 
 package io.github.leo3418.hbwhelper.game;
 
+import io.github.leo3418.hbwhelper.util.TextComponents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ArmorStandEntity;
@@ -317,7 +318,8 @@ public class GameManager {
      * @param event the event fired when client receives a chat message
      */
     public void update(ClientChatReceivedEvent event) {
-        String message = event.getMessage().getFormattedText();
+        String message = TextComponents.toFormattedText(
+                event.getMessage());
         if (message.contains(HEAL_POOL_PROMPT)) {
             healPool = true;
         } else if (message.contains(DRAGON_BUFF_PROMPT)) {
@@ -408,7 +410,8 @@ public class GameManager {
                         .getAllEntities();
         for (Entity entity : entities) {
             if (entity instanceof ArmorStandEntity) {
-                String name = entity.getDisplayName().getFormattedText();
+                String name = TextComponents.toFormattedText(
+                        entity.getDisplayName());
                 if (name.contains(generatorText)) {
                     return entity.getPosition();
                 }
@@ -433,7 +436,7 @@ public class GameManager {
         for (ArmorStandEntity genEntity : genEntities) {
             ITextComponent floatTextComponent = genEntity.getDisplayName();
             String formattedText =
-                    floatTextComponent.getFormattedText();
+                    TextComponents.toFormattedText(floatTextComponent);
             if (formattedText.contains(GENERATOR_TEXT)) {
                 return Integer.parseInt(floatTextComponent.getString()
                         .replaceAll("[^0-9]", ""));

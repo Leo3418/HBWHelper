@@ -121,7 +121,8 @@ public class InProgressGameDetector {
      */
     public void detect(ClientChatReceivedEvent event) {
         if (hypixelDetector.isIn()) {
-            String message = event.getMessage().getFormattedText();
+            String message = TextComponents.toFormattedText(
+                    event.getMessage());
             if (message.contains(IN_PROGRESS_GAME_JOIN_TEXT)) {
                 EventManager.EVENT_BUS
                         .post(new ClientJoinInProgressGameEvent());
