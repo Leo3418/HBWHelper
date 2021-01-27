@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 Leo3418 <https://github.com/Leo3418>
+ * Copyright (C) 2018-2021 Leo3418 <https://github.com/Leo3418>
  *
  * This file is part of Hypixel Bed Wars Helper (HBW Helper).
  *
