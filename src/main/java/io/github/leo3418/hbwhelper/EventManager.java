@@ -39,9 +39,9 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.BusBuilder;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.util.Objects;
 
@@ -63,8 +63,7 @@ public class EventManager {
     /**
      * The proprietary event bus of this mod
      */
-    public static final IEventBus EVENT_BUS =
-            FMLJavaModLoadingContext.get().getModEventBus();
+    public static final IEventBus EVENT_BUS = BusBuilder.builder().build();
 
     /**
      * {@link ITextComponent} object storing prompt being shown when client
