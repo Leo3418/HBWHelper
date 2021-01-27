@@ -66,7 +66,71 @@ components on your computer:
 
 ### Configuring Your Project
 
-#### Configuring on `1.8.9`, `1.9-1.10.2`, or `1.11-1.12.2` Branch
+#### On Branches Using ForgeGradle 3.x (`dev` and Branches for Minecraft 1.14.4 and Above)
+
+1. Bring up a shell from a terminal; if you are on Windows, you can open up a
+   Command Prompt window instead. Navigate to the folder where you have cloned
+   the repository.
+
+2. Perform this step only if you are using **Eclipse** for development:
+
+   Execute the following command from your shell:
+   ```
+   ./gradlew genEclipseRuns
+   ```
+
+   If you are using Command Prompt, execute this instead:
+   ```
+   gradlew genEclipseRuns
+   ```
+
+3. Import the folder storing your fork in your IDE.
+
+   On Eclipse, please use the "Gradle > Existing Gradle Project" import wizard.
+
+   On IntelliJ IDEA, make sure you either select `build.gradle` in the folder
+   or choose "Gradle" as the project model if you select the folder itself.
+
+4. Generate run configurations. Although this step is not required, it is
+   recommended.
+
+   - If you are using **IntelliJ IDEA** for development:
+
+     - Close this project in IntelliJ IDEA if it is opened.
+
+     - Execute:
+       ```
+       ./gradlew genIntelliJRuns
+       ```
+
+       Or, in Command Prompt, execute:
+       ```
+       gradlew genIntelliJRuns
+       ```
+
+     - Then, reopen the project, and you can see run configurations.
+
+   - If you are using **Eclipse** for development:
+
+     - Select "Run > Run Configurations..." from menu.
+
+     - Select "Java Application" on the left panel, and select "runClient".
+
+     - Click on "Run". In the future, you can directly start this configuration
+       from menu.
+
+##### Common Issues
+
+- If you are using IntelliJ IDEA, you may get this error when you reload Gradle
+  projects after switching to another branch using ForgeGradle 3.x:
+
+  ```
+  java.lang.IllegalStateException: ProjectScopeServices has been closed.
+  ```
+
+  Closing the mod project and reopening it should resolve this issue.
+
+#### On Branches Using ForgeGradle 2.x (`1.8.9`, `1.9-1.10.2`, and `1.11-1.12.2`)
 
 1. Bring up a shell from a terminal; if you are on Windows, you can open up a
    Command Prompt window instead. Navigate to the folder where you have cloned
@@ -132,58 +196,43 @@ components on your computer:
     - Click on "Run". In the future, you can directly start this configuration
       from menu.
 
-#### Configuring on All Other Branches, Including `dev`
+##### Common Issues
 
-1. Bring up a shell from a terminal; if you are on Windows, you can open up a
-   Command Prompt window instead. Navigate to the folder where you have cloned
-   the repository.
+- If you get any errors like the following ones:
 
-2. Perform this step only if you are using **Eclipse** for development:
+  ```
+  > Task :recompileMc FAILED
 
-   Execute the following command from your shell:
-   ```
-   ./gradlew genEclipseRuns
-   ```
+  FAILURE: Build failed with an exception.
 
-   If you are using Command Prompt, execute this instead:
-   ```
-   gradlew genEclipseRuns
-   ```
+  * What went wrong:
+    Execution failed for task ':recompileMc'.
+  > java.lang.NullPointerException (no error message)
+  ```
 
-3. Import the folder storing your fork in your IDE.
+  ```
+  FAILURE: Build failed with an exception.
 
-   On Eclipse, please use the "Gradle > Existing Gradle Project" import wizard.
+  * What went wrong:
+  Execution failed for task ':fixMcSources'.
+  > com.cloudbees.diff.PatchException: Cannot find hunk target
+  ```
 
-   On IntelliJ IDEA, make sure you either select `build.gradle` in the folder
-   or choose "Gradle" as the project model if you select the folder itself.
+  Then please make sure the default Java version on your computer is Java 8.
+  You may check this with command `java -version`. Please consult any
+  documentation for your operating system and your JDK installation for
+  instructions to change the default Java version.
 
-4. Generate run configurations. Although this step is not required, it is
-   recommended.
+  If you are still getting errors after ensuring you are using Java 8, then
+  please run this command and try again:
+  ```
+  ./gradlew cleanCache
+  ```
 
-   - If you are using **IntelliJ IDEA** for development:
-
-     - Close this project in IntelliJ IDEA if it is opened.
-
-     - Execute:
-       ```
-       ./gradlew genIntelliJRuns
-       ```
-
-       Or, in Command Prompt, execute:
-       ```
-       gradlew genIntelliJRuns
-       ```
-
-     - Then, reopen the project, and you can see run configurations.
-
-   - If you are using **Eclipse** for development:
-
-     - Select "Run > Run Configurations..." from menu.
-
-     - Select "Java Application" on the left panel, and select "runClient".
-
-     - Click on "Run". In the future, you can directly start this configuration
-       from menu.
+  Or, in Command Prompt, execute:
+  ```
+  gradlew cleanCache
+  ```
 
 ### Testing This Mod from Your IDE
 
