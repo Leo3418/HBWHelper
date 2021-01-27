@@ -427,7 +427,9 @@ public class GameManager {
                                 new AxisAlignedBB(generatorPos, generatorPos.add(1, 1, 1)));
         for (EntityArmorStand genEntity : genEntities) {
             IChatComponent floatTextComponent = genEntity.getDisplayName();
-            if (floatTextComponent.getFormattedText().contains(GENERATOR_TEXT)) {
+            String formattedText =
+                    floatTextComponent.getFormattedText();
+            if (formattedText.contains(GENERATOR_TEXT)) {
                 return Integer.parseInt(floatTextComponent.getUnformattedText()
                         .replaceAll("[^0-9]", ""));
             }
