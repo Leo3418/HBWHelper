@@ -35,6 +35,7 @@ import io.github.leo3418.hbwhelper.util.HypixelDetector;
 import io.github.leo3418.hbwhelper.util.InProgressGameDetector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.client.event.*;
@@ -221,14 +222,11 @@ public class EventManager {
                 Objects.requireNonNull(Minecraft.getInstance().player);
         if (GameManager.getInstance() == null) {
             // Client is rejoining a Bed Wars game after restart of Minecraft
-            player.sendMessage(CLIENT_RESTART_PROMPT,
-                    // Undocumented and unused parameter
-                    PlayerEntity.createPlayerUUID(player.getGameProfile()));
+            player.sendMessage(CLIENT_RESTART_PROMPT, Util.NIL_UUID);
             gameTypeDetector.startDetection();
         } else {
             // Client is rejoining a Bed Wars game, but Minecraft is not closed
-            player.sendMessage(CLIENT_REJOIN_PROMPT,
-                    PlayerEntity.createPlayerUUID(player.getGameProfile()));
+            player.sendMessage(CLIENT_REJOIN_PROMPT, Util.NIL_UUID);
         }
     }
 

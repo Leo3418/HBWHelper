@@ -30,11 +30,10 @@ import io.github.leo3418.hbwhelper.ConfigManager;
 import io.github.leo3418.hbwhelper.HbwHelper;
 import io.github.leo3418.hbwhelper.KeyBindings;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -372,10 +371,8 @@ public final class QuickJoinMenuScreen extends Screen {
          */
         @Override
         public void onPress(@Nonnull Button button) {
-            ClientPlayerEntity player =
-                    Objects.requireNonNull(Minecraft.getInstance().player);
-            player.sendMessage(prompt,
-                    PlayerEntity.createPlayerUUID(player.getGameProfile()));
+            Objects.requireNonNull(Minecraft.getInstance().player)
+                    .sendMessage(prompt, Util.NIL_UUID);
         }
     }
 
