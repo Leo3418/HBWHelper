@@ -43,7 +43,7 @@ import static java.util.AbstractMap.SimpleImmutableEntry;
  */
 public class TextComponents {
     /**
-     * An immutable map that associates {@linkplain Color#getColor() color
+     * An immutable map that associates {@linkplain Color#getValue()} color
      * integer codes} with format control strings with the section sign
      * ({@code §})
      */
@@ -80,7 +80,7 @@ public class TextComponents {
     public static String toFormattedText(ITextComponent textComponent) {
         Objects.requireNonNull(textComponent, "textComponent");
         StringBuilder resultBuilder = new StringBuilder();
-        String text = textComponent.getUnformattedComponentText();
+        String text = textComponent.getContents();
         if (!text.isEmpty()) {
             resultBuilder.append(formattingCodeOf(textComponent.getStyle()))
                     .append(text)
@@ -104,27 +104,27 @@ public class TextComponents {
         StringBuilder formattingCodeBuilder = new StringBuilder();
         Color color = style.getColor();
         if (color != null) {
-            int colorCode = color.getColor();
+            int colorCode = color.getValue();
             formattingCodeBuilder.append(
                     COLOR_INT_TO_CTRL_STR_MAP.getOrDefault(colorCode, ""));
         }
-        if (style.getObfuscated()) {
+        if (style.isObfuscated()) {
             formattingCodeBuilder.append(
                     TextFormatting.OBFUSCATED.toString());
         }
-        if (style.getBold()) {
+        if (style.isBold()) {
             formattingCodeBuilder.append(
                     TextFormatting.BOLD.toString());
         }
-        if (style.getStrikethrough()) {
+        if (style.isStrikethrough()) {
             formattingCodeBuilder.append(
                     TextFormatting.STRIKETHROUGH.toString());
         }
-        if (style.getUnderlined()) {
+        if (style.isUnderlined()) {
             formattingCodeBuilder.append(
                     TextFormatting.UNDERLINE.toString());
         }
-        if (style.getItalic()) {
+        if (style.isItalic()) {
             formattingCodeBuilder.append(
                     TextFormatting.ITALIC.toString());
         }

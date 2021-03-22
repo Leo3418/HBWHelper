@@ -406,14 +406,14 @@ public class GameManager {
      */
     private BlockPos findGenerator(String generatorText) {
         Iterable<Entity> entities =
-                Objects.requireNonNull(Minecraft.getInstance().world)
-                        .getAllEntities();
+                Objects.requireNonNull(Minecraft.getInstance().level)
+                        .entitiesForRendering();
         for (Entity entity : entities) {
             if (entity instanceof ArmorStandEntity) {
                 String name = TextComponents.toFormattedText(
                         entity.getDisplayName());
                 if (name.contains(generatorText)) {
-                    return entity.getPosition();
+                    return entity.blockPosition();
                 }
             }
         }
@@ -430,8 +430,8 @@ public class GameManager {
      */
     private int getSpawnTime(BlockPos generatorPos) {
         Iterable<ArmorStandEntity> genEntities =
-                Objects.requireNonNull(Minecraft.getInstance().world)
-                        .getEntitiesWithinAABB(ArmorStandEntity.class,
+                Objects.requireNonNull(Minecraft.getInstance().level)
+                        .getEntitiesOfClass(ArmorStandEntity.class,
                                 new AxisAlignedBB(generatorPos));
         for (ArmorStandEntity genEntity : genEntities) {
             ITextComponent floatTextComponent = genEntity.getDisplayName();

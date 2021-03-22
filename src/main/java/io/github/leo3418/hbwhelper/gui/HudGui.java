@@ -193,8 +193,8 @@ public class HudGui extends AbstractGui {
      * @return whether this GUI should be rendered
      */
     private boolean shouldRender() {
-        return !(mc.currentScreen instanceof ChatScreen)
-                && !mc.gameSettings.showDebugInfo;
+        return !(mc.screen instanceof ChatScreen)
+                && !mc.options.renderDebug;
     }
 
     /**
@@ -259,14 +259,14 @@ public class HudGui extends AbstractGui {
                     nextDiamond = game.getNextDiamond() + "s";
                 } else {
                     nextDiamond =
-                            I18n.format("hbwhelper.hudGui.findingGenerator");
+                            I18n.get("hbwhelper.hudGui.findingGenerator");
                 }
                 String nextEmerald;
                 if (game.getNextEmerald() != -1) {
                     nextEmerald = game.getNextEmerald() + "s";
                 } else {
                     nextEmerald =
-                            I18n.format("hbwhelper.hudGui.findingGenerator");
+                            I18n.get("hbwhelper.hudGui.findingGenerator");
                 }
                 drawItemIconAndString(new ItemStack(DIAMOND), nextDiamond);
                 drawItemIconAndString(new ItemStack(EMERALD), nextEmerald);
@@ -353,13 +353,13 @@ public class HudGui extends AbstractGui {
      */
     private void drawEffectIconAndString(TextureAtlasSprite icon, String text) {
         mc.getTextureManager()
-                .bindTexture(icon.getAtlasTexture().getTextureLocation());
+                .bind(icon.atlas().location());
         // Removes black background of the first icon rendered
         RenderSystem.enableBlend();
         blit(matrixStack, configManager.hudX(), currentHeight,
                 this.getBlitOffset(),
                 EFFECT_ICON_SIZE, EFFECT_ICON_SIZE, icon);
-        drawString(matrixStack, mc.fontRenderer, " " + text,
+        drawString(matrixStack, mc.font, " " + text,
                 EFFECT_ICON_SIZE + configManager.hudX(),
                 currentHeight + (EFFECT_ICON_SIZE - LINE_HEIGHT) / 2 + 1,
                 TEXT_COLOR);
@@ -380,12 +380,12 @@ public class HudGui extends AbstractGui {
      * @param text the text to be rendered
      */
     private void drawItemIconAndString(ItemStack itemStack, String text) {
-        RenderHelper.enableStandardItemLighting();
-        mc.getItemRenderer().renderItemAndEffectIntoGUI(itemStack,
+        RenderHelper.turnBackOn();
+        mc.getItemRenderer().renderAndDecorateItem(itemStack,
                 configManager.hudX() + (EFFECT_ICON_SIZE - ITEM_ICON_SIZE) / 2,
                 currentHeight);
-        RenderHelper.disableStandardItemLighting();
-        drawString(matrixStack, mc.fontRenderer, " " + text,
+        RenderHelper.turnOff();
+        drawString(matrixStack, mc.font, " " + text,
                 ITEM_ICON_SIZE + configManager.hudX(),
                 currentHeight + (ITEM_ICON_SIZE - LINE_HEIGHT) / 2 + 1,
                 TEXT_COLOR);
@@ -406,13 +406,13 @@ public class HudGui extends AbstractGui {
     private void drawItemIcons(List<ItemStack> itemStacks) {
         int currentWidth = configManager.hudX()
                 + (EFFECT_ICON_SIZE - ITEM_ICON_SIZE) / 2;
-        RenderHelper.enableStandardItemLighting();
+        RenderHelper.turnBackOn();
         for (ItemStack itemStack : itemStacks) {
-            mc.getItemRenderer().renderItemAndEffectIntoGUI(itemStack,
+            mc.getItemRenderer().renderAndDecorateItem(itemStack,
                     currentWidth, currentHeight);
             currentWidth += ITEM_ICON_SIZE + 1;
         }
-        RenderHelper.disableStandardItemLighting();
+        RenderHelper.turnOff();
         if (!itemStacks.isEmpty()) {
             currentHeight += ITEM_ICON_SIZE + 1;
         }

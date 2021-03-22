@@ -75,10 +75,10 @@ public class ScoreboardReader {
      *         formatting codes
      */
     private static Collection<String> getLines() {
-        return Objects.requireNonNull(Minecraft.getInstance().world)
-                .getScoreboard().getTeams().stream()
-                .map(team -> team.getPrefix().getString()
-                        + team.getSuffix().getString())
+        return Objects.requireNonNull(Minecraft.getInstance().level)
+                .getScoreboard().getPlayerTeams().stream()
+                .map(team -> team.getPlayerPrefix().getString()
+                        + team.getPlayerSuffix().getString())
                 .collect(Collectors.toList());
     }
 }

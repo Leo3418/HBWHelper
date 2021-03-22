@@ -223,12 +223,12 @@ public class EventManager {
             // Client is rejoining a Bed Wars game after restart of Minecraft
             player.sendMessage(CLIENT_RESTART_PROMPT,
                     // Undocumented and unused parameter
-                    PlayerEntity.getUUID(player.getGameProfile()));
+                    PlayerEntity.createPlayerUUID(player.getGameProfile()));
             gameTypeDetector.startDetection();
         } else {
             // Client is rejoining a Bed Wars game, but Minecraft is not closed
             player.sendMessage(CLIENT_REJOIN_PROMPT,
-                    PlayerEntity.getUUID(player.getGameProfile()));
+                    PlayerEntity.createPlayerUUID(player.getGameProfile()));
         }
     }
 
@@ -253,8 +253,8 @@ public class EventManager {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onKeyInput(InputEvent.KeyInputEvent event) {
-        if (hypixelDetector.isIn() && KeyBindings.QUICK_JOIN.isPressed()) {
-            Minecraft.getInstance().displayGuiScreen(new QuickJoinMenuScreen());
+        if (hypixelDetector.isIn() && KeyBindings.QUICK_JOIN.consumeClick()) {
+            Minecraft.getInstance().setScreen(new QuickJoinMenuScreen());
         }
     }
 }

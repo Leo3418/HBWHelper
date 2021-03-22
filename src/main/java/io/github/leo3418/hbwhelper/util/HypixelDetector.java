@@ -91,9 +91,9 @@ public class HypixelDetector {
     public void update(ClientPlayerNetworkEvent event) {
         if (event instanceof ClientPlayerNetworkEvent.LoggedInEvent) {
             ServerData currentServer = Minecraft.getInstance()
-                    .getCurrentServerData();
+                    .getCurrentServer();
             if (currentServer != null) {
-                String serverAddress = currentServer.serverIP.toLowerCase();
+                String serverAddress = currentServer.ip.toLowerCase();
                 inHypixel = serverAddress.contains(HYPIXEL_DOMAIN);
             }
         } else if (event instanceof ClientPlayerNetworkEvent.LoggedOutEvent) {

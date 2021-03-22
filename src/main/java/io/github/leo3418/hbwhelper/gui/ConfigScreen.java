@@ -126,56 +126,56 @@ public final class ConfigScreen extends Screen {
                 OPTIONS_LIST_TOP_HEIGHT,
                 this.height - OPTIONS_LIST_BOTTOM_OFFSET,
                 OPTIONS_LIST_ITEM_HEIGHT);
-        this.optionsRowList.addOption(new BooleanOption(
+        this.optionsRowList.addBig(new BooleanOption(
                 "hbwhelper.configGui.showGenerationTimes.title",
                 unused -> CMI.showGenerationTimes(),
                 (unused, newValue) -> CMI.changeShowGenerationTimes(newValue)
         ));
-        this.optionsRowList.addOption(new BooleanOption(
+        this.optionsRowList.addBig(new BooleanOption(
                 "hbwhelper.configGui.showTeamUpgrades.title",
                 unused -> CMI.showTeamUpgrades(),
                 (unused, newValue) -> CMI.changeShowTeamUpgrades(newValue)
         ));
-        this.optionsRowList.addOption(new BooleanOption(
+        this.optionsRowList.addBig(new BooleanOption(
                 "hbwhelper.configGui.showArmorInfo.title",
                 unused -> CMI.showArmorInfo(),
                 (unused, newValue) -> CMI.changeShowArmorInfo(newValue)
         ));
-        this.optionsRowList.addOption(new BooleanOption(
+        this.optionsRowList.addBig(new BooleanOption(
                 "hbwhelper.configGui.showEffectsInfo.title",
                 unused -> CMI.showEffectsInfo(),
                 (unused, newValue) -> CMI.changeShowEffectsInfo(newValue)
         ));
-        this.optionsRowList.addOption(new BooleanOption(
+        this.optionsRowList.addBig(new BooleanOption(
                 "hbwhelper.configGui.alwaysShowEffects.title",
                 unused -> CMI.alwaysShowEffects(),
                 (unused, newValue) -> CMI.changeAlwaysShowEffects(newValue)
         ));
-        this.optionsRowList.addOption(new SliderPercentageOption(
+        this.optionsRowList.addBig(new SliderPercentageOption(
                 "hbwhelper.configGui.hudX.title",
                 0.0, this.width, 1.0F,
                 unused -> (double) CMI.hudX(),
                 (unused, newValue) -> CMI.changeHudX(newValue.intValue()),
-                (gs, option) -> new StringTextComponent(I18n.format(
+                (gs, option) -> new StringTextComponent(I18n.get(
                         "hbwhelper.configGui.hudX.title"
                 ) + ": " + (int) option.get(gs))));
-        this.optionsRowList.addOption(new SliderPercentageOption(
+        this.optionsRowList.addBig(new SliderPercentageOption(
                 "hbwhelper.configGui.hudY.title",
                 0.0, this.height, 1.0F,
                 unused -> (double) CMI.hudY(),
                 (unused, newValue) -> CMI.changeHudY(newValue.intValue()),
-                (gs, option) -> new StringTextComponent(I18n.format(
+                (gs, option) -> new StringTextComponent(I18n.get(
                         "hbwhelper.configGui.hudY.title"
                 ) + ": " + (int) option.get(gs))));
-        this.optionsRowList.addOption(new IteratableOption(
+        this.optionsRowList.addBig(new IteratableOption(
                 "hbwhelper.configGui.currentDreamMode.title",
                 (unused, newValue) ->
                         CMI.changeCurrentDreamMode(DreamMode.values()[
                                 (CMI.currentDreamMode().ordinal() + newValue)
                                         % DreamMode.values().length]),
-                (unused, option) -> new StringTextComponent(I18n.format(
+                (unused, option) -> new StringTextComponent(I18n.get(
                         "hbwhelper.configGui.currentDreamMode.title"
-                ) + ": " + I18n.format(
+                ) + ": " + I18n.get(
                         CMI.currentDreamMode().getTranslateKey()
                 ))
         ));
@@ -186,15 +186,14 @@ public final class ConfigScreen extends Screen {
                 this.height - BOTTOM_BUTTON_HEIGHT_OFFSET,
                 BOTTOM_BUTTON_WIDTH, BUTTON_HEIGHT,
                 new TranslationTextComponent("hbwhelper.configGui.moreInfo"),
-                button -> Util.getOSType().openURI(MORE_INFO_URL))
+                button -> Util.getPlatform().openUri(MORE_INFO_URL))
         );
         this.addButton(new Button(
                 (this.width + BUTTONS_INTERVAL) / 2,
                 this.height - BOTTOM_BUTTON_HEIGHT_OFFSET,
                 BOTTOM_BUTTON_WIDTH, BUTTON_HEIGHT,
                 new TranslationTextComponent("gui.done"),
-                button -> Objects.requireNonNull(this.minecraft)
-                        .displayGuiScreen(parentScreen))
+                button -> this.onClose())
         );
     }
 
@@ -206,7 +205,6 @@ public final class ConfigScreen extends Screen {
      * @param mouseY vertical location of the mouse
      * @param partialTicks number of partial ticks
      */
-    @SuppressWarnings("SuspiciousNameCombination")
     @Override
     public void render(@Nonnull MatrixStack matrixStack,
                        int mouseX, int mouseY, float partialTicks) {
@@ -218,15 +216,11 @@ public final class ConfigScreen extends Screen {
     }
 
     /**
-     * Executes tasks before this screen is closed.
-     *
-     * @apiNote Since Minecraft 1.16, the {@link Screen#onClose()} method no
-     *         longer closes the current screen. Instead, the way to close the
-     *         current screen becomes
-     *         {@code minecraft.displayGuiScreen(parentScreen)}.
+     * Closes this screen.
      */
     @Override
     public void onClose() {
         CMI.save();
+        Objects.requireNonNull(this.minecraft).setScreen(parentScreen);
     }
 }

@@ -62,7 +62,7 @@ public class EffectsReader {
      */
     public static Collection<EffectInstance> getEffects() {
         return Objects.requireNonNull(Minecraft.getInstance().player)
-                .getActivePotionEffects();
+                .getActiveEffects();
     }
 
     /**
@@ -87,7 +87,7 @@ public class EffectsReader {
      * @return duration of the potion effect as how they are shown in the client
      */
     public static String getDisplayedDuration(EffectInstance potionEffect) {
-        return EffectUtils.getPotionDurationString(potionEffect, 1.0F);
+        return EffectUtils.formatDuration(potionEffect, 1.0F);
     }
 
     /**
@@ -99,7 +99,7 @@ public class EffectsReader {
      *         maximum duration
      */
     public static int getDuration(EffectInstance potionEffect) {
-        if (potionEffect.getIsPotionDurationMax()) {
+        if (potionEffect.isNoCounter()) {
             return -1;
         }
         return potionEffect.getDuration() / TICKS_PER_SECOND;
@@ -112,7 +112,7 @@ public class EffectsReader {
      * @return the icon of the potion effect
      */
     public static TextureAtlasSprite getIcon(EffectInstance potionEffect) {
-        return Minecraft.getInstance().getPotionSpriteUploader()
-                .getSprite(potionEffect.getPotion());
+        return Minecraft.getInstance().getMobEffectTextures()
+                .get(potionEffect.getEffect());
     }
 }

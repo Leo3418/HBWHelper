@@ -72,8 +72,8 @@ public class ArmorReader {
      */
     public static int getProtectionLevel() {
         if (hasArmor()) {
-            return EnchantmentHelper.getEnchantmentLevel(
-                    Enchantments.PROTECTION, getArmorStack());
+            return EnchantmentHelper.getItemEnchantmentLevel(
+                    Enchantments.ALL_DAMAGE_PROTECTION, getArmorStack());
         }
         return -1;
     }
@@ -94,7 +94,7 @@ public class ArmorReader {
      */
     public static ItemStack getArmorStack() {
         return Objects.requireNonNull(Minecraft.getInstance().player).inventory
-                .armorItemInSlot(BOOTS_INDEX);
+                .getArmor(BOOTS_INDEX);
     }
 
     /**
