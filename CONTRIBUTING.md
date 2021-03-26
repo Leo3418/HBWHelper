@@ -66,7 +66,7 @@ components on your computer:
 
 ### Configuring Your Project
 
-#### On Branches Using ForgeGradle 3.x (`dev` and Branches for Minecraft 1.14.4 and Above)
+#### On Branches Using ForgeGradle 3.x and Above (`dev` and Branches for Minecraft 1.14.4 and Above)
 
 1. Bring up a shell from a terminal; if you are on Windows, you can open up a
    Command Prompt window instead. Navigate to the folder where you have cloned
