@@ -17,10 +17,10 @@
 # - Global variable `$TRAVIS_BRANCH` which stores the mod version of the
 #   current build with "v" prefix must be defined in the environment.
 
-# Release branches for older clients that use ForgeGradle 3.x.
+# Release branches for older clients that use ForgeGradle 3.x or 4.x.
 # When building from these branches, the `build` task can be run directly
 # without setting up a workspace.
-OLD_FG3_BRANCHES="1.15-1.15.2 1.14.4"
+OLD_FG3_4_BRANCHES="1.15-1.15.2 1.14.4"
 
 # Release branches for older clients that use ForgeGradle 2.x.
 # Building from these branches requires setting up a workspace.
@@ -51,7 +51,7 @@ build_jar() {
 # Performs pre-deployment tasks.
 pre_deploy() {
   # Builds JAR artifacts and source archives for old client versions
-  for branch in ${OLD_FG3_BRANCHES}; do
+  for branch in ${OLD_FG3_4_BRANCHES}; do
     build_jar "$branch" false
   done
   for branch in ${OLD_FG2_BRANCHES}; do
